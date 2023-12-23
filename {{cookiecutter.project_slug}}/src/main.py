@@ -1,15 +1,5 @@
-"""The pipeline manages the analytical data flow.
+"""The main module manage the functional flow.
 
-The pipeline will run the script in analytical order from the given step to
-the end or just ofr a single step, depending on the user's choice.
-
-The analytical steps are as follows:
-
-1. ETL: Extract, transform and load the raw data.
-2. Preprocessing: Preprocessing the data.
-3. Feature engineering: Feature engineering.
-4. Modelization: Compute the modelization.
-5. Winding up: Final clean up, export, etc.
 """
 import sys
 from pathlib import Path

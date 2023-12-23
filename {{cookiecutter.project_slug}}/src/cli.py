@@ -25,5 +25,5 @@ args = parser.parse_args()
 if __name__ == "__main__":
     verb = args.verbose
     print(f"{verb=}")
-    main.run_main(verbose=verb)
+    main.run_main(msg="Main flow called by the cli.", verbose=verb)
     ws.MessageBeep(type=ws.MB_ICONASTERISK)
