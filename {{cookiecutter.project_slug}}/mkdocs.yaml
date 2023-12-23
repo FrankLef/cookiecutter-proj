@@ -1,0 +1,18 @@
+site_name: {{cookiecutter.git_repo}}
+
+theme:
+  name: "readthedocs"
+
+plugins:
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          paths: [../src]  # https://mkdocstrings.github.io/python/usage/#finding-modules
+
+nav:
+  - index.md
+  - tutorials.md
+  - how-to-guides.md
+  - reference.md
+  - explanation.md

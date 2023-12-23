@@ -1,0 +1,14 @@
+{
+  "project_name": "todo",
+  "project_slug": "{{cookiecutter.project_name.lower().replace(' ', '_') }}",
+  "__title_name": "{{cookiecutter.project_name}}.replace('-', ' ').replace('_', ' ').title()",
+  "description": "A short description of the data science project.",
+  "author": "Fran\u00E7ois Lefebvre",
+  "email": "flefebvre01@hotmail.com",
+  "author_email": "{{cookiecutter.author}} <{{cookiecutter.email}}>",
+  "git_user": "FrankLef",
+  "git_email": "https://github.com/{{cookiecutter.git_user}}",
+  "git_repo": "{{cookiecutter.git_email}}/{{cookiecutter.project_slug}}.git",
+  "version": "0.1.0",
+  "license": ["MIT", "BSD", "ISC", "Apache 2.0", "GNU General Public v3"]
+}

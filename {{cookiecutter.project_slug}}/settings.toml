@@ -1,0 +1,17 @@
+# array of pipeline start id
+starts=["etl","preproc","feat","model","windup"]
+
+# default url used by etl
+url="https://raw.githubusercontent.com/fivethirtyeight/data/master/airline-safety/airline-safety.csv"
+
+[message]
+etl = "Processing ETL"
+preproc = "Processing Preproc"
+feat = "Processing Features"
+model = "Processing Models"
+windup = "Processing Windup"
+
+# ms access database specs
+[msaccess]
+path = "C:/Users/Public/MyJob/DesjCap_cies/PHT/db_PHT_V1_xprt.accdb"
+tables = ["tbl_xprt_sales_grp", "tbl_xprt_part"]
