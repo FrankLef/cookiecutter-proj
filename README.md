@@ -237,6 +237,10 @@ The primary libraries used are described in sections as follows:
 |[pyodbc]|Access ODBC database|
 |[SQLAlchemy]|SQL toolkit and object relational mapper|
 
+## Test
+
+:[test]structure.md
+
 ## Directory structure
 
 This is how the new project will be organized.
