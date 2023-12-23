@@ -251,11 +251,7 @@ This is how the new project will be organized.
     ├── .secrets.toml             <- Secret settings used by `dynaconf`.
     ├── README.md                 <- The top-level README for developers using this project.
     ├── data                      <- Data directories used throughout the project.
-    │   ├── external              <- Data from third party sources.
     │   ├── raw                   <- The original, immutable data dump.
-    |   ├── ready                 <- The raw data formatted for analysis.
-    │   ├── refined               <- Intermediate data ready for final processing.
-    │   └── results               <- The final, canonical data sets.
     ├── docs                      <- GitHub pages website.
     │   ├── explanation.md        <- Understanding-oriented documentation.
     │   ├── how-to-guides.md      <- Problem-oriented documentation.
