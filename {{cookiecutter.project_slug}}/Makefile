@@ -67,13 +67,9 @@ git_init:
 	@echo -e "\x7"
 
 ignored_dir:
-	# create data dir which are not done by cookicutter
-	# because it is in .gitignore
-	md data
-	@echo -e "\x1b[1;36m"data\" created.\x1b[0m"
-	md data\raw
-	@echo -e "\x1b[1;36m"data\raw" created.\x1b[0m"
-	@echo -e "\x1b[1;32mIgnored directories created!\x1b[0m"
+	# create data dir which are in the cookicutter because of .gitignore
+	mkdir -p data\raw
+	@echo -e "\x1b[1;32mIgnored directories created successfully!\x1b[0m"
 
 test:
 	@echo -e "\x1b[1;37mThis is a test\x1b[0m"
