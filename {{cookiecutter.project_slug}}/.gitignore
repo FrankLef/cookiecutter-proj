@@ -136,4 +136,4 @@ dask-worker-space
 
 
 # remove custom directories
-data
+data/
