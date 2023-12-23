@@ -1,4 +1,4 @@
-# cookiecutter-dsci
+# cookiecutter-proj
 
 <!-- badges: start -->
 [![Lifecycle:
@@ -10,33 +10,15 @@ stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://
 ![Pre-commit](https://img.shields.io/badge/precommit-2.20.0-blue)
 <!-- badges: end -->
 
-Cookiecutter for data science projects by Ephel. This cookiecutter tries to use
+Cookiecutter for simple projects by Ephel. This cookiecutter tries to use
 the most modern Python setup without the full complexity of [Hypermodern Python cookiecutter].
 
 ## Features
 
+
 ### Workflow
 
 This cookiecutter proposes a workflow organized with [directory structure](#directory-structure).
-and summarized as follows:
-
-1. **etl**: Extract, transform and load data.
-2. **preproc**: Convert raw data into a usable format.
-3. **features**: Feature engineering.
-4. **models**: Modelization.
-5. **windup**: Final processing and output.
-
-### Templates
-
-The cookiecutter is setup as a very small data science project to accelerate
-the initial project creation.
-
-* A pipeline file including a command line interface with `argparse` and `winsound`.
-* Preprocessing with files saved using `pyarrow.feather`.
-* A small data simulation with `numpy`, modelized with `statsmodels`.
-* An output file used in creating a report with `quarto`.
-
-## Acknowledgements
 
 The overall choices of packages is inspired from [Hypermodern Python cookiecutter].
 
@@ -54,7 +36,7 @@ repo name, project name, etc.
 ### Step 1 Setup the project structure with `cookiecutter`
 
 Change to the parent location where you want the project to be created.
-For example if your project is called `project-dsci` in the `parent` folder,
+For example if your project is called `project-proj` in the `parent` folder,
 then move to `parent` first
 
     cd ../parent
@@ -65,7 +47,7 @@ verify that `cookiecutter` is properly installed by calling its version
 
 then generate the project
 
-    cookiecutter https://github.com/FrankLef/cookiecutter-dsci.git
+    cookiecutter https://github.com/FrankLef/cookiecutter-proj.git
 
 and **make the new folder the working directory**.
 
@@ -99,6 +81,8 @@ To delete the old environment use this command
 
 ### Step 3 Setup the new `.git`
 
+#### Create repo in `github`
+
 First create the new repo in github
 
 * **Give the repo the exact same name as the project**. That is keep the
@@ -106,6 +90,8 @@ underscore in the name when there one. i.e. flproj_todo is also flproj_todo
 in github.
 * Don't create `README`, `.gitignore` and `LICENSE` with the new repo they
 will be overriden anyway.
+
+#### Initialize the repo
 
 Then initialize git using
 
@@ -286,25 +272,10 @@ This is how the new project will be organized.
     │   ├── data                  <- Data used in reporting.
     │   └── viz                   <- Visualizations such as plots, figures and tables used in reporting.
     ├── src                       <- Store the source code.
-    │   ├── main.py               <- The main CLI entry point, used to call `pipeline.py`.
-    │   ├── pipeline.py           <- The pipeline to dispatch the flows.
+    │   ├── cli.py                <- The main CLI entry point, used to call `main.py`.
+    │   ├── main.py               <- The main flow (pipeline) to dispatch the subflows.
     │   ├── helpers               <- Utilities and helper codes.
     │   │   ├── __init__.py
-    │   ├── etl                   <- Code to extract, transform and load the raw data.
-    │   │   ├── __init__.py
-    │   │   └── main.py           <- Main entry point to ectraxt, transform and load data.
-    │   ├── preproc               <- Code for preprocessing the data.
-    │   │   ├── __init__.py
-    │   │   └── main.py           <- Main entry point for preprocessing.
-    │   ├── features              <- Code for feature engineering.
-    │   │   ├── __init__.py
-    │   │   └── main.py           <- Main entry point for feature engineering.
-    │   ├── models                <- Code for modelizations.
-    │   │   ├── __init__.py
-    │   │   └── main.py           <- Main entry point for modelizations.
-    │   └── windup                <- Final processing.
-    │       ├── __init__.py
-    │       └── main.py           <- Main entry point for final processing.
     └── tests                     <- All test and fixtures files used in testing.
         ├── __init__.py
         ├── fixtures              <- Where to put example inputs and outputs.
