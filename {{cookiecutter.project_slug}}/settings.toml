@@ -1,15 +1,7 @@
-# array of pipeline start id
-starts=["etl","preproc","feat","model","windup"]
 
-# default url used by etl
-url="https://raw.githubusercontent.com/fivethirtyeight/data/master/airline-safety/airline-safety.csv"
 
 [message]
-etl = "Processing ETL"
-preproc = "Processing Preproc"
-feat = "Processing Features"
-model = "Processing Models"
-windup = "Processing Windup"
+main = "Processing the main flow."
 
 # ms access database specs
 [msaccess]

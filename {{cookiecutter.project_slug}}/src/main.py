@@ -26,44 +26,17 @@ if a_path not in sys.path:
 
 from config import settings  # noqa
 
-the_starts = tuple(settings.starts)
-
-a_path = str(src_path.joinpath("etl"))
-if a_path not in sys.path:
-    sys.path.insert(1, a_path)
-
-from etl.main import run_etl  # noqa
-from features.main import run_feat  # noqa
-from models.main import run_model  # noqa
-from preproc.main import run_preproc  # noqa
-from windup.main import run_windup  # noqa
+process_msg = settings.message.main
+from helpers import richmsg  # noqa
 
 
-@flow(name="pipeline", log_prints=True)
-def run_pipeline(starts: tuple[str, ...], verbose: bool = False) -> int:
-    """Process the analytical pipeline.
-
-    Args:
-        starts (tuple[str, ...]python main.copy()): id of the analytical steps.
-        verbose (bool, optional): If `True` be verbose. Defaults to False.
-
-    Returns:
-        int: Return the number of steps processed.
-    """
-    if the_starts[0] in starts:
-        run_etl()
-    if the_starts[1] in starts:
-        run_preproc()
-    if the_starts[2] in starts:
-        run_feat()
-    if the_starts[3] in starts:
-        run_model()
-    if the_starts[4] in starts:
-        run_windup()
-    return len(starts)
+@flow(name="main", log_prints=True)
+def run_main(msg:str, verbose=False) -> bool:
+    if not msg:
+        msg = process_msg
+    richmsg.print_msg(text=process_msg, type="process")
+    return True
 
 
 if __name__ == "__main__":
-    idx = the_starts.index("preproc")
-    the_defaults = the_starts[idx:]
-    run_pipeline(starts=the_defaults)
+    run_main(process_msg)
