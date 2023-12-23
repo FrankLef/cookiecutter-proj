@@ -135,5 +135,5 @@ dmypy.json
 dask-worker-space
 
 
-# remove custom directories
+# custom directories
 data/
