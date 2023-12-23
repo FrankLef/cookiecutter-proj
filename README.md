@@ -15,7 +15,6 @@ the most modern Python setup without the full complexity of [Hypermodern Python 
 
 ## Features
 
-
 ### Workflow
 
 This cookiecutter proposes a workflow organized with [directory structure](#directory-structure).
