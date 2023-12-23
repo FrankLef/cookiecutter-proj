@@ -96,7 +96,15 @@ Then initialize git using
 
     make git_init
 
-### Step 4 Install `pre-commit`
+### Step 4 Add the ignored directories
+
+Some directories, such as the `data/`, are included in `.gitignore` and therefoer
+ignored by the cookicutter which is coming from `git`. Run `make` to add these
+extra directories. The most usual one is `data`.
+
+    make ignored_dir
+
+### Step 5 Install `pre-commit`
 
 Once `.git` is setup, make sure to include the pre-commit script in `.git`
 by running `pre-commit install` from the poetry shell. Also `pre-commit update`
@@ -112,7 +120,7 @@ It is also a good idea to run the hooks against all files when adding a new hook
 
     pre-commit run --all-files
 
-### Step 5 Verify the features
+### Step 6 Verify the features
 
 It is also useful to test the features of the new project before embarking
 in the coding.

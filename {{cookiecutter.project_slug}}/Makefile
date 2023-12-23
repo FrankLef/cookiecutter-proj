@@ -66,7 +66,7 @@ git_init:
 	@echo -e "\x1b[1;32mgit initialized successfully!\x1b[0m"
 	@echo -e "\x7"
 
-data_dir:
+ignored_dir:
 	# create data dir which are not done by cookicutter
 	# because it is in .gitignore
 	md data
