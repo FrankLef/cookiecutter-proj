@@ -279,6 +279,8 @@ This is how the new project will be organized.
     │   ├── main.py               <- The main flow (pipeline) to dispatch the subflows.
     │   ├── helpers               <- Utilities and helper codes.
     │   │   ├── __init__.py
+    |   ├── etl                   <- Code to extract, transform and load the raw data.
+    │   │   ├── __init__.py
     └── tests                     <- All test and fixtures files used in testing.
         ├── __init__.py
         ├── fixtures              <- Where to put example inputs and outputs.
