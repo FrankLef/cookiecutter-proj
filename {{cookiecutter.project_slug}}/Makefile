@@ -1,7 +1,7 @@
-project_name := "{{cookiecutter.project_slug}}"
-git_user := "{{cookiecutter.git_user}}"
-git_email := "{{cookiecutter.git_email}}"
-git_repo := "{{cookiecutter.git_repo}}"
+project_name := "igc_etl"
+git_user := "FrankLef"
+git_email := "https://github.com/FrankLef"
+git_repo := "https://github.com/FrankLef/igc_etl.git"
 
 # the first target is the default
 all: hello
@@ -38,6 +38,9 @@ pre_commit:
 	pre-commit autoupdate
 	@echo -e "\x1b[1;32mpre-commit autoupdate ok!\x1b[0m"
 	@echo -e "\x1b[1;36mcompleted successfully!\x1b[0m"
+
+pre_commit_run:
+	pre-commit run --all-files
 
 
 lint: isort black flake
