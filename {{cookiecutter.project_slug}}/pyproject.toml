@@ -1,12 +1,12 @@
 [tool.poetry]
-name = "{{cookiecutter.project_slug}}"
+name = "igc_dsci"
 version = "0.1.0"
-description = "{{cookiecutter.description}}"
-authors = ["{{cookiecutter.author_email}}"]
+description = "IGC data science"
+authors = ["François Lefebvre <flefebvre01@hotmail.com>"]
 license = "MIT"
 readme = "README.md"
-homepage = "{{cookiecutter.git_repo}}"
-repository = "{{cookiecutter.git_repo}}"
+homepage = "https://github.com/FrankLef/igc_dsci.git"
+repository = "https://github.com/FrankLef/igc_dsci.git"
 documentation = "TBA"
 classifiers = [
     "Programming Language :: Python :: 3.6",
@@ -17,7 +17,7 @@ classifiers = [
 ]
 
 [tool.poetry.urls]
-Changelog = "{{cookiecutter.git_repo}}/releases"
+Changelog = "https://github.com/FrankLef/igc_dsci.git/releases"
 
 [tool.poetry.dependencies]
 # python changed to allow install of scipy
@@ -44,6 +44,7 @@ scipy = "^1.10.1"
 numba = "~0.56.0"
 pyod = "^1.0.7"
 seaborn = "^0.12.2"
+prefect = "^2.82"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^5.0.4"
