@@ -1,7 +1,7 @@
-import math
+import numpy as np
 
 
-def log1ps(x: float, base: float = math.e) -> list[float] | float:
+def log1ps(x: float, base: float = np.e) -> list[float] | float:
     """Return 'math.log1p' of `x` to the given `base`, keeping the sign of `x`.
 
     Args:
@@ -11,18 +11,12 @@ def log1ps(x: float, base: float = math.e) -> list[float] | float:
     Returns:
         list[float] | float: Number converted with `log1ps`.
     """
-    def fun(x):
-        y = abs(x)
-        y = math.log1p(y) / math.log(base)
-        return math.copysign(y, x)
-    if hasattr(x, "__iter__"):
-        out = [fun(item) for item in x]
-    else:
-        out = fun(x)
+    y = np.abs(x)
+    out = np.sign(x) * np.log1p(y) / np.log(base)
     return out
 
 
-def expm1s(x: float, base: float = math.e) -> list[float] | float:
+def expm1s(x: float, base: float = np.e) -> list[float] | float:
     """Return 'math.expm1' of `x` at the given `base`, keeping the sign of `x`.
 
     Args:
@@ -32,14 +26,8 @@ def expm1s(x: float, base: float = math.e) -> list[float] | float:
     Returns:
         list[float] | float: Number converted with `expm1s`.
     """
-    def fun(x):
-        y = abs(x)
-        y = math.pow(base, y) - 1
-        return math.copysign(y, x)
-    if hasattr(x, "__iter__"):
-        out = [fun(item) for item in x]
-    else:
-        out = fun(x)
+    y = np.abs(x)
+    out = np.sign(x) * (np.power(base, y) - 1)
     return out
 
 
