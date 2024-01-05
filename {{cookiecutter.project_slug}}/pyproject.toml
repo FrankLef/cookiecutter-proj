@@ -1,12 +1,12 @@
 [tool.poetry]
-name = "igc_dsci"
-version = "0.1.0"
-description = "IGC data science"
-authors = ["François Lefebvre <flefebvre01@hotmail.com>"]
-license = "MIT"
+name = "{{cookiecutter.project_slug}}"
+version = "{{cookiecutter.version}}"
+description = "{{cookiecutter.description}}"
+authors = ["{{cookiecutter.author_email}}"]
+license = "{{cookiecutter.license}}"
 readme = "README.md"
-homepage = "https://github.com/FrankLef/igc_dsci.git"
-repository = "https://github.com/FrankLef/igc_dsci.git"
+homepage = "{{cookiecutter.git_repo}}"
+repository = "{{cookiecutter.git_repo}}"
 documentation = "TBA"
 classifiers = [
     "Programming Language :: Python :: 3.6",
