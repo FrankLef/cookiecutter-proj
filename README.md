@@ -260,6 +260,7 @@ This is how the new project will be organized.
     ├── README.md                 <- The top-level README for developers using this project.
     ├── data                      <- Data directories used throughout the project.
     │   ├── raw                   <- The original, immutable data dump.
+    │   ├── temp                  <- Temporary folder. These files can be deleted.
     ├── docs                      <- GitHub pages website.
     │   ├── explanation.md        <- Understanding-oriented documentation.
     │   ├── how-to-guides.md      <- Problem-oriented documentation.
