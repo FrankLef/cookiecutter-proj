@@ -17,7 +17,7 @@ classifiers = [
 ]
 
 [tool.poetry.urls]
-Changelog = "https://github.com/FrankLef/igc_dsci.git/releases"
+Changelog = "{{cookiecutter.__changelog}}"
 
 [tool.poetry.dependencies]
 # python changed to allow install of scipy

@@ -9,6 +9,7 @@
   "git_user": "FrankLef",
   "git_email": "https://github.com/{{cookiecutter.git_user}}",
   "git_repo": "{{cookiecutter.git_email}}/{{cookiecutter.project_slug}}.git",
+  "__changelog": "{{cookiecutter.git_repo}}/releases",
   "version": "0.1.0",
   "license": ["MIT", "BSD", "ISC", "Apache 2.0", "GNU General Public v3"]
 }
