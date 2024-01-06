@@ -2,12 +2,13 @@
 
 <!-- badges: start -->
 [![Lifecycle:
-stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](https://opensource.org/licenses/MIT)
-[![Python 3.10](https://img.shields.io/badge/python-3.10.6-blue.svg)](https://www.python.org/downloads/release/python-3106/)
+stable](https://img.shields.io/badge/lifecycle-stable-brightgreen)](https://lifecycle.r-lib.org/articles/stages)
+[![License](https://img.shields.io/badge/license-MIT-green)](https://opensource.org/licenses/MIT)
+[![Python](https://img.shields.io/badge/python-^3.10-blue)](https://www.python.org/downloads/release/python-3106/)
+[![cooliecutter](https://img.shields.io/badge/cookiecutter-2.1.1-blueviolet)](https://cookiecutter.readthedocs.io/en/stable/)
 [![Poetry](https://img.shields.io/badge/poetry-1.1.15-purple)](https://pypi.org/project/poetry/)
-![Black](https://img.shields.io/badge/black-22.8.0-orange)
-![Pre-commit](https://img.shields.io/badge/precommit-2.20.0-blue)
+[![Black](https://img.shields.io/badge/codestyle-black-black)](https://pypi.org/project/black/)
+[![Pre-commit](https://img.shields.io/badge/precommit-3.5.0-orange)](https://pypi.org/project/pre-commit/)
 <!-- badges: end -->
 
 Cookiecutter for simple projects by Ephel. This cookiecutter tries to use
