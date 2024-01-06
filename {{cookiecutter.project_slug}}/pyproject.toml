@@ -7,7 +7,6 @@ license = "{{cookiecutter.license}}"
 readme = "README.md"
 homepage = "{{cookiecutter.git_repo}}"
 repository = "{{cookiecutter.git_repo}}"
-documentation = "TBA"
 classifiers = [
     "Programming Language :: Python :: 3.6",
     "Programming Language :: Python :: 3.7",
@@ -44,7 +43,7 @@ scipy = "^1.10.1"
 numba = "~0.56.0"
 pyod = "^1.0.7"
 seaborn = "^0.12.2"
-prefect = "^2.82"
+prefect = "^2.14"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^5.0.4"
