@@ -1,4 +1,3 @@
-project_name := "{{cookiecutter.project_name}}"
 git_user := "{{cookiecutter.git_user}}"
 git_email := "{{cookiecutter.git_email}}"
 git_repo := "{{cookiecutter.git_repo}}"
