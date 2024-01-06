@@ -162,7 +162,7 @@ this command wich runs the tests from the `tests` directory.
 
 ## Setup notes
 
-When using the configurations recommended usually as best practices problems
+When using the configurations problems
 were encountered. They are described as well as their solutions below.
 
 You can also read the `pyproject.toml` provided by this cookiecutter to see
@@ -261,12 +261,14 @@ This is how the new project will be organized.
     ├── data                      <- Data directories used throughout the project.
     │   ├── raw                   <- The original, immutable data dump.
     │   ├── temp                  <- Temporary folder. These files can be deleted.
+    |   └── ...
     ├── docs                      <- GitHub pages website.
     │   ├── explanation.md        <- Understanding-oriented documentation.
     │   ├── how-to-guides.md      <- Problem-oriented documentation.
     │   ├── index.md              <- The index page for the whole documentation.
     │   ├── reference.md          <- Information-oriented documentation.
-    │   └── tutorials.md          <- Learning-oriented documentation.
+    │   ├── tutorials.md          <- Learning-oriented documentation.
+    |   └── ...
     ├── notebooks                 <- Jupyter notebooks. Naming convention is a number (for ordering),
     │   │                            the creator's initials, and a short `_` delimited description, e.g.
     │   │                            `01_fl_exploratory_data_analysis.ipynb`.
@@ -282,6 +284,7 @@ This is how the new project will be organized.
     │   │   ├── __init__.py
     |   ├── etl                   <- Code to extract, transform and load the raw data.
     │   │   ├── __init__.py
+    |   |   └── ...
     └── tests                     <- All test and fixtures files used in testing.
         ├── __init__.py
         ├── fixtures              <- Where to put example inputs and outputs.
@@ -289,7 +292,8 @@ This is how the new project will be organized.
         │   └── output.json       <- Test output data.
         ├── test_config           <- Test the project's settings.
         ├── test_etl              <- Test example on `etl.py`.
-        └── test_samples.py       <- Test example to verify `pytest`.
+        ├── test_samples.py       <- Test example to verify `pytest`.
+        └── ...
 
 [cookiecutter]: https://github.com/audreyr/cookiecutter
 [Hypermodern Python cookiecutter]: https://cookiecutter-hypermodern-python.readthedocs.io/en/2020.6.15/index.html
