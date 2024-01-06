@@ -17,7 +17,7 @@ def log1ps(x: float, base: float = np.e) -> list[float] | float:
 
 
 def expm1s(x: float, base: float = np.e) -> list[float] | float:
-    """Return 'np.power(x, base), keeping the sign of `x`.
+    """Return 'np.power(x, base) - 1, keeping the sign of `x`.
 
     Args:
         x (float): Value to process, it is the power of the given `base`.
