@@ -20,7 +20,7 @@ Changelog = "{{cookiecutter.__changelog}}"
 
 [tool.poetry.dependencies]
 # python changed to allow install of scipy
-python = ">=3.10.6"
+python = "^3.10.6"
 requests = "^2.28.1"
 pandas = "^1.5.0"
 numpy = "^1.23.3"
