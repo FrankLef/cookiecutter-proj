@@ -2,11 +2,11 @@ import numpy as np
 
 
 def log1ps(x: float, base: float = np.e) -> list[float] | float:
-    """Return 'math.log1p' of `x` to the given `base`, keeping the sign of `x`.
+    """Return 'np.log1p' of `x` to the given `base`, keeping the sign of `x`.
 
     Args:
         x (float): Value to process.
-        base (float, optional): Base of the logarithm. Defaults to `math.e`.
+        base (float, optional): Base of the logarithm. Defaults to `np.e`.
 
     Returns:
         list[float] | float: Number converted with `log1ps`.
@@ -17,11 +17,11 @@ def log1ps(x: float, base: float = np.e) -> list[float] | float:
 
 
 def expm1s(x: float, base: float = np.e) -> list[float] | float:
-    """Return 'math.expm1' of `x` at the given `base`, keeping the sign of `x`.
+    """Return 'np.power(x, base), keeping the sign of `x`.
 
     Args:
         x (float): Value to process, it is the power of the given `base`.
-        base (float, optional): Base of the power. Defaults to `math.e`.
+        base (float, optional): Base of the power. Defaults to `np.e`.
 
     Returns:
         list[float] | float: Number converted with `expm1s`.
