@@ -1,4 +1,4 @@
-# {{ cookiecutter.project_name }}
+# {{cookiecutter.project_name}}
 
 <!-- badges: start -->
 [![Lifecycle:
@@ -9,17 +9,22 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 
 {{ cookiecutter.description }}
 
-## Pipeline
+## How to use
 
-The pipeline can be run by changing to the src
+The entry point is in `\..src\__main__.py` with a command line that will use
+the `dispatch.py` file to dispatch actions required by `__main__.py`.
 
-    cd src
+You just need to be in the project directory
 
-and usin the command
+    cd {{cookiecutter.project_slug}}
 
-    python cli.py <start>
+and use the command
 
-where `start` is where the pipeline starts. It must one of
-`("etl", "preproc", "feat", "model", "windup")`. See help for more details.
+    python src <args> <option>
 
-    pythin cli.py -h
+where `<args>` and `<options>` are the arguments and options defined in
+`__main.py`. You will usually have to change them to suit your needs.
+
+The help on the `<args>` and `<options>` is found as usual by invoking
+
+    python src -h
