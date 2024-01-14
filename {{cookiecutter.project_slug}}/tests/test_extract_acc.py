@@ -1,18 +1,23 @@
+"""Test the MS Access connections."""
 import pytest
+from pathlib import Path
 import sqlalchemy as sa
 
 import src.etl.extract_acc as extr
-from config import settings
 
 
 @pytest.fixture
 def db_path():
-    return settings.msaccess.path
+    # NOTE: Change this path to your local MS Access db
+    path = Path("C:/Users/Public/MyJob/DesjCap_cies/PHT/db_PHT_V1_xprt.accdb")
+    return path
 
 
 @pytest.fixture
 def db_tables():
-    return settings.msaccess.tables
+    # NOTE: Change this tuple of table mames to your local specs.
+    the_tables = ("tbl_xprt_sales_grp", "tbl_xprt_part")
+    return the_tables
 
 
 def test_acc_engine(db_path):

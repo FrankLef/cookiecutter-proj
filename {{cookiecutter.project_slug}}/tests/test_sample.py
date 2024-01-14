@@ -1,5 +1,4 @@
-# This is a sample file to validate pytest and nox.
-# It can be deleted.
+"""Test example to verify `pytest`."""
 
 import pytest
 

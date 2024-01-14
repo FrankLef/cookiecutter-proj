@@ -1,3 +1,4 @@
+"""Dispatch the command received from the entry point."""
 import logging
 from rich.logging import RichHandler
 

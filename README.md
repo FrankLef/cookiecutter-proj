@@ -161,7 +161,7 @@ this command wich runs the tests from the `tests` directory.
 
     pytest
 
-## Setup notes
+## Help notes
 
 When using the configurations problems
 were encountered. They are described as well as their solutions below.
@@ -191,7 +191,7 @@ flake8 hook.
 Use `pyarrow.feather` instead of `feather-format`, `feather.format` exists only
 for backward compatibility. `pyarrow` should be installed with
 `pip3 install pyarrow` in the local python. Don't install `pyarrow` with
-`poetry add pyarrow` or you will get a whole lotof cryptic errors.
+`poetry add pyarrow` or you will get a whole lot of cryptic errors.
 
 ## Libraries Used
 
@@ -247,7 +247,7 @@ The primary libraries used are described in sections as follows:
 
 ## Directory structure
 
-This is how the new project will be organized.
+This is how the folders will be organized.
 
     ├── .gitignore                <- GitHub's Python `.gitignore` customized for this project.
     ├── config.py                 <- Script used `dynaconf` to manage settings.
@@ -274,7 +274,7 @@ This is how the new project will be organized.
     │   │                            the creator's initials, and a short `_` delimited description, e.g.
     │   │                            `01_fl_exploratory_data_analysis.ipynb`.
     │   ├── data                  <- Data used by notebooks.
-    │   └── viz                   <- Visualizations such as plots, figures and tables used by notebooks.
+    │   └── viz                   <- Visualizations such as plots and tables used by notebooks.
     ├── reports                   <- Reports, usually in markdown or other formats (pdf, html, etc.).
     │   ├── data                  <- Data used in reporting.
     │   └── viz                   <- Visualizations such as plots, figures and tables used in reporting.
@@ -291,8 +291,7 @@ This is how the new project will be organized.
         ├── fixtures              <- Where to put example inputs and outputs.
         │   ├── input.json        <- Test input data.
         │   └── output.json       <- Test output data.
-        ├── test_config           <- Test the project's settings.
-        ├── test_etl              <- Test example on `etl.py`.
+        ├── test_extract_acc.py   <- Test example on `etl.py`.
         ├── test_samples.py       <- Test example to verify `pytest`.
         └── ...
 
