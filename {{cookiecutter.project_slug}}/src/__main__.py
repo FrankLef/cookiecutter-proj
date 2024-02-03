@@ -1,10 +1,8 @@
-"""The entry point.
-"""
+"""The main entry point."""
 import argparse
 import logging
-from rich.logging import RichHandler
 
-import dispatch
+from rich.logging import RichHandler
 
 logging.basicConfig(
     level=logging.DEBUG,
@@ -14,8 +12,12 @@ logging.basicConfig(
 )
 log = logging.getLogger("rich")
 
+import dispatch  # noqa
+
 parser = argparse.ArgumentParser(
-    prog="Hello", description="Say Hello many times.", epilog="Good luck."
+    prog="dispatch",
+    description="Dispatch the functional flow.",
+    epilog="Good luck.",
 )
 parser.add_argument(
     "-v",
@@ -24,32 +26,25 @@ parser.add_argument(
     help="output detailed info to the console.",
 )
 parser.add_argument(
-    "-t",
-    "--text",
+    "process",
     action="store",
-    default="Hello",
-    help="The text to show on the console.",
+    help="The name of the process.",
 )
 parser.add_argument(
-    "text",
-    action="store",
-    help="The text to show on the console.",
-)
-parser.add_argument(
-    "-n",
-    "--number",
-    action="store",
-    default=1,
-    help="The number of times we say Hello.",
+    "-s",
+    "--single",
+    action="store_false",
+    help="Default is False. If true, process the step alone.",
 )
 args = parser.parse_args()
 
 
 def main():
-    log.info("Begin EDGAR.")
-    log.debug("%s %d times.", args.text, int(args.number))
-    dispatch.main(text=args.text, n=int(args.number))
-    log.info("End EDGAR.")
+    log.info("Begin the process.")
+    log.debug("process: '%s', single: %s.", args.process, args.single)
+    dispatch.main(process=args.process, single=args.single)
+    log.info("End the process.")
 
 
-main()
+if __name__ == "__main__":
+    main()

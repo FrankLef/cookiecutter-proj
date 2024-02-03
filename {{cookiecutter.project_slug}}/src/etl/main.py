@@ -1,49 +1,43 @@
 
-import sys
-from pathlib import Path
+import logging
 
-import extract_url as extr
-import sim as sim
-from prefect import flow
+from rich.logging import RichHandler
+
+logging.basicConfig(
+    level=logging.DEBUG,
+    format="%(message)s",
+    datefmt="[%X]",
+    handlers=[RichHandler()],
+)
+log = logging.getLogger("rich")
+
+import etl.extract_url as extr  # noqa
+import etl.sim as sim  # noqa
 
 # import pyarrow.feather as feather  # noqa
 
-# src path to be able to import the settings
-src_path = Path(__file__).parent.parent
 
-# add the project path to be able to access the settings
-a_path = str(src_path.parent)
-if a_path not in sys.path:
-    sys.path.insert(1, a_path)
-
-from config import settings  # noqa
-from helpers import richmsg  # noqa
-
-process_msg = settings.message.etl
-a_url = settings.url
-
-
-@flow(name="ETL", log_prints=True)
-def run_etl(size: int = 5, seed: int = 1009, url: str = "") -> dict:
-    """Extract, transform and load data.
+def run_etl(size: int, seed: int, url: str):
+    """Examples of data extraction.
 
     Args:
-        size (int, optional): _description_. Defaults to 5.
-        seed (int, optional): _description_. Defaults to 1009.
-        url (str, optional): _description_. Defaults to "".
+        size (int, optional): Sample size of a multivariate normal simulation.
+        seed (int, optional): Seed of the multivariate normal sampling.
+        url (str, optional): A url to test `requests`.
 
     Returns:
         dict: _description_
     """
-    richmsg.print_msg(text=process_msg, type="process")
-    if not url:
-        url = a_url
-    df1 = sim.sim_df(size=size, seed=seed)
-    df1.info()
-    df2 = extr.extract_url(url)
-    df2.info()
-    return {"sim": df1, "extract": df2}
+    the_sim = sim.sim_df(size=size, seed=seed)
+    log.debug("Sim has shape %s.", the_sim.shape)
+    # the_sim.info()
+    the_url_data = extr.extract_url(url)
+    # the_url_data.info()
+    return {"sim": the_sim, "url_data": the_url_data}
 
 
 if __name__ == "__main__":
-    run_etl()
+    size: int = 5
+    seed: int = 1009
+    a_url = r"https://raw.githubusercontent.com/fivethirtyeight/data/master/airline-safety/airline-safety.csv"  # noqa: E501
+    run_etl(size=size, seed=seed, url=a_url)
