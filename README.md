@@ -25,7 +25,7 @@ The overall choices of packages is inspired from [Hypermodern Python cookiecutte
 This data science project template is inspired from [cookiecutter-modern-datascience]
 for the directory structure.
 
-The cookiecutter [data-science-template] by Khuyen Tran was also very much used.
+The cookiecutter [data-science-template] by Khuyen Tran was also very useful.
 
 ## Quickstart
 

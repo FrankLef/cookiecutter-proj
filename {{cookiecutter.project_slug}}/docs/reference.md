@@ -5,11 +5,11 @@ an **information-oriented** approach. Use it as a
 reference for the technical implementation of the
 project code.
 
-## Main
+## Dispatch
 
-Functions used to process the main flow.
+Functions used to process the functional flow.
 
-::: src.main
+::: src.dispatch
 
 ## Helpers and utilities
 
