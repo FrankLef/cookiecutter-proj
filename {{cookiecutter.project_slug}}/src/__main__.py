@@ -12,7 +12,7 @@ logging.basicConfig(
 )
 log = logging.getLogger("rich")
 
-import dispatch  # noqa
+import cli  # noqa
 
 parser = argparse.ArgumentParser(
     prog="dispatch",
@@ -42,7 +42,7 @@ args = parser.parse_args()
 def main():
     log.info("Begin the process.")
     log.debug("process: '%s', single: %s.", args.process, args.single)
-    dispatch.main(process=args.process, single=args.single)
+    cli.main(process=args.process, single=args.single)
     log.info("End the process.")
 
 

@@ -2,7 +2,7 @@
 import logging
 
 from rich.logging import RichHandler
-
+from etl.main import run_etl as etl
 logging.basicConfig(
     level=logging.DEBUG,
     format="%(message)s",
@@ -12,9 +12,6 @@ logging.basicConfig(
 log = logging.getLogger("rich")
 
 
-from etl.main import run_etl as etl  # noqa
-
-
 def main(process: str, single: bool) -> int:
     log.info("Dispatching '%s' with single = %s.", process, single)
     size: int = 5
@@ -22,6 +19,7 @@ def main(process: str, single: bool) -> int:
     a_url = r"https://raw.githubusercontent.com/fivethirtyeight/data/master/airline-safety/airline-safety.csv"  # noqa: E501
     etl(size=size, seed=seed, url=a_url)
     return -1
+
 
 if __name__ == "__main__":
     main(process="etl", single=True)
