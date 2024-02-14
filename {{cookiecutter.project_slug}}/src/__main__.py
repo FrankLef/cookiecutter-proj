@@ -1,7 +1,7 @@
 """The main entry point."""
 import argparse
 import logging
-
+import cli
 from rich.logging import RichHandler
 
 logging.basicConfig(
@@ -11,8 +11,6 @@ logging.basicConfig(
     handlers=[RichHandler()],
 )
 log = logging.getLogger("rich")
-
-import cli  # noqa
 
 parser = argparse.ArgumentParser(
     prog="dispatch",
