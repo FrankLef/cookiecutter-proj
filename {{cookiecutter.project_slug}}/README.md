@@ -11,12 +11,13 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 
 ## How to use
 
-The entry point is in `..\src\__main__.py` with a command line that will use
-the `cli.py` file to dispatch the actions chosen by `__main__.py`.
+The entry point is in `{{cookiecutter.project_slug}}\src\__main__.py` with a
+command line that will use the `cli.py` file to dispatch the actions chosen
+by `__main__.py`.
 
 You just need to be in the project directory
 
-    cd {{cookiecutter.project_slug}}
+    cd ..\{{cookiecutter.project_slug}}
 
 and use the command
 
