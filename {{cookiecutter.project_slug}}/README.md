@@ -12,7 +12,7 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 ## How to use
 
 The entry point is in `..\src\__main__.py` with a command line that will use
-the `dispatch.py` file to dispatch actions required by `__main__.py`.
+the `cli.py` file to dispatch the actions chosen by `__main__.py`.
 
 You just need to be in the project directory
 
