@@ -26,6 +26,7 @@ parser.add_argument(
 parser.add_argument(
     "process",
     action="store",
+    choices=["etl"],
     help="The name of the process.",
 )
 parser.add_argument(

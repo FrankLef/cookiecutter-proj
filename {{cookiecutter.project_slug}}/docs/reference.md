@@ -9,7 +9,7 @@ project code.
 
 Functions used to process the functional flow.
 
-::: src.dispatch
+::: src.cli
 
 ## Helpers and utilities
 
