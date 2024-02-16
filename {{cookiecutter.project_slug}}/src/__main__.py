@@ -1,8 +1,6 @@
 """The main entry point."""
 import argparse
-import logging
 import cli
-from rich.logging import RichHandler
 
 logging.basicConfig(
     level=logging.DEBUG,
@@ -39,10 +37,7 @@ args = parser.parse_args()
 
 
 def main():
-    log.info("Begin the process.")
-    log.debug("process: '%s', single: %s.", args.process, args.single)
     cli.main(process=args.process, single=args.single)
-    log.info("End the process.")
 
 
 if __name__ == "__main__":

@@ -13,7 +13,7 @@ log = logging.getLogger("rich")
 
 
 def main(process: str, single: bool) -> int:
-    log.info("Dispatching '%s' with single = %s.", process, single)
+    log.info("Run '%s' with single = %s.", process, single)
     size: int = 5
     seed: int = 1009
     a_url = r"https://raw.githubusercontent.com/fivethirtyeight/data/master/airline-safety/airline-safety.csv"  # noqa: E501
