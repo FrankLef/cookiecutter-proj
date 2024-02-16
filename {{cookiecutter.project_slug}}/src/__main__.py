@@ -2,14 +2,6 @@
 import argparse
 import cli
 
-logging.basicConfig(
-    level=logging.DEBUG,
-    format="%(message)s",
-    datefmt="[%X]",
-    handlers=[RichHandler()],
-)
-log = logging.getLogger("rich")
-
 parser = argparse.ArgumentParser(
     prog="dispatch",
     description="Dispatch the functional flow.",
