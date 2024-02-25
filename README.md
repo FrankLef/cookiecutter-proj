@@ -280,13 +280,14 @@ This is how the folders will be organized.
     │   ├── data                  <- Data used in reporting.
     │   └── viz                   <- Visualizations such as plots, figures and tables used in reporting.
     ├── src                       <- Store the source code.
-    │   ├── __main__.py           <- The main CLI entry point.
-    │   ├── dispatch.py           <- Dispatch the command received from the entry point.
+    │   ├── cli.py                <- The main CLI entry point.
     │   ├── helpers               <- Utilities and helper codes.
     │   │   ├── __init__.py
+    |   |   └── ...
     |   ├── etl                   <- Code to extract, transform and load the raw data.
     │   │   ├── __init__.py
     |   |   └── ...
+    |   └── ...
     └── tests                     <- All test and fixtures files used in testing.
         ├── __init__.py
         ├── fixtures              <- Where to put example inputs and outputs.
