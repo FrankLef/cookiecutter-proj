@@ -237,10 +237,11 @@ The primary libraries used are described in sections as follows:
 |:-----|:-----------------|
 |[dynaconf]|Settings management|
 |[rich]|Writing rich text to the terminal and display advanced content|
+|[typer]|Typer, build great CLIs|
 |[tomli]|A lil' TOML parser|
 |[requests]|HTTP library for Python|
 |[prefect]|Manage the dataflow|
-|[pandas]|Data analysis and manipulaiton tool|
+|[pandas]|Data analysis and manipulation tool|
 |[numpy]|Scientific computing|
 |[pyodbc]|Access ODBC database|
 |[SQLAlchemy]|SQL toolkit and object relational mapper|
@@ -315,9 +316,9 @@ This is how the folders will be organized.
 [mkdocstrings-python]: https://mkdocstrings.github.io/python/
 [dynaconf]: https://www.dynaconf.com
 [rich]: https://rich.readthedocs.io/en/stable/introduction.html
+[typer]: https://typer.tiangolo.com
 [tomli]: https://pypi.org/project/tomli/
 [requests]: https://requests.readthedocs.io/en/latest/
-[prefect]: https://docs.prefect.io
 [pandas]: https://pandas.pydata.org
 [numpy]: https://numpy.org
 [pyodbc]: https://pypi.org/project/pyodbc/
