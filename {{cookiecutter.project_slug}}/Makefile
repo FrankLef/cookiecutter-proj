@@ -41,21 +41,13 @@ pre_commit:
 pre_commit_run:
 	pre-commit run --all-files
 
+lint:
+	ruff check .
+	@echo -e "\x1b[1;32mlint completed successfully with ruff!\x1b[0m"
 
-lint: isort black flake
-	@echo -e "\x1b[1;36mcompleted successfully!\x1b[0m"
-
-isort:
-	isort .
-	@echo -e "\x1b[1;32misort ok!\x1b[0m"
-
-black:
-	black src/
-	@echo -e "\x1b[1;32mblack ok!\x1b[0m"
-
-flake:
-	flake8 --ignore=E501
-	@echo -e "\x1b[1;32mflake8 ok!\x1b[0m"
+format:
+	ruff format .
+	@echo -e "\x1b[1;32mformat completed successfully with ruff!\x1b[0m"
 
 git_init:
 	# initialize git_repo
