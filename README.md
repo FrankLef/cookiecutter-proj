@@ -213,15 +213,12 @@ The primary libraries used are described in sections as follows:
 
 |Library|Description|
 |:-----|:-----------------|
-|[flake8]|Style guide enforcement|
-|[pep8-naming]|Check PEP-8 naming conventions, plugin for `flake8`|
-|[black]|Code formatter|
+|[ruff]|An extremely fast Python linter and code formatter, written in Rust.|
 |[pre-commit]|Manage pre-commit hooks|
 |[pre-commit-hooks]|Some out-of-the-box hooks for `pre-commit`|
 |[pytest]|Framework for testing|
 |[mypy]|Static type checker|
 |[typeguard]|Type checking for functions|
-|[isort]|Sort imports and separate them into sections and types|
 
 ### Documentation
 
@@ -303,15 +300,12 @@ This is how the folders will be organized.
 [data-science-template]: https://github.com/khuyentran1401/data-science-template
 [real python]: https://realpython.com/python-project-documentation-with-mkdocs/
 [poetry]: https://pypi.org/project/poetry/
-[flake8]: https://pypi.org/project/flake8/
-[pep8-naming]: https://pythonfix.com/pkg/p/pep8-naming/
-[black]: https://pypi.org/project/black/
+[ruff]: https://docs.astral.sh/ruff/
 [pre-commit]: https://pypi.org/project/pre-commit/
 [pre-commit-hooks]: https://github.com/pre-commit/pre-commit-hooks
 [pytest]: https://pypi.org/project/pytest/
 [mypy]: http://www.mypy-lang.org
 [typeguard]: https://typeguard.readthedocs.io/en/latest/
-[isort]: https://github.com/PyCQA/isort
 [MkDocs]: https://www.mkdocs.org
 [mkdocstrings]: https://mkdocstrings.github.io
 [mkdocstrings-python]: https://mkdocstrings.github.io/python/
