@@ -291,7 +291,6 @@ This is how the folders will be organized.
 [Hypermodern Python cookiecutter]: https://cookiecutter-hypermodern-python.readthedocs.io/en/2020.6.15/index.html
 [cookiecutter-modern-datascience]: https://github.com/crmne/cookiecutter-modern-datascience
 [data-science-template]: https://github.com/khuyentran1401/data-science-template
-[real python]: https://realpython.com/python-project-documentation-with-mkdocs/
 [poetry]: https://pypi.org/project/poetry/
 [ruff]: https://docs.astral.sh/ruff/
 [pre-commit]: https://pypi.org/project/pre-commit/
