@@ -213,7 +213,7 @@ The primary libraries used are described in sections as follows:
 
 |Library|Description|
 |:-----|:-----------------|
-|[ruff]|An extremely fast Python linter and code formatter, written in Rust.|
+|[ruff]|Fast Python linter and code formatter, written in Rust.|
 |[pre-commit]|Manage pre-commit hooks|
 |[pre-commit-hooks]|Some out-of-the-box hooks for `pre-commit`|
 |[pytest]|Framework for testing|
@@ -237,7 +237,6 @@ The primary libraries used are described in sections as follows:
 |[typer]|Typer, build great CLIs|
 |[tomli]|A lil' TOML parser|
 |[requests]|HTTP library for Python|
-|[prefect]|Manage the dataflow|
 |[pandas]|Data analysis and manipulation tool|
 |[numpy]|Scientific computing|
 |[pyodbc]|Access ODBC database|
