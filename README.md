@@ -6,7 +6,7 @@ stable](https://img.shields.io/badge/lifecycle-stable-brightgreen)](https://life
 [![License](https://img.shields.io/badge/license-MIT-green)](https://opensource.org/licenses/MIT)
 [![Python](https://img.shields.io/badge/python-^3.10-blue)](https://www.python.org/downloads/release/python-3106/)
 [![cookiecutter](https://img.shields.io/badge/cookiecutter-2.1.1-blueviolet)](https://cookiecutter.readthedocs.io/en/stable/)
-[![Poetry](https://img.shields.io/badge/poetry-1.1.15-purple)](https://pypi.org/project/poetry/)
+[![Poetry](https://img.shields.io/badge/poetry-^1.7.1-purple)](https://pypi.org/project/poetry/)
 [![Ruff](https://img.shields.io/badge/ruff-^0.2.2-maroon)](https://docs.astral.sh/ruff/)
 [![Pre-commit](https://img.shields.io/badge/precommit-^3.5.0-orange)](https://pypi.org/project/pre-commit/)
 <!-- badges: end -->
@@ -52,6 +52,11 @@ then generate the project
 and **make the new folder the working directory**.
 
 ### Step 2 Manage the dependencies with `poetry`
+
+**Very important:** Make sure the poetry version used is at least 1.7. Verify
+with
+
+    poetry --version.
 
 Run `poetry shell` to open the poetry shell and avoid having to always add
 `poetry run`in front of all commands
@@ -99,7 +104,7 @@ Then initialize git using
 
 ### Step 4 Add the ignored directories
 
-Some directories, such as the `data/`, are included in `.gitignore` and therefoer
+Some directories, such as the `data/`, are included in `.gitignore` and therefore
 ignored by the cookicutter which is coming from `git`. Run `make` to add these
 extra directories. The most usual one is `data`.
 
@@ -109,28 +114,36 @@ extra directories. The most usual one is `data`.
 
 Once `.git` is setup, make sure to include the pre-commit script in `.git`
 by running `pre-commit install` from the poetry shell. Also `pre-commit update`
-ensures that the `black`, `flake8` etc. are up-to-date. Sometimes warnings
-appear about the 'rev' field being mutable, using this `pre-commit update`
+ensures that the `ruff` is up-to-date. Sometimes warnings
+appear about the 'rev' field being mutable, using `pre-commit update`
 usually resolves this.
 
-These steps are encoded in the Makefile and can be run as follows
+These steps are encoded in the Makefile with the command
 
-    make pre_commit
+    make precommit
 
 It is also a good idea to run the hooks against all files when adding a new hook
 
     pre-commit run --all-files
+
+wich is encoded in the MakeFile with the command
+
+    make precommit_run
 
 ### Step 6 Verify the features
 
 It is also useful to test the features of the new project before embarking
 in the coding.
 
-#### Code source format and check
+#### Code source linter and formatter
 
-To run `isort` and `flake8` and verify all is in order run this make command
+To run the linter from `ruff check .` use the command
 
     make lint
+
+To run the code formatter from `ruff format .` use the command
+
+    make format
 
 #### Create the documentation with `mkdocs`
 
@@ -150,8 +163,6 @@ Then you update the documentation with
 
     mkdocs build
 
-There is more information at [real python] on using `mkdocs`.
-
 **Important:**
 
 #### Code testing with `pytest`
@@ -168,23 +179,6 @@ were encountered. They are described as well as their solutions below.
 
 You can also read the `pyproject.toml` provided by this cookiecutter to see
 info on the required changes.
-
-### `flake8`
-
-`flake8` reports error **E501** for lines exceeding the 79 length limit
-recommended by PIP-8. Even when `black` is ok with it and even when all lines
-are properly formatted and abide by the rule.
-
-Several hours were spent trying to fix it. The solution used here is
-as follows:
-
-* Modify `pyproject.toml` to include a section **tools.flake8** to tell
-`flake8` to ignore E501 with `ignore=E501`.
-* Add the plugin `flake8-pyproject` to the **tool.poetry.dependencies** section
-of `pyproject.toml` because `flake8` does not use the `pyproject.toml` except
-when the `flake8-pyproject` is installed.
-* Modify `.pre-commit-config.yaml` to add `args: [--ignore=E501]` to the
-flake8 hook.
 
 ### `pyarrow`
 
@@ -213,7 +207,7 @@ The primary libraries used are described in sections as follows:
 
 |Library|Description|
 |:-----|:-----------------|
-|[ruff]|Fast Python linter and code formatter, written in Rust.|
+|[ruff]|Fast (very) Python linter and code formatter, written in Rust.|
 |[pre-commit]|Manage pre-commit hooks|
 |[pre-commit-hooks]|Some out-of-the-box hooks for `pre-commit`|
 |[pytest]|Framework for testing|
@@ -232,9 +226,9 @@ The primary libraries used are described in sections as follows:
 
 |Library|Description|
 |:-----|:-----------------|
-|[dynaconf]|Settings management|
 |[rich]|Writing rich text to the terminal and display advanced content|
 |[typer]|Typer, build great CLIs|
+|[dynaconf]|Settings management|
 |[tomli]|A lil' TOML parser|
 |[requests]|HTTP library for Python|
 |[pandas]|Data analysis and manipulation tool|

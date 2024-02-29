@@ -31,14 +31,14 @@ poetry_update:
 	@echo -e "\x1b[1;32mpoetry show ok!\x1b[0m"
 	@echo -e "\x1b[1;36mcompleted successfully!\x1b[0m"
 
-pre_commit:
+precommit:
 	pre-commit install
 	@echo -e "\x1b[1;32mpre-commit install ok!\x1b[0m"
 	pre-commit autoupdate
 	@echo -e "\x1b[1;32mpre-commit autoupdate ok!\x1b[0m"
 	@echo -e "\x1b[1;36mcompleted successfully!\x1b[0m"
 
-pre_commit_run:
+precommit_run:
 	pre-commit run --all-files
 
 lint:
