@@ -79,14 +79,7 @@ Then initialize git using
 
     make git_init
 
-### Step 4 Add the ignored directories
-
-Some directories, such as the `\data`, are included in `.gitignore` and
-therefore ignored by the cookicutter. Run `make` to add these extra directories.
-
-    make ignored_dir
-
-### Step 5 Install `pre-commit`
+### Step 4 Install `pre-commit`
 
 See the [help pre-commit](help-pre-commit-update) for details.
 
@@ -98,7 +91,7 @@ It is also a good idea to run the hooks against all files to verify them.
 
     make precommit_run
 
-### Step 6 Verify the features
+### Step 5 Verify the features
 
 #### Create the documentation with `mkdocs`
 
@@ -124,6 +117,13 @@ Finally you can verify that `pytest` is working as expected. Use
 this command wich runs the tests from the `tests` directory.
 
     pytest
+
+### Step 6 (optional) Add the ignored directories
+
+Some directories, such as the `\data`, are included in `.gitignore` and
+therefore ignored by the cookicutter. Run `make` to add these extra directories.
+
+    make ignored_dir
 
 ## Help notes
 
