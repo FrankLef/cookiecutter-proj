@@ -98,18 +98,22 @@ It is also a good idea to run the hooks against all files to verify them.
 You can also verify that the documentation setup is working by building
 the site.
 
-Note: For some reason I am unable to run mkdocs from `poetry` with
-
-    poetry run mkdocs serve
-
-As a result, the following command which must be run
-**outside the `poetry shell`**. Hence, we need to exit the poetry shell
-
-    exit
-
-then run `mkdocs`
-
     mkdocs serve
+
+This will give you and output like this
+
+    INFO    -  Building documentation...
+    INFO    -  Cleaning site directory
+    INFO    -  Documentation built in 0.11 seconds
+    INFO    -  [09:26:11] Watching paths for changes: 'docs', 'mkdocs.yaml'
+    INFO    -  [09:26:11] Serving on http://127.0.0.1:8000/
+    INFO    -  [09:26:31] Browser connected: http://127.0.0.1:8000/
+
+you can see the resulting documentation by ctrl-click on `http://127.0.0.1:8000/`
+
+and when you are done, you can exit the result with
+
+    ctrl^C
 
 #### Code testing with `pytest`
 
@@ -121,7 +125,8 @@ this command wich runs the tests from the `tests` directory.
 ### Step 6 (optional) Add the ignored directories
 
 Some directories, such as the `\data`, are included in `.gitignore` and
-therefore ignored by the cookicutter. Run `make` to add these extra directories.
+therefore ignored by the cookicutter. You can run `make` to add these extra
+directories.
 
     make ignored_dir
 
