@@ -11,35 +11,25 @@ stable](https://img.shields.io/badge/lifecycle-stable-brightgreen)](https://life
 [![Pre-commit](https://img.shields.io/badge/precommit-^3.5.0-orange)](https://pypi.org/project/pre-commit/)
 <!-- badges: end -->
 
-Cookiecutter for simple projects by Ephel. This cookiecutter tries to use
-the most modern Python setup without the full complexity of [Hypermodern Python cookiecutter].
+Cookiecutter for simple projects using the most up-to-date setup possible.
+Heavily inspired by [Hypermodern-cookiecutter], [cookiecutter-modern-datascience] and
+[data-science-template] to whom we are very grateful.
 
-## Features
-
-### Workflow
-
-This cookiecutter proposes a workflow organized with [directory structure](#directory-structure).
-
-The overall choices of packages is inspired from [Hypermodern Python cookiecutter].
-
-This data science project template is inspired from [cookiecutter-modern-datascience]
-for the directory structure.
-
-The cookiecutter [data-science-template] by Khuyen Tran was also very useful.
+The workflow is organized with this [directory structure](#directory-structure).
 
 ## Quickstart
 
-The file `Makefile` will be used repeatedly hereinafter to automate many of
-the tasks. It automatically configured by the cookiecutter to include, the
+`Makefile` is used repeatedly hereinafter to automate many of
+the tasks. It is automatically configured by the cookiecutter to include, the
 repo name, project name, etc.
 
 ### Step 1 Setup the project structure with `cookiecutter`
 
 Change to the parent location where you want the project to be created.
-For example if your project is called `project-proj` in the `parent` folder,
+For example if your project is called `flproj_todo` in the `parent` folder,
 then move to `parent` first
 
-    cd ../parent
+    cd ..\parent
 
 verify that `cookiecutter` is properly installed by calling its version
 
@@ -49,40 +39,27 @@ then generate the project
 
     cookiecutter https://github.com/FrankLef/cookiecutter-proj.git
 
-and **make the new folder the working directory**.
+and make the new folder the working directory.
+
+    cd ..\parent\flproj_todo
 
 ### Step 2 Manage the dependencies with `poetry`
 
-**Very important:** Make sure the poetry version used is at least 1.7. Verify
-with
+Don't forget to consult the [help poetry](#help-poetry) section in case of
+problem of for more details.
+
+Make sure the poetry version used is at least 1.7.
 
     poetry --version.
 
-Run `poetry shell` to open the poetry shell and avoid having to always add
-`poetry run`in front of all commands
+Run `poetry shell` to open the poetry shell and avoid using `poetry run` with
+all commands
 
     poetry shell
 
-Run the `make` command `poetry_update` so that the following `poetry` command
-will run
-
-1. `poetry update`: The `poetry.lock` file will be created and the virtual
-environment updated with the right packages and versions
-2. `poetry show`: To verify if there are inconsistencies
-
-These steps are encoded in the Makefile and can be run as follows
+Run the `make` command `poetry_update`.
 
     make poetry_update
-
-Sometimes, especially when reusing a folder that had been used as a project
-before, the old environment is still used. To see the environment curently
-opened by `poetry` use this
-
-    poetry env list
-
-To delete the old environment use this command
-
-    poetry env remove <python>
 
 ### Step 3 Setup the new `.git`
 
@@ -91,10 +68,10 @@ To delete the old environment use this command
 First create the new repo in github
 
 * **Give the repo the exact same name as the project**. That is keep the
-underscore in the name when there one. i.e. flproj_todo is also flproj_todo
+underscore in the name when there one. i.e. `flproj_todo` is also `flproj_todo`
 in github.
-* Don't create `README`, `.gitignore` and `LICENSE` with the new repo they
-will be overriden anyway.
+* Don't create `README`, `.gitignore` and `LICENSE`. They will be created by
+the cookiecutter.
 
 #### Initialize the repo
 
@@ -104,46 +81,24 @@ Then initialize git using
 
 ### Step 4 Add the ignored directories
 
-Some directories, such as the `data/`, are included in `.gitignore` and therefore
-ignored by the cookicutter which is coming from `git`. Run `make` to add these
-extra directories. The most usual one is `data`.
+Some directories, such as the `\data`, are included in `.gitignore` and
+therefore ignored by the cookicutter. Run `make` to add these extra directories.
 
     make ignored_dir
 
 ### Step 5 Install `pre-commit`
 
-Once `.git` is setup, make sure to include the pre-commit script in `.git`
-by running `pre-commit install` from the poetry shell. Also `pre-commit update`
-ensures that the `ruff` is up-to-date. Sometimes warnings
-appear about the 'rev' field being mutable, using `pre-commit update`
-usually resolves this.
+See the [help pre-commit](help-pre-commit-update) for details.
 
-These steps are encoded in the Makefile with the command
+Setup and update `pre-commit`
 
     make precommit
 
-It is also a good idea to run the hooks against all files when adding a new hook
-
-    pre-commit run --all-files
-
-wich is encoded in the MakeFile with the command
+It is also a good idea to run the hooks against all files to verify them.
 
     make precommit_run
 
 ### Step 6 Verify the features
-
-It is also useful to test the features of the new project before embarking
-in the coding.
-
-#### Code source linter and formatter
-
-To run the linter from `ruff check .` use the command
-
-    make lint
-
-To run the code formatter from `ruff format .` use the command
-
-    make format
 
 #### Create the documentation with `mkdocs`
 
@@ -155,30 +110,72 @@ Note: For some reason I am unable to run mkdocs from `poetry` with
     poetry run mkdocs serve
 
 As a result, the following command which must be run
-**outside the `poetry shell`**. That is it **must be run from the terminal**.
+**outside the `poetry shell`**. Hence, we need to exit the poetry shell
+
+    exit
+
+then run `mkdocs`
 
     mkdocs serve
 
-Then you update the documentation with
-
-    mkdocs build
-
-**Important:**
-
 #### Code testing with `pytest`
 
-Finally you can verify that `pytest` is working as expected by using
+Finally you can verify that `pytest` is working as expected. Use
 this command wich runs the tests from the `tests` directory.
 
     pytest
 
 ## Help notes
 
-When using the configurations problems
-were encountered. They are described as well as their solutions below.
+This section gives more details for reference and also to help solve problems
+that were encountered and might happen again.
 
 You can also read the `pyproject.toml` provided by this cookiecutter to see
-info on the required changes.
+information on the required changes.
+
+### Help poetry
+
+#### Help `poetry_update`
+
+Run the `make` command `poetry_update` so that the following `poetry` command
+will run
+
+1. `poetry update`: The `poetry.lock` file will be created and the virtual
+environment updated with the right packages and versions
+2. `poetry show`: To verify if there are inconsistencies
+
+#### Help poetry environment
+
+Sometimes, especially when reusing a folder that had been used as a project
+before, the old environment is still used. To see the environment curently
+opened by `poetry` use this
+
+    poetry env list
+
+To delete the old environment use this command
+
+    poetry env remove <python>
+
+### Help pre-commit
+
+#### Help pre-commit update
+
+Once `.git` is setup, make sure to include the pre-commit script in `.git`
+by running `pre-commit install` from the poetry shell. Also `pre-commit update`
+ensures that the `ruff` is up-to-date. Sometimes warnings
+appear about the 'rev' field being mutable, using `pre-commit update`
+usually resolves this.
+
+#### Help pre-commit run
+
+No need to run the linter and code formatter separately. Better yet,
+you can run all the pre-commit hooks using this useful command
+
+    pre-commit run --all-files
+
+wich is encoded in the MakeFile with the command
+
+    make precommit_run
 
 ### `pyarrow`
 
@@ -288,7 +285,7 @@ This is how the folders will be organized.
         └── ...
 
 [cookiecutter]: https://github.com/audreyr/cookiecutter
-[Hypermodern Python cookiecutter]: https://cookiecutter-hypermodern-python.readthedocs.io/en/2020.6.15/index.html
+[Hypermodern-cookiecutter]: https://cookiecutter-hypermodern-python.readthedocs.io/en
 [cookiecutter-modern-datascience]: https://github.com/crmne/cookiecutter-modern-datascience
 [data-science-template]: https://github.com/khuyentran1401/data-science-template
 [poetry]: https://pypi.org/project/poetry/
