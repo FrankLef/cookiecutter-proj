@@ -253,7 +253,9 @@ This is how the folders will be organized.
     ├── .secrets.toml             <- Secret settings used by `dynaconf`.
     ├── README.md                 <- The top-level README for developers using this project.
     ├── data                      <- Data directories used throughout the project.
-    │   ├── raw                   <- The original, immutable data dump.
+    │   ├── raw                   <- Original, immutable data.
+    |   ├── transf                <- Data being processed and transformed
+    |   ├── ready                 <- Transformed, complete data ready to use.
     │   ├── temp                  <- Temporary folder. These files can be deleted.
     |   └── ...
     ├── docs                      <- GitHub pages website.
