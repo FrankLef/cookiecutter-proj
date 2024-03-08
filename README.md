@@ -7,7 +7,7 @@ stable](https://img.shields.io/badge/lifecycle-stable-brightgreen)](https://life
 [![Python](https://img.shields.io/badge/python-^3.10-blue)](https://www.python.org/downloads/release/python-3106/)
 [![cookiecutter](https://img.shields.io/badge/cookiecutter-2.1.1-blueviolet)](https://cookiecutter.readthedocs.io/en/stable/)
 [![Poetry](https://img.shields.io/badge/poetry-^1.7.1-purple)](https://pypi.org/project/poetry/)
-[![Ruff](https://img.shields.io/badge/ruff-^0.2.2-maroon)](https://docs.astral.sh/ruff/)
+[![Ruff](https://img.shields.io/badge/ruff-^0.3.1-maroon)](https://docs.astral.sh/ruff/)
 [![Pre-commit](https://img.shields.io/badge/precommit-^3.5.0-orange)](https://pypi.org/project/pre-commit/)
 <!-- badges: end -->
 
