@@ -5,10 +5,10 @@
 stable](https://img.shields.io/badge/lifecycle-stable-brightgreen)](https://lifecycle.r-lib.org/articles/stages)
 [![License](https://img.shields.io/badge/license-MIT-green)](https://opensource.org/licenses/MIT)
 [![Python](https://img.shields.io/badge/python-^3.10-blue)](https://www.python.org/downloads/release/python-3106/)
-[![cookiecutter](https://img.shields.io/badge/cookiecutter-^2.6.0-blueviolet)](https://cookiecutter.readthedocs.io/en/stable/)
 [![Poetry](https://img.shields.io/badge/poetry-^1.8.2-purple)](https://pypi.org/project/poetry/)
 [![Ruff](https://img.shields.io/badge/ruff-^0.3.1-maroon)](https://docs.astral.sh/ruff/)
 [![Pre-commit](https://img.shields.io/badge/precommit-^3.6.2-orange)](https://pypi.org/project/pre-commit/)
+[![MkDocs](https://img.shields.io/badge/mkdocs-^1.5.3-blueviolet)](https://www.mkdocs.org)
 <!-- badges: end -->
 
 Cookiecutter for simple projects using the most up-to-date setup possible.
