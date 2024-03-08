@@ -242,6 +242,7 @@ The primary libraries used are described in sections as follows:
 
 This is how the folders will be organized.
 
+    {{project_slug}}
     ├── .gitignore                <- GitHub's Python `.gitignore` customized for this project.
     ├── config.py                 <- Script used `dynaconf` to manage settings.
     ├── pre-commit-config.yaml    <- Settings for `pre-commit`.
