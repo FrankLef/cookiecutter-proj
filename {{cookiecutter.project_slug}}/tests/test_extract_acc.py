@@ -12,7 +12,7 @@ def db_path(file: str = "C:/Users/Public/MyJob/DesjCap_cies/PHT/db_PHT_V1_xprt.a
     # NOTE: Change this path to your local MS Access db
     path = Path(file)
     if not path.is_file():
-        msg = f"{path}\n is an invaid path."
+        msg = f"{path}\nis an invalid path."
         raise ValueError(msg)
     return path
 
