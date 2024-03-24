@@ -1,4 +1,5 @@
 """Test the MS Access connections."""
+
 import pytest
 from pathlib import Path
 import sqlalchemy as sa
@@ -7,9 +8,12 @@ import src.etl.extract_acc as extr
 
 
 @pytest.fixture
-def db_path():
+def db_path(file: str = "C:/Users/Public/MyJob/DesjCap_cies/PHT/db_PHT_V1_xprt.accdb"):
     # NOTE: Change this path to your local MS Access db
-    path = Path("C:/Users/Public/MyJob/DesjCap_cies/PHT/db_PHT_V1_xprt.accdb")
+    path = Path(file)
+    if not path.is_file():
+        msg = f"{path}\n is an invaid path."
+        raise ValueError(msg)
     return path
 
 
@@ -27,4 +31,5 @@ def test_acc_engine(db_path):
 
 def test_accs_err():
     with pytest.raises(FileNotFoundError):
-        extr.build_engine("wrong path")
+        path = Path("wrong path")
+        extr.build_engine(path)
