@@ -4,6 +4,7 @@ from enum import Enum
 
 import typer
 from rich.logging import RichHandler
+
 # removing the first "." in ".etl.main" solves error message
 # must be there in the template to avoid error message in the cookiecutter
 from .etl.main import run_etl as etl

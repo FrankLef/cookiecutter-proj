@@ -1,28 +1,40 @@
 """Extract data from MS Access."""
-import urllib
+
+from urllib import parse
 from pathlib import Path
 
 import pandas as pd
-import sqlalchemy as sa
+from sqlalchemy import engine, create_engine, exc
 
 
-def build_engine(path: Path) -> sa.engine:
+def get_engine(
+    path: Path,
+    mode: str = "Read",
+    driver: str = "{Microsoft Access Driver (*.mdb, *.accdb)}",
+) -> engine:
     """Create SQLAlchemy engine for MS Access.
+
     Args:
         path (Path): Path to MS Access database.
-    Returns:
-        sa.engine: SQLAlchemy engine for MS Access.
+        mode (str, optional): Database access mode. Defaults to "Read".
+        driver (str, optional): MS Access driver. Don't change this unless you
+        know what you are doing. Defaults to "{Microsoft Access Driver (*.mdb, *.accdb)}".
+
     Raises:
         FileNotFoundError: The MS Access file name is invalid.
+
+    Returns:
+        engine: SQLAlchemy engine for MS Access.
     """
     if not path.is_file():
         msg = "\n" + str(path) + "\nis an invalid MS Access DB file name."
         raise FileNotFoundError(msg)
-    db_driver = "{Microsoft Access Driver (*.mdb, *.accdb)}"
-    conn_str = f"DRIVER={db_driver};" f"DBQ={path};" "Mode=Read;"
-    url_str = urllib.parse.quote_plus(conn_str)
-    url_str = rf"access+pyodbc://?odbc_connect={url_str}"
-    acc_engine = sa.create_engine(url_str)
+    # NOTE: You must use parse.quote_plus to avoid problem with the password
+    # when it contains characters such as '@' which creates an invalid url.
+    conn = f"DRIVER={driver};DBQ={path};Mode={mode};"
+    url = parse.quote_plus(conn)
+    url = rf"access+pyodbc://?odbc_connect={url}"
+    acc_engine = create_engine(url)
     return acc_engine
 
 
@@ -36,16 +48,16 @@ def extract_acc(db_path: Path, tbl: str) -> pd.DataFrame:
     Returns:
         pd.Dataframe: Dataframe of extracted data.
     """
-    engine = build_engine(db_path)
+    engine = get_engine(db_path)
     sql_str = "select * from " + tbl
     try:
         df = pd.read_sql(sql=sql_str, con=engine)
-    except sa.SQLAlchemyError as err:
+    except exc.SQLAlchemyError as err:
         # https://stackoverflow.com/questions/2136739/error-handling-in-sqlalchemy
         # msg = str(err.__dict__["orig"])
         msg = str(err)
-        msg = "THE ERROR:" + str(type(err))
+        msg = str(type(err)) + "\n" + str(err)
         print(msg)
         raise
-    engine.dispose()
+    engine.dispose()  # disconnect from the database
     return df

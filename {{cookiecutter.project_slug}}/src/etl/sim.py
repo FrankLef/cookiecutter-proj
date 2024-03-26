@@ -23,9 +23,7 @@ def sim_df(size, seed: int | None = None) -> pd.DataFrame:
     # matrix created using multiplication of inverse of a vector is always
     # symmetric and positive definite
     c = np.dot(a[:, None], a[None, :])
-    x = stats.multivariate_normal.rvs(
-        mean=m, cov=c, size=size, random_state=seed
-    )
+    x = stats.multivariate_normal.rvs(mean=m, cov=c, size=size, random_state=seed)
     d = np.concatenate((y[:, None], x), axis=1)
     log.debug("Sim result has size %s.", size)
     return pd.DataFrame(data=d, columns=["y", "x1", "x2", "x3"])

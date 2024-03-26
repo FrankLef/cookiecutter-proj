@@ -17,7 +17,7 @@ def create_msg(text: str, type: str = "info") -> str:
         "success": ("[green]", "\u2713", "[/green]"),
         "warn": ("[yellow]", "\u0021", "[/yellow]"),
         "fail": ("[red]", "\u2716", "[/red]"),
-        "process": ("[gold1]", "\u2026", "[/gold1]")
+        "process": ("[gold1]", "\u2026", "[/gold1]"),
     }
     vals = specs[type]
     if type != "process":
