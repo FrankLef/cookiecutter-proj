@@ -4,14 +4,15 @@ from urllib import parse
 from pathlib import Path
 
 import pandas as pd
-from sqlalchemy import engine, create_engine, exc
+from sqlalchemy import create_engine, exc
+from sqlalchemy.engine.base import Engine  # for type hint
 
 
 def get_engine(
     path: Path,
     mode: str = "Read",
     driver: str = "{Microsoft Access Driver (*.mdb, *.accdb)}",
-) -> engine:
+) -> Engine:
     """Create SQLAlchemy engine for MS Access.
 
     Args:
@@ -24,7 +25,7 @@ def get_engine(
         FileNotFoundError: The MS Access file name is invalid.
 
     Returns:
-        engine: SQLAlchemy engine for MS Access.
+        Engine: SQLAlchemy engine for MS Access.
     """
     if not path.is_file():
         msg = "\n" + str(path) + "\nis an invalid MS Access DB file name."
@@ -34,8 +35,8 @@ def get_engine(
     conn = f"DRIVER={driver};DBQ={path};Mode={mode};"
     url = parse.quote_plus(conn)
     url = rf"access+pyodbc://?odbc_connect={url}"
-    acc_engine = create_engine(url)
-    return acc_engine
+    engine = create_engine(url)
+    return engine
 
 
 def extract_acc(db_path: Path, tbl: str) -> pd.DataFrame:
