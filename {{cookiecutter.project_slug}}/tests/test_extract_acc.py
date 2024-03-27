@@ -15,7 +15,7 @@ def db_path(
     if not path.is_file():
         msg = f"Invalid path\n{path}\nChange this path to your local MS Access db."
         raise ValueError(msg)
-    return path
+    return file
 
 
 @pytest.fixture
@@ -32,5 +32,6 @@ def test_acc_engine(db_path):
 
 def test_accs_err():
     with pytest.raises(FileNotFoundError):
-        path = Path("wrong path")
-        extr.get_engine(path)
+        extr.get_engine(path="WRONG",
+                        mode='Read',
+                        driver= '{Microsoft Access Driver (*.mdb, *.accdb)}')
