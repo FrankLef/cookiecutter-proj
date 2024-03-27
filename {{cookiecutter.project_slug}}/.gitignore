@@ -135,7 +135,7 @@ dmypy.json
 dask-worker-space
 
 # secret config file
-.secrets/toml
+.secrets.toml
 
 # custom directories
 data/
