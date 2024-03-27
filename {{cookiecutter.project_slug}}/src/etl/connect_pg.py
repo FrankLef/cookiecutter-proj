@@ -40,7 +40,7 @@ def get_engine(
         driver (str, optional): Name of driver. Defaults to specs['driver'].
 
     Raises:
-        FileExistsError: MSAcess database was not found.
+        FileExistsError: PostgreSQL database was not found.
 
     Returns:
         Engine: Engine postgreSQL.
