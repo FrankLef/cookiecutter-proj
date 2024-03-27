@@ -4,7 +4,7 @@ from sqlalchemy import create_engine, URL
 from sqlalchemy.engine.base import Engine  # for type hint
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import Session  # for type hint (does not work, why?)
-from sqlalchemy_utils import database_exists
+from sqlalchemy_utils import database_exists  # type:ignore
 # from urllib.parse import quote_plus
 
 # source: https://www.youtube.com/watch?v=neW9Y9xh4jc
