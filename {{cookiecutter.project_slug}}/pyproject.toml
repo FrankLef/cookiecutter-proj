@@ -18,7 +18,7 @@ requests = "^2.28.1"
 pandas = "^1.5.0"
 numpy = "^1.23.3"
 pyodbc = "^4.0.34"
-SQLAlchemy = "^1.4.41"
+SQLAlchemy = "^2.0.0"
 sqlalchemy-utils = "^0.41.2"
 # used by sqlalchemy to connect to MS Access
 sqlalchemy-access = "^2.0.2"
