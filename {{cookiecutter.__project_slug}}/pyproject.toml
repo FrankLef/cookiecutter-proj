@@ -56,6 +56,11 @@ mkdocstrings-python = "^0.7.1"
 [tool.pytest.ini_options]
 minversion = "7.0"
 addopts = "-ra -q"
+# source: https://browniebroke.com/blog/convert-existing-poetry-to-src-layout/
+pythonpath = ["src"]
+testpaths = [
+    "tests,
+]
 
 [tool.ruff]
 # source https://blog.jerrycodes.com/ruff-the-python-linter/
