@@ -7,5 +7,5 @@ main = "Processing the main flow."
 # NOTE: This is an example, to be deleted.
 # ms access database specs
 [msaccess]
-path = "C:/Users/Public/MyJob/DesjCap_cies/PHT/db_PHT_V1_xprt.accdb"
-tables = ["tbl_xprt_sales_grp", "tbl_xprt_part"]
+path = "C:/Users/Public/MyJob/DesjCap_cies/NSE/OlapNse_V02/db_NSE_V02.accdb"
+tables = ["tbl_clients", "tbl_fournisseurs"]

@@ -1,4 +1,4 @@
-# {{cookiecutter.project_name}}
+# {{cookiecutter.__title_name}}
 
 <!-- badges: start -->
 [![Lifecycle:

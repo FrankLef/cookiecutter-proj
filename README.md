@@ -41,7 +41,7 @@ then generate the project
 
 and make the new folder the working directory.
 
-    cd ..\parent\flproj_todo
+    cd ..\parent\{{cookiecutter.__project_slug}}
 
 ### Step 2 Manage the dependencies with `poetry`
 
