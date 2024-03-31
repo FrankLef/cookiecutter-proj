@@ -1,6 +1,6 @@
 {
   "project_name": "todo-proj",
-  "__project_slug": "{{ cookiecutter.package_name.lower().replace(' ', '_').replace('-', '_') }}",
+  "__project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '_').replace('-', '_') }}",
   "__title_name": "{{cookiecutter.project_name.replace('-', ' ').replace('_', ' ').title()}}",
   "description": "A short description of the data science project.",
   "author": "Fran\u00E7ois Lefebvre",
