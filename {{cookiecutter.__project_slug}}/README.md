@@ -11,7 +11,7 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 
 ## How to use
 
-The entry point is in `{{cookiecutter.project_slug}}\src\cli.py`. The details
+The entry point is in `{{cookiecutter.__project_slug}}\src\cli.py`. The details
 the command can be found with
 
     cd ..\{{cookiecutter.__project_slug}}\src
