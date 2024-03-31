@@ -59,7 +59,8 @@ addopts = "-ra -q"
 # source: https://browniebroke.com/blog/convert-existing-poetry-to-src-layout/
 pythonpath = ["src"]
 testpaths = [
-    "tests,
+    "tests",
+    "integration"
 ]
 
 [tool.ruff]
