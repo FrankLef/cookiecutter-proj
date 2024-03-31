@@ -14,5 +14,5 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 The entry point is in `{{cookiecutter.project_slug}}\src\cli.py`. The details
 the command can be found with
 
-    cd ..\{{cookiecutter.project_slug}}\src
+    cd ..\{{cookiecutter.__project_slug}}\src
     python cli.py --help
