@@ -1,4 +1,6 @@
 [tool.poetry]
+# Operating mode is NOT PACKAGE
+package-mode = false
 name = "{{cookiecutter.__project_slug}}"
 version = "{{cookiecutter.version}}"
 description = "{{cookiecutter.description}}"
@@ -35,10 +37,6 @@ typer = "^0.9.0"
 tomli = "^2.0.1"
 matplotlib = "^3.7.0"
 scipy = "^1.10.1"
-# numba added to allow poetry add of pyOD
-# https://github.com/python-poetry/poetry/issues/6265
-numba = "~0.56.0"
-pyod = "^1.0.7"
 seaborn = "^0.12.2"
 
 [tool.poetry.dev-dependencies]
