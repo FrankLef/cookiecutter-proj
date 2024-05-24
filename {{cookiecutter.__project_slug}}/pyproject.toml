@@ -1,6 +1,6 @@
 [tool.poetry]
 # Operating mode is NOT PACKAGE
-package-mode = false
+# package-mode = false
 name = "{{cookiecutter.__project_slug}}"
 version = "{{cookiecutter.version}}"
 description = "{{cookiecutter.description}}"
