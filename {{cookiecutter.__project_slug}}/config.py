@@ -14,5 +14,6 @@ project_path = Path(__file__).parent.absolute()
 settings.paths = {
     "raw": project_path.joinpath("data", "raw"),
     "ready": project_path.joinpath("data", "ready"),
-    "results": project_path.joinpath("data", "final"),
+    "temp": project_path.joinpath("data", "temp"),
+    "transf": project_path.joinpath("data", "transf"),
 }
