@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from dynaconf import Dynaconf
+from dynaconf import Dynaconf  # type: ignore
 
 settings = Dynaconf(
     envvar_prefix="DYNACONF",
@@ -12,6 +12,7 @@ settings = Dynaconf(
 
 project_path = Path(__file__).parent.absolute()
 settings.paths = {
+    "data": project_path.joinpath("data"), 
     "raw": project_path.joinpath("data", "raw"),
     "ready": project_path.joinpath("data", "ready"),
     "temp": project_path.joinpath("data", "temp"),

@@ -1,4 +1,4 @@
-
+tdict = "tdict_RL.xlsx"
 
 # NOTE: This is an example, to be deleted.
 [message]
@@ -7,5 +7,4 @@ main = "Processing the main flow."
 # NOTE: This is an example, to be deleted.
 # ms access database specs
 [msaccess]
-path = "C:/Users/Public/MyJob/DesjCap_cies/NSE/OlapNse_V02/db_NSE_V02.accdb"
-tables = ["tbl_clients", "tbl_fournisseurs"]
+path = "C:/Users/Public/MyJob/DesjCap_cies/RL/db_RL_raw.accdb"

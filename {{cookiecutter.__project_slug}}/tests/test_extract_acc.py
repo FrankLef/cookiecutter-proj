@@ -4,7 +4,7 @@ import pytest
 from pathlib import Path
 from sqlalchemy import engine
 
-import src.etl.extract_acc as extr
+import src.extr.extract_acc as extr
 
 
 @pytest.fixture
