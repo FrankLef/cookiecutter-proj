@@ -3,26 +3,16 @@
 # ruff: noqa: E402
 
 import logging
-import sys
-from pathlib import Path
 
 import typer
 from rich.logging import RichHandler
+
+from config import settings
 
 from extr.extract import main as extr  # type: ignore
 from transf.transform import main as transf  #  type: ignore
 from load.load import main as load_db  # type: ignore
 
-
-src_path = Path(__file__).parent
-if src_path not in sys.path:
-    sys.path.insert(1, str(src_path))
-
-proj_path = Path(__file__).parents[1]
-if proj_path not in sys.path:
-    sys.path.insert(1, str(proj_path))
-
-from config import settings  # type: ignore
 
 logging.basicConfig(
     level=logging.DEBUG,
@@ -38,10 +28,6 @@ data_path = settings.paths.data
 tdict_path = settings.tdict
 tdict_path = data_path.joinpath(tdict_path)
 
-if tdict_path.is_file():
-    print(tdict_path)
-else:
-    raise FileNotFoundError(f"File not found: {tdict_path}")
 
 @app.command()
 def extract(subprocess: str) -> int:
