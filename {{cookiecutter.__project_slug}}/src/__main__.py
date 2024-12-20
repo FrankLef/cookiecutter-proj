@@ -1,4 +1,4 @@
-"""The main entry point."""
+"""Main entry point."""
 
 # ruff: noqa: E402
 

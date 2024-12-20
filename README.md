@@ -253,11 +253,15 @@ This is how the folders will be organized.
     ├── settings.toml             <- Project's settings used by `dynaconf`.
     ├── .secrets.toml             <- Secret settings used by `dynaconf`.
     ├── README.md                 <- The top-level README for developers using this project.
+    ├── pypath.bat                <- A batch file to set the PYTHONPATH. Optional.
     ├── data                      <- Data directories used throughout the project.
-    │   ├── raw                   <- Original, immutable data.
-    |   ├── transf                <- Data being processed and transformed
-    |   ├── ready                 <- Transformed, complete data ready to use.
-    │   ├── temp                  <- Temporary folder. These files can be deleted.
+    │   ├── d0-temp               <- Temporary folder. These files can be deleted.
+    │   ├── d1-raw                <- Original, immutable data.
+    |   ├── d2-transf             <- Data being transformed.
+    |   ├── d3-ready              <- Transformed data ready to use.
+    │   ├── d4-preproc            <- Preprocessed data to used for EDA.
+    │   ├── d5-eda                <- Data used for exploratory data analysis.
+    │   ├── d6-final              <- Final data sets used for reports.
     |   └── ...
     ├── docs                      <- GitHub pages website.
     │   ├── explanation.md        <- Understanding-oriented documentation.
@@ -266,20 +270,36 @@ This is how the folders will be organized.
     │   ├── reference.md          <- Information-oriented documentation.
     │   ├── tutorials.md          <- Learning-oriented documentation.
     |   └── ...
-    ├── notebooks                 <- Jupyter notebooks. Naming convention is a number (for ordering),
-    │   │                            the creator's initials, and a short `_` delimited description, e.g.
-    │   │                            `01_fl_exploratory_data_analysis.ipynb`.
-    │   ├── data                  <- Data used by notebooks.
+    ├── notes                     <- Notebooks. Naming convention is a prefix,
+    │   │                            a number (for ordering), and a short `_`
+    │   │                            delimited description, e.g. `fl_eda_01a_explore_data.ipynb`.
+    │   ├── tmp_01a.ipynb         <- Notebook example.
     │   └── viz                   <- Visualizations such as plots and tables used by notebooks.
     ├── reports                   <- Reports, usually in markdown or other formats (pdf, html, etc.).
     │   ├── data                  <- Data used in reporting.
-    │   └── viz                   <- Visualizations such as plots, figures and tables used in reporting.
+    │   └── viz                   <- Visualizations such as plots and tables used in reporting.
     ├── src                       <- Store the source code.
-    │   ├── cli.py                <- The main CLI entry point.
-    │   ├── helpers               <- Utilities and helper codes.
+    │   ├── __init__.py           <- The module's initialize file.
+    │   ├── __main__.py           <- The main CLI entry point.
+    │   ├── s0-helpers            <- Utilities and helper codes.
     │   │   ├── __init__.py
     |   |   └── ...
-    |   ├── etl                   <- Code to extract, transform and load the raw data.
+    |   ├── s1-extr               <- Code to extract the raw data.
+    │   │   ├── __init__.py
+    |   |   └── ...
+    |   ├── s2-transf             <- Code to transform the raw data.
+    │   │   ├── __init__.py
+    |   |   └── ...
+    |   ├── s3-load               <- Code to load the raw data, usually in a database.
+    │   │   ├── __init__.py
+    |   |   └── ...
+    |   ├── s4-preproc            <- Code to preprocess the data for EDA.
+    │   │   ├── __init__.py
+    |   |   └── ...
+    |   ├── s5-eda                <- Code for exploratory data analysis.
+    │   │   ├── __init__.py
+    |   |   └── ...
+    |   ├── s6-final              <- Code for final data usually used in reporting.
     │   │   ├── __init__.py
     |   |   └── ...
     |   └── ...
@@ -288,7 +308,7 @@ This is how the folders will be organized.
         ├── fixtures              <- Where to put example inputs and outputs.
         │   ├── input.json        <- Test input data.
         │   └── output.json       <- Test output data.
-        ├── test_extract_acc.py   <- Test example on `etl.py`.
+        ├── test_extract_acc.py   <- Test example for etl..
         ├── test_samples.py       <- Test example to verify `pytest`.
         └── ...
 
