@@ -255,13 +255,13 @@ This is how the folders will be organized.
     ├── README.md                 <- The top-level README for developers using this project.
     ├── pypath.bat                <- A batch file to set the PYTHONPATH. Optional.
     ├── data                      <- Data directories used throughout the project.
-    │   ├── d0-temp               <- Temporary folder. These files can be deleted.
-    │   ├── d1-raw                <- Original, immutable data.
-    |   ├── d2-transf             <- Data being transformed.
-    |   ├── d3-ready              <- Transformed data ready to use.
-    │   ├── d4-preproc            <- Preprocessed data to used for EDA.
-    │   ├── d5-eda                <- Data used for exploratory data analysis.
-    │   ├── d6-final              <- Final data sets used for reports.
+    │   ├── d0_temp               <- Temporary folder. These files can be deleted.
+    │   ├── d1_raw                <- Original, immutable data.
+    |   ├── d2_transf             <- Data being transformed.
+    |   ├── d3_ready              <- Transformed data ready to use.
+    │   ├── d4_preproc            <- Preprocessed data to used for EDA.
+    │   ├── d5_eda                <- Data used for exploratory data analysis.
+    │   ├── d6_final              <- Final data sets used for reports.
     |   └── ...
     ├── docs                      <- GitHub pages website.
     │   ├── explanation.md        <- Understanding-oriented documentation.
@@ -281,25 +281,25 @@ This is how the folders will be organized.
     ├── src                       <- Store the source code.
     │   ├── __init__.py           <- The module's initialize file.
     │   ├── __main__.py           <- The main CLI entry point.
-    │   ├── s0-helpers            <- Utilities and helper codes.
+    │   ├── s0_helpers            <- Utilities and helper codes.
     │   │   ├── __init__.py
     |   |   └── ...
-    |   ├── s1-extr               <- Code to extract the raw data.
+    |   ├── s1_extr               <- Code to extract the raw data.
     │   │   ├── __init__.py
     |   |   └── ...
-    |   ├── s2-transf             <- Code to transform the raw data.
+    |   ├── s2_transf             <- Code to transform the raw data.
     │   │   ├── __init__.py
     |   |   └── ...
-    |   ├── s3-load               <- Code to load the raw data, usually in a database.
+    |   ├── s3_load               <- Code to load the raw data, usually in a database.
     │   │   ├── __init__.py
     |   |   └── ...
-    |   ├── s4-preproc            <- Code to preprocess the data for EDA.
+    |   ├── s4_preproc            <- Code to preprocess the data for EDA.
     │   │   ├── __init__.py
     |   |   └── ...
-    |   ├── s5-eda                <- Code for exploratory data analysis.
+    |   ├── s5_eda                <- Code for exploratory data analysis.
     │   │   ├── __init__.py
     |   |   └── ...
-    |   ├── s6-final              <- Code for final data usually used in reporting.
+    |   ├── s6_final              <- Code for final data usually used in reporting.
     │   │   ├── __init__.py
     |   |   └── ...
     |   └── ...
