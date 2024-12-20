@@ -2,11 +2,9 @@
 
 from sqlalchemy import engine
 
-import src.extr.connect_pg as extr
+import src.s1_extr.connect_pg as extr
 
 
 def test_engine_gp():
     out = extr.get_engine()
     assert isinstance(out, engine.base.Engine)
-
-

@@ -1,7 +1,8 @@
 """Test the log1ps module."""
+
 import pytest
 import math
-import src.helpers.log1ps as lg
+import src.s0_helpers.log1ps as lg
 
 
 @pytest.fixture

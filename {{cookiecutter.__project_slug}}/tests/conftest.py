@@ -1,0 +1,1 @@
+# https://stackoverflow.com/questions/34466027/what-is-conftest-py-for-in-pytest
