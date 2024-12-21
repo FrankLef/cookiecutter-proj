@@ -4,7 +4,7 @@ import pytest
 from pathlib import Path
 from sqlalchemy import engine
 
-import src.s3_load.load_acc as extr
+import src.s0_helpers.connect_acc as extr
 
 
 @pytest.fixture

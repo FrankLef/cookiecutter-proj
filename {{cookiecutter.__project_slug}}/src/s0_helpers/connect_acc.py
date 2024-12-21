@@ -1,4 +1,4 @@
-"""Load/Extract data to/from MS Access."""
+"""Download / Upload data from / to MS Access."""
 
 from pathlib import Path
 
