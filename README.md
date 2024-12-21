@@ -281,75 +281,75 @@ The primary libraries used are described in sections as follows:
 This is how the folders will be organized.
 
 ```text
-    {{cookiecutter.__project_slug}}
-    ├── .gitignore                <- GitHub's Python `.gitignore` customized for this project.
-    ├── config.py                 <- Script used `dynaconf` to manage settings.
-    ├── pre-commit-config.yaml    <- Settings for `pre-commit`.
-    ├── LICENSE                   <- The project's license.
-    ├── Makefile                  <- Scripts to automate tasks.
-    ├── mkdocs.yaml               <- Settings for `mkdocs`.
-    ├── pyproject.toml            <- Configuration file used by `poetry`.
-    ├── settings.toml             <- Project's settings used by `dynaconf`.
-    ├── .secrets.toml             <- Secret settings used by `dynaconf`.
-    ├── README.md                 <- The top-level README for developers using this project.
-    ├── pypath.bat                <- A batch file to set the PYTHONPATH. Optional.
-    ├── data                      <- Data directories used throughout the project.
-    │   ├── d0_temp               <- Temporary folder. These files can be deleted.
-    │   ├── d1_raw                <- Original, immutable data.
-    |   ├── d2_transf             <- Data being transformed.
-    |   ├── d3_ready              <- Transformed data ready to use.
-    │   ├── d4_preproc            <- Preprocessed data to used for EDA.
-    │   ├── d5_eda                <- Data used for exploratory data analysis.
-    │   ├── d6_final              <- Final data sets used for reports.
-    |   └── ...
-    ├── docs                      <- GitHub pages website.
-    │   ├── explanation.md        <- Understanding-oriented documentation.
-    │   ├── how-to-guides.md      <- Problem-oriented documentation.
-    │   ├── index.md              <- The index page for the whole documentation.
-    │   ├── reference.md          <- Information-oriented documentation.
-    │   ├── tutorials.md          <- Learning-oriented documentation.
-    |   └── ...
-    ├── notes                     <- Notebooks. Naming convention is a prefix,
-    │   │                            a number (for ordering), and a short `_`
-    │   │                            delimited description, e.g. `fl_eda_01a_explore_data.ipynb`.
-    │   ├── tmp_01a.ipynb         <- Notebook example.
-    │   └── viz                   <- Visualizations such as plots and tables used by notebooks.
-    ├── reports                   <- Reports, usually in markdown or other formats (pdf, html, etc.).
-    │   ├── data                  <- Data used in reporting.
-    │   └── viz                   <- Visualizations such as plots and tables used in reporting.
-    ├── src                       <- Store the source code.
-    │   ├── __init__.py           <- The module's initialize file.
-    │   ├── __main__.py           <- The main CLI entry point.
-    │   ├── s0_helpers            <- Utilities and helper codes.
-    │   │   ├── __init__.py
-    |   |   └── ...
-    |   ├── s1_extr               <- Code to extract the raw data.
-    │   │   ├── __init__.py
-    |   |   └── ...
-    |   ├── s2_transf             <- Code to transform the raw data.
-    │   │   ├── __init__.py
-    |   |   └── ...
-    |   ├── s3_load               <- Code to load the raw data, usually in a database.
-    │   │   ├── __init__.py
-    |   |   └── ...
-    |   ├── s4_preproc            <- Code to preprocess the data for EDA.
-    │   │   ├── __init__.py
-    |   |   └── ...
-    |   ├── s5_eda                <- Code for exploratory data analysis.
-    │   │   ├── __init__.py
-    |   |   └── ...
-    |   ├── s6_final              <- Code for final data usually used in reporting.
-    │   │   ├── __init__.py
-    |   |   └── ...
-    |   └── ...
-    └── tests                     <- All test and fixtures files used in testing.
-        ├── __init__.py
-        ├── fixtures              <- Where to put example inputs and outputs.
-        │   ├── input.json        <- Test input data.
-        │   └── output.json       <- Test output data.
-        ├── test_extract_acc.py   <- Test example for etl..
-        ├── test_samples.py       <- Test example to verify `pytest`.
-        └── ...
+{{cookiecutter.__project_slug}}
+├── .gitignore                <- GitHub's Python `.gitignore` customized for this project.
+├── config.py                 <- Script used `dynaconf` to manage settings.
+├── pre-commit-config.yaml    <- Settings for `pre-commit`.
+├── LICENSE                   <- The project's license.
+├── Makefile                  <- Scripts to automate tasks.
+├── mkdocs.yaml               <- Settings for `mkdocs`.
+├── pyproject.toml            <- Configuration file used by `poetry`.
+├── settings.toml             <- Project's settings used by `dynaconf`.
+├── .secrets.toml             <- Secret settings used by `dynaconf`.
+├── README.md                 <- The top-level README for developers using this project.
+├── pypath.bat                <- A batch file to set the PYTHONPATH. Optional.
+├── data                      <- Data directories used throughout the project.
+│   ├── d0_temp               <- Temporary folder. These files can be deleted.
+│   ├── d1_raw                <- Original, immutable data.
+|   ├── d2_transf             <- Data being transformed.
+|   ├── d3_ready              <- Transformed data ready to use.
+│   ├── d4_preproc            <- Preprocessed data to used for EDA.
+│   ├── d5_eda                <- Data used for exploratory data analysis.
+│   ├── d6_final              <- Final data sets used for reports.
+|   └── ...
+├── docs                      <- GitHub pages website.
+│   ├── explanation.md        <- Understanding-oriented documentation.
+│   ├── how-to-guides.md      <- Problem-oriented documentation.
+│   ├── index.md              <- The index page for the whole documentation.
+│   ├── reference.md          <- Information-oriented documentation.
+│   ├── tutorials.md          <- Learning-oriented documentation.
+|   └── ...
+├── notes                     <- Notebooks. Naming convention is a prefix,
+│   │                            a number (for ordering), and a short `_`
+│   │                            delimited description, e.g. `fl_eda_01a_explore_data.ipynb`.
+│   ├── tmp_01a.ipynb         <- Notebook example.
+│   └── viz                   <- Visualizations such as plots and tables used by notebooks.
+├── reports                   <- Reports, usually in markdown or other formats (pdf, html, etc.).
+│   ├── data                  <- Data used in reporting.
+│   └── viz                   <- Visualizations such as plots and tables used in reporting.
+├── src                       <- Store the source code.
+│   ├── __init__.py           <- The module's initialize file.
+│   ├── __main__.py           <- The main CLI entry point.
+│   ├── s0_helpers            <- Utilities and helper codes.
+│   │   ├── __init__.py
+|   |   └── ...
+|   ├── s1_extr               <- Code to extract the raw data.
+│   │   ├── __init__.py
+|   |   └── ...
+|   ├── s2_transf             <- Code to transform the raw data.
+│   │   ├── __init__.py
+|   |   └── ...
+|   ├── s3_load               <- Code to load the raw data, usually in a database.
+│   │   ├── __init__.py
+|   |   └── ...
+|   ├── s4_preproc            <- Code to preprocess the data for EDA.
+│   │   ├── __init__.py
+|   |   └── ...
+|   ├── s5_eda                <- Code for exploratory data analysis.
+│   │   ├── __init__.py
+|   |   └── ...
+|   ├── s6_final              <- Code for final data usually used in reporting.
+│   │   ├── __init__.py
+|   |   └── ...
+|   └── ...
+└── tests                     <- All test and fixtures files used in testing.
+    ├── __init__.py
+    ├── fixtures              <- Where to put example inputs and outputs.
+    │   ├── input.json        <- Test input data.
+    │   └── output.json       <- Test output data.
+    ├── test_extract_acc.py   <- Test example for etl..
+    ├── test_samples.py       <- Test example to verify `pytest`.
+    └── ...
 ```
 
 [cookiecutter]: https://github.com/audreyr/cookiecutter
