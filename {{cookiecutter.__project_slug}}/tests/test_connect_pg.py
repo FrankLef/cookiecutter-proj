@@ -2,9 +2,9 @@
 
 from sqlalchemy import engine
 
-import src.s0_helpers.connect_pg as extr
+import src.s0_helpers.connect_pg as conn
 
 
 def test_engine_gp():
-    out = extr.get_engine()
+    out = conn.get_engine()
     assert isinstance(out, engine.base.Engine)
