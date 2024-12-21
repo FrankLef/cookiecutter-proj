@@ -319,7 +319,7 @@ This is how the folders will be organized.
 │   └── viz                   <- Visualizations such as plots and tables used in reporting.
 ├── src                       <- Store the source code.
 │   ├── __init__.py           <- The module's initialize file.
-│   ├── __main__.py           <- The main CLI entry point.
+│   ├── __main__.py           <- Main CLI entry point.
 │   ├── s0_helpers            <- Utilities and helper codes.
 │   │   ├── __init__.py
 |   |   └── ...
