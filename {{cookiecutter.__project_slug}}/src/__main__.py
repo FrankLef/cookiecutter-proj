@@ -9,8 +9,8 @@ from rich.logging import RichHandler
 
 from config import settings
 
-from s1_extr.extract import main as do_extr
-from s2_transf.transform import main as do_transf
+from s1_extr.extr import main as do_extr
+from s2_transf.transf import main as do_transf
 from s3_load.load import main as do_load
 
 

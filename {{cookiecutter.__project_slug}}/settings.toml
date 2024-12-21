@@ -1,10 +1,1 @@
-tdict = "tdict_RL.xlsx"
-
-# NOTE: This is an example, to be deleted.
-[message]
-main = "Processing the main flow."
-
-# NOTE: This is an example, to be deleted.
-# ms access database specs
-[msaccess]
-path = "C:/Users/Public/MyAcctg/xbrl/db_xbr.accdb"
+tdict = "tdict.xlsx"
