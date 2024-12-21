@@ -16,7 +16,6 @@ log = logging.getLogger("rich")
 
 def main(subprocess: str) -> int:
     start = perf_counter()
-    # n = transf_xl(subprocess)
     n = 0
     t = strftime("Elapsed time %H:%M:%S.", gmtime(perf_counter() - start))
     log.info("'%s' transformed %d files.\n%s", subprocess, n, t)

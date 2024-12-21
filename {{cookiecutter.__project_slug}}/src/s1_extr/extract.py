@@ -15,7 +15,6 @@ log = logging.getLogger("rich")
 
 def main(subprocess) -> int:
     start = perf_counter()
-    # n = extr(subprocess)
     n = 0
     t = strftime("Elapsed time %H:%M:%S.", gmtime(perf_counter() - start))
     log.info("'%s' extracted %d files.\n%s", subprocess, n, t)
