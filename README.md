@@ -124,12 +124,14 @@ mkdocs serve
 
 This will give you and output like this
 
+```text
     INFO    -  Building documentation...
     INFO    -  Cleaning site directory
     INFO    -  Documentation built in 0.11 seconds
     INFO    -  [09:26:11] Watching paths for changes: 'docs', 'mkdocs.yaml'
     INFO    -  [09:26:11] Serving on http://127.0.0.1:8000/
     INFO    -  [09:26:31] Browser connected: http://127.0.0.1:8000/
+```
 
 you can see the resulting documentation by ctrl-click on `http://127.0.0.1:8000/`
 
