@@ -26,7 +26,7 @@ repo name, project name, etc.
 ### Step 1 Setup the project structure with `cookiecutter`
 
 Change to the parent location where you want the project to be created.
-For example if your project is called `flproj_todo` in the `parent` folder,
+For example if your project is called `pjTodo` in the `parent` folder,
 then move to `parent` first
 
 ```console
@@ -82,7 +82,7 @@ make poetry_update
 First create the new repo in github
 
 * **Give the repo the exact same name as the project**. That is keep the
-underscore in the name when there one. i.e. `flproj_todo` is also `flproj_todo`
+underscore in the name when there one. i.e. `pjTodo` is also `pjTodo`
 in github.
 * Don't create `README`, `.gitignore` and `LICENSE`. They will be created by
 the cookiecutter.
