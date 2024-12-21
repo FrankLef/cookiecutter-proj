@@ -7,11 +7,9 @@ import logging
 import typer
 from rich.logging import RichHandler
 
-from config import settings
-
-from s1_extr.extr import main as do_extr
-from s2_transf.transf import main as do_transf
-from s3_load.load import main as do_load
+from s1_extr.extr import main as do_extr  # noqa
+from s2_transf.transf import main as do_transf  # noqa
+from s3_load.load import main as do_load  # noqa
 
 
 logging.basicConfig(
