@@ -27,7 +27,7 @@ app = typer.Typer()
 
 @app.command()
 def extract(subprocess: str) -> int:
-    """Extract data.
+    """Extract data from external source.
 
     Args:
         subprocess (str): Must be in ['test'].
@@ -65,7 +65,7 @@ def transform(subprocess: str) -> int:
 
 @app.command()
 def load(subprocess: str) -> int:
-    """Load budget data to MS Access.
+    """Upload data to database.
 
     Args:
         subprocess (str): Must be in ['test'].
