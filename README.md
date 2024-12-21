@@ -29,19 +29,27 @@ Change to the parent location where you want the project to be created.
 For example if your project is called `flproj_todo` in the `parent` folder,
 then move to `parent` first
 
-    cd ..\parent
+```console
+cd ..\parent
+```
 
 verify that `cookiecutter` is properly installed by calling its version
 
-    cookiecutter --version
+```console
+cookiecutter --version
+```
 
 then generate the project
 
-    cookiecutter https://github.com/FrankLef/cookiecutter-proj.git
+```console
+cookiecutter https://github.com/FrankLef/cookiecutter-proj.git
+```
 
 and make the new folder the working directory.
 
-    cd ..\parent\{{cookiecutter.__project_slug}}
+```console
+cd ..\parent\{{cookiecutter.__project_slug}}
+```
 
 ### Step 2 Manage the dependencies with `poetry`
 
@@ -50,16 +58,22 @@ problem of for more details.
 
 Make sure the poetry version used is at least 1.7.
 
-    poetry --version.
+```console
+poetry --version.
+```
 
 Run `poetry shell` to open the poetry shell and avoid using `poetry run` with
 all commands
 
-    poetry shell
+```console
+poetry shell
+```
 
 Run the `make` command `poetry_update`.
 
-    make poetry_update
+```console
+make poetry_update
+```
 
 ### Step 3 Setup the new `.git`
 
@@ -77,7 +91,9 @@ the cookiecutter.
 
 Then initialize git using
 
-    make git_init
+```console
+make git_init
+```
 
 ### Step 4 Install `pre-commit`
 
@@ -85,11 +101,15 @@ See the [help pre-commit](help-pre-commit-update) for details.
 
 Setup and update `pre-commit`
 
-    make precommit
+```console
+make precommit
+```
 
 It is also a good idea to run the hooks against all files to verify them.
 
-    make precommit_run
+```console
+make precommit_run
+```
 
 ### Step 5 Verify the features
 
@@ -98,7 +118,9 @@ It is also a good idea to run the hooks against all files to verify them.
 You can also verify that the documentation setup is working by building
 the site.
 
-    mkdocs serve
+```console
+mkdocs serve
+```
 
 This will give you and output like this
 
@@ -113,14 +135,18 @@ you can see the resulting documentation by ctrl-click on `http://127.0.0.1:8000/
 
 and when you are done, you can exit the result with
 
-    ctrl^C
+```console
+ctrl^C
+```
 
 #### Code testing with `pytest`
 
 Finally you can verify that `pytest` is working as expected. Use
 this command wich runs the tests from the `tests` directory.
 
-    pytest
+```console
+pytest
+```
 
 ### Step 6 (optional) Add the ignored directories
 
@@ -128,7 +154,9 @@ Some directories, such as the `\data`, are included in `.gitignore` and
 therefore ignored by the cookicutter. You can run `make` to add these extra
 directories.
 
-    make ignored_dir
+```console
+make ignored_dir
+```
 
 ## Help notes
 
@@ -155,11 +183,15 @@ Sometimes, especially when reusing a folder that had been used as a project
 before, the old environment is still used. To see the environment curently
 opened by `poetry` use this
 
-    poetry env list
+```console
+poetry env list
+```
 
 To delete the old environment use this command
 
-    poetry env remove <python>
+```console
+poetry env remove <python>
+```
 
 ### Help pre-commit
 
@@ -176,11 +208,15 @@ usually resolves this.
 No need to run the linter and code formatter separately. Better yet,
 you can run all the pre-commit hooks using this useful command
 
-    pre-commit run --all-files
+```console
+pre-commit run --all-files
+```
 
 wich is encoded in the MakeFile with the command
 
-    make precommit_run
+```console
+make precommit_run
+```
 
 ### `pyarrow`
 
@@ -242,6 +278,7 @@ The primary libraries used are described in sections as follows:
 
 This is how the folders will be organized.
 
+```console
     {{cookiecutter.__project_slug}}
     ├── .gitignore                <- GitHub's Python `.gitignore` customized for this project.
     ├── config.py                 <- Script used `dynaconf` to manage settings.
@@ -311,6 +348,7 @@ This is how the folders will be organized.
         ├── test_extract_acc.py   <- Test example for etl..
         ├── test_samples.py       <- Test example to verify `pytest`.
         └── ...
+```
 
 [cookiecutter]: https://github.com/audreyr/cookiecutter
 [Hypermodern-cookiecutter]: https://cookiecutter-hypermodern-python.readthedocs.io/en
