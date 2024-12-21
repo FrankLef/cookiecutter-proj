@@ -62,13 +62,13 @@ git_init:
 
 ignored_dir:
 	# create data dir which are in the cookicutter because of .gitignore
-	mkdir -p data\d0_temp
-	mkdir -p data\d1_raw
-	mkdir -p data\d2_transf
-	mkdir -p data\d3_ready
-	mkdir -p data\d4_preproc
-	mkdir -p data\d5_eda
-	mkdir -p data\d6_final
+	mkdir -p data/d0_temp
+	mkdir -p data/d1_raw
+	mkdir -p data/d2_transf
+	mkdir -p data/d3_ready
+	mkdir -p data/d4_preproc
+	mkdir -p data/d5_eda
+	mkdir -p data/d6_final
 	@echo -e "\x1b[1;32mIgnored directories created successfully!\x1b[0m"
 
 test:
