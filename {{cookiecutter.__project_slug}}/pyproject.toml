@@ -38,6 +38,7 @@ tomli = "^2.0.1"
 matplotlib = "^3.7.0"
 scipy = "^1.10.1"
 seaborn = "^0.12.2"
+openpyxl = "^3.1.5"
 
 [tool.poetry.dev-dependencies]
 ruff = "^0.3.1"
