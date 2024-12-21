@@ -9,9 +9,9 @@ from rich.logging import RichHandler
 
 from config import settings
 
-from s1_extr.extract import main as extr
-from s2_transf.transform import main as transf
-from s3_load.load import main as load_db
+from s1_extr.extract import main as do_extr
+from s2_transf.transform import main as do_transf
+from s3_load.load import main as do_load
 
 
 logging.basicConfig(
@@ -36,7 +36,7 @@ def extract(subprocess: str) -> int:
         int: Number of files processed.
     """
     if subprocess in ["test"]:
-        n = extr(subprocess)
+        n = do_extr(subprocess)
     else:
         msg = f"'{subprocess}' is an invalid extract `subprocess`."
         log.error(msg)
@@ -55,7 +55,7 @@ def transform(subprocess: str) -> int:
         int: Number of files processed.
     """
     if subprocess in ["test"]:
-        n = transf(subprocess)
+        n = do_transf(subprocess)
     else:
         msg = f"'{subprocess}' is an invalid transform `subprocess`."
         log.error(msg)
@@ -74,7 +74,7 @@ def load(subprocess: str) -> int:
         int: Number of files processed.
     """
     if subprocess in ["test"]:
-        n = load_db(subprocess)
+        n = do_load(subprocess)
     else:
         msg = f"'{subprocess}' is an invalid load `subprocess`."
         log.error(msg)
