@@ -59,7 +59,7 @@ problem of for more details.
 Make sure the poetry version used is at least 1.7.
 
 ```console
-poetry --version.
+poetry --version
 ```
 
 Run `poetry shell` to open the poetry shell and avoid using `poetry run` with
