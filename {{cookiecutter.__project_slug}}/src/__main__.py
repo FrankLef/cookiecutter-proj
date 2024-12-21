@@ -9,9 +9,9 @@ from rich.logging import RichHandler
 
 from config import settings
 
-from extr.extract import main as extr  # type: ignore
-from transf.transform import main as transf  #  type: ignore
-from load.load import main as load_db  # type: ignore
+from s1_extr.extract import main as extr
+from s2_transf.transform import main as transf
+from s3_load.load import main as load_db
 
 
 logging.basicConfig(
@@ -24,22 +24,18 @@ log = logging.getLogger("rich")
 
 app = typer.Typer()
 
-data_path = settings.paths.data
-tdict_path = settings.tdict
-tdict_path = data_path.joinpath(tdict_path)
-
 
 @app.command()
 def extract(subprocess: str) -> int:
     """Extract data.
 
     Args:
-        subprocess (str): Must be in ['conso', 'test'].
+        subprocess (str): Must be in ['test'].
 
     Returns:
         int: Number of files processed.
     """
-    if subprocess in ["conso", "test"]:
+    if subprocess in ["test"]:
         n = extr(subprocess)
     else:
         msg = f"'{subprocess}' is an invalid extract `subprocess`."
@@ -53,12 +49,12 @@ def transform(subprocess: str) -> int:
     """Transform data.
 
     Args:
-        subprocess (str): Must be in ['conso', 'test'].
+        subprocess (str): Must be in ['test'].
 
     Returns:
         int: Number of files processed.
     """
-    if subprocess in ["conso", "test"]:
+    if subprocess in ["test"]:
         n = transf(subprocess)
     else:
         msg = f"'{subprocess}' is an invalid transform `subprocess`."
@@ -72,12 +68,12 @@ def load(subprocess: str) -> int:
     """Load budget data to MS Access.
 
     Args:
-        subprocess (str): Must be in ['conso', 'test'].
+        subprocess (str): Must be in ['test'].
 
     Returns:
         int: Number of files processed.
     """
-    if subprocess in ["conso", "test"]:
+    if subprocess in ["test"]:
         n = load_db(subprocess)
     else:
         msg = f"'{subprocess}' is an invalid load `subprocess`."

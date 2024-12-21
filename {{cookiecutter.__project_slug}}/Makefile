@@ -72,4 +72,5 @@ ignored_dir:
 	@echo -e "\x1b[1;32mIgnored directories created successfully!\x1b[0m"
 
 test:
-	@echo -e "\x1b[1;37mThis is a test\x1b[0m"
+	@echo -e "\x1b[1;37mThis runs pytest\x1b[0m"
+	pytest
