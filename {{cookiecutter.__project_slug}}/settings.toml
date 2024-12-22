@@ -1,1 +1,10 @@
 tdict = "tdict.xlsx"
+
+[data_paths]
+temp = "d0_temp"
+raw = "d1_raw"
+transf = "d2_transf"
+ready = "d3_ready"
+preproc = "d4_preproc"
+eda = "d5_eda"
+final = "d6_final"
