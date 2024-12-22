@@ -67,6 +67,7 @@ def read_acc(db_path: Path, qry: str) -> pd.DataFrame:
     """
     acc_engine = build_engine(db_path)
     with acc_engine.connect() as conn:
-        data = pd.read_sql(sql=qry, con=conn)
+        a_qry = sa.text(qry)  # must use text to make it executable
+        data = pd.read_sql(sql=a_qry, con=conn)
     acc_engine.dispose()
     return data
