@@ -1,7 +1,7 @@
-from src.s0_helpers import tdict
+from src.s0_helpers.setup import tdict
 
 
 def main(subprocess: str) -> int:
-    df = tdict.main()
-    print(df.shape)
+    specs = tdict.get_specs()
+    print(specs.shape)
     return 0
