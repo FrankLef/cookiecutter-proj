@@ -37,11 +37,11 @@ def build_engine(path: Path):
     return acc_engine
 
 
-def load_acc(data: pd.DataFrame, in_path: Path, db_path: Path, tbl: str) -> pd.DataFrame:
+def load_acc(data: pd.DataFrame, db_path: Path, tbl: str) -> pd.DataFrame:
     """Load data to MS Access.
 
     Args:
-        in_path (Path): Full name of excel file to upload.
+        data (pd.DataFrame): Data frame to upload.
         db_path (Path): MS Access db path.
         tbl (str): Name of table to upload to MS Access.
 
@@ -55,11 +55,10 @@ def load_acc(data: pd.DataFrame, in_path: Path, db_path: Path, tbl: str) -> pd.D
     return data
 
 
-def read_acc(out_path: Path, db_path: Path, qry: str) -> pd.DataFrame:
+def read_acc(db_path: Path, qry: str) -> pd.DataFrame:
     """Read  data from MS Access.
 
     Args:
-        out_path (Path): Full name of excel file to save.
         db_path (Path): MS Access db path.
         qry (str): SQL query to download from MS Access.
 
