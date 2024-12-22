@@ -29,6 +29,10 @@ def test_get_data_path(data_paths, id="raw"):
     target = Path(__file__).parents[1].joinpath("data", a_dir)
     assert a_path == target
 
-def test_get_data_path_err(id="wrong"):
-    with pytest.raises(ValueError):
+def test_get_data_path_keyerr(id="wrong"):
+    with pytest.raises(KeyError):
         shunter.get_data_path(id=id)
+        
+def test_get_data_path_direrr(id="raw"):
+    with pytest.raises(NotADirectoryError):
+        shunter.get_data_path(id=id, sub="wrong")

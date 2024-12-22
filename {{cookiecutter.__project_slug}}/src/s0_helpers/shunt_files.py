@@ -32,7 +32,7 @@ def get_data_path(
         a_path = base_path.joinpath(dct[id])
     else:
         msg = f"{id} is an invalid data path id."
-        raise ValueError(msg)
+        raise KeyError(msg)
     if sub is not None:
         a_path = a_path.joinpath(sub)
     if not a_path.is_dir():
@@ -40,9 +40,6 @@ def get_data_path(
         raise NotADirectoryError(msg)
     if name is not None:
         a_path = a_path.joinpath(name)
-        if not a_path.is_file():
-            msg = f"{a_path} not found."
-            raise FileNotFoundError(msg)
     return a_path
 
     

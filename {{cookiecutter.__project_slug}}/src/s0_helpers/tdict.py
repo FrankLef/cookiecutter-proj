@@ -15,7 +15,7 @@ def main(path: Path = data_path, role_rgx: str = ".", process_rgx: str = ".") ->
         msg = f"'{path}' not found."
         raise FileNotFoundError(msg)
     df = df[df.role.str.match(role_rgx) & df.process.str.match(process_rgx)]
-    if not len(df.axes[0]):
+    if not df.empty:
         msg = f"No tdict for {role_rgx=} and {process_rgx=}."
         raise ValueError(msg)
     # print(df.shape)
