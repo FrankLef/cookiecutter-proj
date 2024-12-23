@@ -12,7 +12,7 @@ class FileNamer:
         self._ext = ext
         self._sep = sep
     
-    def fname(self, name: str, *suffix) -> str:
+    def get_name(self, name: str, *suffix) -> str:
         """Create a file name.
 
         Args:
