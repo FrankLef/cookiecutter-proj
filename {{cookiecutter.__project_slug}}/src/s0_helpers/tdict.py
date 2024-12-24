@@ -19,12 +19,12 @@ class TDict:
         self._path = path
         self._data = pd.read_excel(path)
 
-    def get_data(self, role_rgx: str = ".", process_rgx: str = ".") -> pd.DataFrame:
+    def get_data(self, role_rgx: str = ".*", process_rgx: str = ".*") -> pd.DataFrame:
         """Get filtered data from a table dictionary.
 
         Args:
-            role_rgx (str, optional): Regex for the role. Defaults to ".".
-            process_rgx (str, optional): Regex for the process. Defaults to ".".
+            role_rgx (str, optional): Regex for the role. Defaults to ".*".
+            process_rgx (str, optional): Regex for the process. Defaults to ".*".
 
         Raises:
             ValueError: The filtered specs are empty.
