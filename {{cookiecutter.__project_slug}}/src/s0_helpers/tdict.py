@@ -1,4 +1,5 @@
 import pandas as pd
+import re
 
 
 class TDict:
@@ -13,26 +14,65 @@ class TDict:
         Raises:
             FileNotFoundError: Excel file is not found.
         """
-        self._data = data
+        """These 3 columns must be of string type which is not the case when
+        a column is empty. Otherwise the filter will raise an exception.
+        """
+        self._data = data.astype({"role": str, "process": str, "rule": str})
 
-    def get_data(self, role_rgx: str = ".*", process_rgx: str = ".*") -> pd.DataFrame:
+    def get_data(
+        self,
+        role: str|None = None,
+        process: str|None = None,
+        rule: str|None = None,
+        is_bound: bool = True,
+    ) -> pd.DataFrame:
         """Get filtered data from a table dictionary.
 
         Args:
-            role_rgx (str, optional): Regex for the role. Defaults to ".*".
-            process_rgx (str, optional): Regex for the process. Defaults to ".*".
+            role (str | None, optional): Regex for the role. Defaults to None.
+            process (str | None, optional): Regex for the process. Defaults to None.
+            rule (str | None, optional): Regex for the rule. Defaults to None.
+            is_bound (bool, optional): Add regex boundaries. Defaults to True.
 
         Raises:
-            ValueError: The filtered specs are empty.
+            UserWarning: The filtered data frame is empty.
 
         Returns:
             pd.DataFrame: Filtered data in a data frame.
         """
-        sel = self._data.role.str.match(role_rgx) & self._data.process.str.match(
-            process_rgx
-        )
-        df = self._data[sel]
+        role_sel = self._find_rows(var="role", val=role, is_bound=is_bound)
+        process_sel = self._find_rows(var="process", val=process, is_bound=is_bound)
+        rule_sel = self._find_rows(var="rule", val=rule, is_bound=is_bound)
+        
+        sel = (role_sel & process_sel & rule_sel)
+        
+        df = self._data.loc[sel]
         if df.empty:
-            msg = f"No tdict for {role_rgx=} and {process_rgx=}."
-            raise ValueError(msg)
+            msg = f"No data returned with {role=}, {process=}, {rule=}."
+            raise UserWarning(msg)
         return df
+
+    def _with_bounds(self, x: str, is_bound: bool) -> str:
+        """Add regex boundaries to a word. 
+
+        Args:
+            x (str): Word to process.
+            is_bound (bool): True = add the boundaries.
+
+        Returns:
+            str: Word with regex boundaries. 
+        """
+        if (x != ".*") & is_bound:
+            x = rf"\b{x}\b"
+        return x
+    
+    def _find_rows(self, var:str, val:str|None, is_bound:bool) -> pd.Series:
+        assert var in self._data.columns
+        if val:
+            val_rgx = self._with_bounds(val, is_bound=is_bound)
+            sel = self._data[var].str.contains(
+                val_rgx, flags=re.IGNORECASE, regex=True)
+        else:
+            sel = pd.Series(True, index=self._data.index, dtype=bool)
+        return sel
+        
