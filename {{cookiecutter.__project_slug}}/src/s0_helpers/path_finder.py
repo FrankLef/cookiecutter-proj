@@ -2,8 +2,8 @@ from pathlib import Path
 
 
 class PathFinder:
-    """Tools to retrieve path from a dictionary of paths.
-    """
+    """Tools to retrieve path from a dictionary of paths."""
+
     def __init__(self, paths: dict[str, str], base_path: Path):
         """Create a path finder with a dictionary and a base path.
 
@@ -19,13 +19,12 @@ class PathFinder:
         self._paths = paths
         self._base_path = base_path
 
-    def get_path(self, id: str, sub: str | None = None, name: str | None = None):
-        """Build the path.
+    def get_path(self, id: str, *sub: str, name: str | None = None):
+        """_summary_
 
         Args:
             id (str): The path's key in the path dictionary.
-            sub (str | None, optional): The sub-direcotry to join. Defaults to None.
-            name (str | None, optional): Name of the file to add to the path. Defaults to None.
+            name (str | None, optional): Name of the file to add to the path. Defaults to None. Defaults to None.
 
         Raises:
             KeyError: The `id` is not found in the path dictionary.
@@ -36,10 +35,9 @@ class PathFinder:
         """
         if id in self._paths.keys():
             a_path = self._base_path.joinpath(self._paths[id])
+            a_path = a_path.joinpath(*sub)
         else:
             raise KeyError(f"'{id}' is an invalid data path id.")
-        if sub:
-            a_path = a_path.joinpath(sub)
         if not a_path.is_dir():
             raise NotADirectoryError(f"{a_path} is not a directory.")
         if name:
