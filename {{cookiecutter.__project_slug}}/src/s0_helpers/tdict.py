@@ -1,11 +1,10 @@
-from pathlib import Path
 import pandas as pd
 
 
 class TDict:
     """Table dictionary with tables' specs"""
 
-    def __init__(self, path: Path):
+    def __init__(self, data: pd.DataFrame):
         """Initialize a table dictionary.
 
         Args:
@@ -14,10 +13,7 @@ class TDict:
         Raises:
             FileNotFoundError: Excel file is not found.
         """
-        if not path.is_file():
-            raise FileNotFoundError(f"{path} not found.")
-        self._path = path
-        self._data = pd.read_excel(path)
+        self._data = data
 
     def get_data(self, role_rgx: str = ".*", process_rgx: str = ".*") -> pd.DataFrame:
         """Get filtered data from a table dictionary.
