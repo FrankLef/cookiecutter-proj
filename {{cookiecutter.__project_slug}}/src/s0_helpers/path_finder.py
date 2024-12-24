@@ -19,7 +19,7 @@ class PathFinder:
         self._paths = paths
         self._base_path = base_path
 
-    def get_path(self, id: str, *other: str):
+    def get_path(self, id: str, *other: str) -> Path:
         """Build the path with the path dictionary.
 
         Args:
@@ -30,7 +30,7 @@ class PathFinder:
             FileExistsError: The path does not exist.
 
         Returns:
-            _type_: The complete path.
+            Path: The complete path.
         """
         if id in self._paths.keys():
             a_path = self._base_path.joinpath(self._paths[id])
