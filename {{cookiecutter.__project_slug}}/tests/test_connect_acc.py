@@ -4,7 +4,7 @@ import pytest
 from pathlib import Path
 from sqlalchemy import engine
 
-import src.s0_helpers.connect_acc as conn
+from src.s0_helpers.connect_acc import ConnectAcc as conn_cls
 
 
 @pytest.fixture
@@ -26,12 +26,12 @@ def db_tables():
 
 
 def test_acc_engine(db_path):
-    out = conn.build_engine(db_path)
-    assert isinstance(out, engine.base.Engine)
+    conn = conn_cls(db_path)
+    assert isinstance(conn._engine, engine.base.Engine)
 
 
 def test_accs_err():
     fn = r"C:\Users\Public\MyAcctg\xbrl\wrong.accdb"
     a_path = Path(fn)
     with pytest.raises(FileNotFoundError):
-        conn.build_engine(path=a_path)
+        conn_cls(db_path)(path=a_path)

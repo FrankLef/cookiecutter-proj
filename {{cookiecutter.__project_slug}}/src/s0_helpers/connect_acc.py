@@ -1,73 +1,75 @@
-"""Download / Upload data from / to MS Access."""
-
 from pathlib import Path
-
 import pandas as pd
 import sqlalchemy as sa
 
+class ConnectAcc:
+    def __init__(self, path: Path):
+        self._path = path
+        self._engine = self._build_engine()
+    
+    def _build_engine(self):
+        """Create SQLAlchemy engine for MS Access.
 
-def build_engine(path: Path):
-    """Create SQLAlchemy engine for MS Access.
+        Args:
+            path (Path): Path to MS Access database.
 
-    Args:
-        path (Path): Path to MS Access database.
+        Raises:
+            FileNotFoundError: SQLAlchemy engine for MS Access.
 
-    Returns:
-        sa.engine: SQLAlchemy engine for MS Access.
+        Returns:
+            _type_: The MS Access file name is invalid.
+        """
+        if not self._path.is_file():
+            msg = "\n" + str(self._path) + "\nis an invalid MS Access file name."
+            raise FileNotFoundError(msg)
+        db_driver = "{Microsoft Access Driver (*.mdb, *.accdb)}"
+        conn_str = f"DRIVER={db_driver};DBQ={self._path};"
+        # print(f"{conn_str=}")
+        engine_url = sa.engine.url.URL.create(
+            drivername="access+pyodbc", query={"odbc_connect": conn_str}
+        )
+        an_engine = sa.create_engine(engine_url)
+        return an_engine
+        
+    
+    def test_connect(self):
+        try:
+            with self._engine.connect() as conn:
+                conn.execute(sa.text("SELECT 1"))
+        except (sa.exc.DBAPIError, sa.exc.OperationalError) as e:
+            print(f"CONNECTION FAILED:\n{e}")
+            return False
+        return True
+                       
+                  
+    def load(self, data: pd.DataFrame, tbl: str) -> pd.DataFrame:
+        """Load data to MS Access.
 
-    Raises:
-        FileNotFoundError: The MS Access file name is invalid.
-    """
-    if not path.is_file():
-        msg = "\n" + str(path) + "\nis an invalid MS Access file name."
-        raise FileNotFoundError(msg)
-    db_driver = "{Microsoft Access Driver (*.mdb, *.accdb)}"
-    conn_str = f"DRIVER={db_driver};DBQ={path};"
-    # print(f"{conn_str=}")
-    engine_url = sa.engine.url.URL.create(
-        drivername="access+pyodbc", query={"odbc_connect": conn_str}
-    )
-    acc_engine = sa.create_engine(engine_url)
-    # Test the connection
-    try:
-        with acc_engine.connect() as conn:
-            conn.execute(sa.text("SELECT 1"))
-    except (sa.exc.DBAPIError, sa.exc.OperationalError) as e:
-        print(f"CONNECTION FAILED:\n{e}")
-    return acc_engine
+        Args:
+            data (pd.DataFrame): Data frame to upload.
+            tbl (str): Name of table to upload to MS Access.
 
+        Returns:
+            pd.Dataframe: Dataframe of uploaded data.
+        """
+        assert isinstance(data, pd.DataFrame)
+        assert len(tbl) != 0
+        with self._engine.connect() as conn:
+            data.to_sql(name=tbl, con=conn, index=False, if_exists="replace")
+        return data
+    
+    
+    def read(self, qry: str) -> pd.DataFrame:
+        """Read  data from MS Access.
 
-def load_acc(data: pd.DataFrame, db_path: Path, tbl: str) -> pd.DataFrame:
-    """Load data to MS Access.
+        Args:
+            qry (str): SQL query to download from MS Access.
 
-    Args:
-        data (pd.DataFrame): Data frame to upload.
-        db_path (Path): MS Access db path.
-        tbl (str): Name of table to upload to MS Access.
-
-    Returns:
-        pd.Dataframe: Dataframe of uploaded data.
-    """
-    acc_engine = build_engine(db_path)
-    with acc_engine.connect() as conn:
-        data.to_sql(name=tbl, con=conn, index=False, if_exists="replace")
-    acc_engine.dispose()
-    return data
-
-
-def read_acc(db_path: Path, qry: str) -> pd.DataFrame:
-    """Read  data from MS Access.
-
-    Args:
-        db_path (Path): MS Access db path.
-        qry (str): SQL query to download from MS Access.
-
-    Returns:
-        pd.Dataframe: Dataframe of downloaded data.
-    """
-    acc_engine = build_engine(db_path)
-    with acc_engine.connect() as conn:
-        a_qry = sa.text(qry)  # must use text to make it executable
-        data = pd.read_sql(sql=a_qry, con=conn)
-    acc_engine.dispose()
-    return data
+        Returns:
+            pd.Dataframe: Dataframe of downloaded data.
+        """
+        assert len(qry) != 0
+        with self._engine.connect() as conn:
+            a_qry = sa.text(qry)  # must use text to make it executable
+            data = pd.read_sql(sql=a_qry, con=conn)
+        return data
