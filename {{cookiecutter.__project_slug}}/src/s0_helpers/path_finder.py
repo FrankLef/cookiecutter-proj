@@ -19,27 +19,24 @@ class PathFinder:
         self._paths = paths
         self._base_path = base_path
 
-    def get_path(self, id: str, *sub: str, name: str | None = None):
-        """_summary_
+    def get_path(self, id: str, *other: str):
+        """Build the path with the path dictionary.
 
         Args:
             id (str): The path's key in the path dictionary.
-            name (str | None, optional): Name of the file to add to the path. Defaults to None. Defaults to None.
 
         Raises:
             KeyError: The `id` is not found in the path dictionary.
-            NotADirectoryError: The output path is invalid.
+            FileExistsError: The path does not exist.
 
         Returns:
-            _type_: A complete path.
+            _type_: The complete path.
         """
         if id in self._paths.keys():
             a_path = self._base_path.joinpath(self._paths[id])
-            a_path = a_path.joinpath(*sub)
+            a_path = a_path.joinpath(*other)
         else:
             raise KeyError(f"'{id}' is an invalid data path id.")
-        if not a_path.is_dir():
-            raise NotADirectoryError(f"{a_path} is not a directory.")
-        if name:
-            a_path = a_path.joinpath(name)
+        if not a_path.exists():
+            raise FileExistsError(f"{a_path} does not exist.")
         return a_path
