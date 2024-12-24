@@ -1,16 +1,41 @@
 from pathlib import Path
 import pandas as pd
 
+
 class TDict:
+    """Table dictionary with tables' specs"""
+
     def __init__(self, path: Path):
+        """Initialize a table dictionary.
+
+        Args:
+            path (Path): Path of excel file.
+
+        Raises:
+            FileNotFoundError: Excel file is not found.
+        """
         if not path.is_file():
             raise FileNotFoundError(f"{path} not found.")
         self._path = path
-        self._specs = pd.read_excel(path)
-        
-    def get_specs(self, role_rgx: str = ".", process_rgx: str = "."):
-        sel = self._specs.role.str.match(role_rgx) & self._specs.process.str.match(process_rgx)
-        df = self._specs[sel]
+        self._data = pd.read_excel(path)
+
+    def get_data(self, role_rgx: str = ".", process_rgx: str = ".") -> pd.DataFrame:
+        """Get filtered data from a table dictionary.
+
+        Args:
+            role_rgx (str, optional): Regex for the role. Defaults to ".".
+            process_rgx (str, optional): Regex for the process. Defaults to ".".
+
+        Raises:
+            ValueError: The filtered specs are empty.
+
+        Returns:
+            pd.DataFrame: Filtered data in a data frame.
+        """
+        sel = self._data.role.str.match(role_rgx) & self._data.process.str.match(
+            process_rgx
+        )
+        df = self._data[sel]
         if df.empty:
             msg = f"No tdict for {role_rgx=} and {process_rgx=}."
             raise ValueError(msg)
