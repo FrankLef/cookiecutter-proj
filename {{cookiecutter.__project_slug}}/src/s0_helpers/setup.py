@@ -3,25 +3,23 @@ Manage files and directories.
 
 Normally this script stays with the module.
 """
-
-from pathlib import Path
-
+import pandas as pd
 from config import settings
 
-from src.s0_helpers import path_finder as pathfinder_cls
-from src.s0_helpers import tdict as tdict_cls
-from src.s0_helpers import file_namer as fnamer_cls
-
+from src.s0_helpers import tdict, path_finder, file_namer
 
 data_paths = settings.data_paths
-data_path = Path(__file__).parents[2].joinpath("data")
+data_path = settings.paths.data
 
 # the PathFinder instance used in the project
-pathfindr = pathfinder_cls.PathFinder(paths=data_paths, base_path=data_path)
+pathfindr = path_finder.PathFinder(paths=data_paths, base_path=data_path)
 
-# the TDict instance used in the project
-tdict_path = data_path.joinpath(settings.tdict)
-tdict = tdict_cls.TDict(tdict_path)
+# the TDict instances used in the project
+tdict_etl_path = data_path.joinpath(settings.tdict_etl)
+tdict_etl = tdict.TDict(pd.read_excel(tdict_etl_path))
+tdict_eda_path = data_path.joinpath(settings.tdict_eda)
+tdict_eda = tdict.TDict(pd.read_excel(tdict_eda_path))
 
-# the FileNamer instance used in the project
-fnamer = fnamer_cls.FileNamer()
+# the FileNamer instances used in the project
+fnamer = file_namer.FileNamer()
+fnamer_fea = file_namer.FileNamer(ext=".fea")
