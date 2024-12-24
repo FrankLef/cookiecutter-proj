@@ -2,12 +2,13 @@ from pathlib import Path
 import pandas as pd
 import sqlalchemy as sa
 
+
 class ConnectAcc:
     def __init__(self, path: Path):
-        self._path = path
-        self._engine = self._build_engine()
-    
-    def _build_engine(self):
+        self.path = path
+        self._engine = self._build_engine(path)
+
+    def _build_engine(self, path:Path):
         """Create SQLAlchemy engine for MS Access.
 
         Args:
@@ -19,19 +20,18 @@ class ConnectAcc:
         Returns:
             _type_: The MS Access file name is invalid.
         """
-        if not self._path.is_file():
-            msg = "\n" + str(self._path) + "\nis an invalid MS Access file name."
+        if not path.is_file():
+            msg = "\n" + str(path) + "\nis an invalid MS Access file name."
             raise FileNotFoundError(msg)
         db_driver = "{Microsoft Access Driver (*.mdb, *.accdb)}"
-        conn_str = f"DRIVER={db_driver};DBQ={self._path};"
+        conn_str = f"DRIVER={db_driver};DBQ={path};"
         # print(f"{conn_str=}")
         engine_url = sa.engine.url.URL.create(
             drivername="access+pyodbc", query={"odbc_connect": conn_str}
         )
         an_engine = sa.create_engine(engine_url)
         return an_engine
-        
-    
+
     def test_connect(self):
         try:
             with self._engine.connect() as conn:
@@ -40,8 +40,7 @@ class ConnectAcc:
             print(f"CONNECTION FAILED:\n{e}")
             return False
         return True
-                       
-                  
+
     def load(self, data: pd.DataFrame, tbl: str) -> pd.DataFrame:
         """Load data to MS Access.
 
@@ -57,8 +56,7 @@ class ConnectAcc:
         with self._engine.connect() as conn:
             data.to_sql(name=tbl, con=conn, index=False, if_exists="replace")
         return data
-    
-    
+
     def read(self, qry: str) -> pd.DataFrame:
         """Read  data from MS Access.
 

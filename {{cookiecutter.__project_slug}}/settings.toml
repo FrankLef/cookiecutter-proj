@@ -1,10 +1,22 @@
-tdict = "tdict.xlsx"
+tdict_etl = "tdict_etl_RL.xlsx"
+tdict_eda = "tdict_eda_RL.xlsx"
+chrono = "periods_RL.xlsx"
+
+[db]
+fn = "C:/Users/Public/MyJob/DesjCap_cies/RL/db_RL.accdb"
+
+[raw_db]
+fn = "C:/Users/Public/MyJob/DesjCap_cies/RL/db_RL_raw.accdb"
+conso = "tbl_imp_conso"
+conso_qrtr = "tbl_imp_conso_qrtr"
+conso_rolly = "tbl_imp_conso_rolly"
 
 [data_paths]
 temp = "d0_temp"
-raw = "d1_raw"
+extr = "d1_extr"
 transf = "d2_transf"
-ready = "d3_ready"
-preproc = "d4_preproc"
-eda = "d5_eda"
-final = "d6_final"
+load = "d3_load"
+raw = "d4_raw"
+preproc = "d5_preproc"
+eda = "d6_eda"
+final = "d7_final"

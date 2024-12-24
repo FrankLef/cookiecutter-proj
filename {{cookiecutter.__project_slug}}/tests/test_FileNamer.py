@@ -8,24 +8,24 @@ from config import settings
 def data_paths():
     return settings.data_paths
 
+
 @pytest.fixture
 def fnamer():
     return fnamer_cls.FileNamer()
 
 
 def test_write_fn_default(fnamer, name="base"):
-    out = fnamer.fname(name)
+    out = fnamer.get_name(name)
     target = "base.xlsx"
     assert out == target
 
 
 def test_write_fn(fnamer, name="base"):
-    out = fnamer.fname(name, "lg", "z", ext=".tmp")
-    # out = shunter.write_fn(name, "lg", "z", ext=".tmp")
-    target = "base_lg_z.tmp"
+    out = fnamer.get_name(name, "lg", "z")
+    target = "base_lg_z.xlsx"
     assert out == target
 
 
 def test_write_fn_err(fnamer, name=""):
     with pytest.raises(ValueError):
-        fnamer.fname(name)
+        fnamer.get_name(name)

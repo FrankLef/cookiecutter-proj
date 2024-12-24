@@ -30,8 +30,8 @@ def test_acc_engine(db_path):
     assert isinstance(conn._engine, engine.base.Engine)
 
 
-def test_accs_err():
+def test_acc_err():
     fn = r"C:\Users\Public\MyAcctg\xbrl\wrong.accdb"
     a_path = Path(fn)
     with pytest.raises(FileNotFoundError):
-        conn_cls(db_path)(path=a_path)
+        conn_cls(path=a_path)
