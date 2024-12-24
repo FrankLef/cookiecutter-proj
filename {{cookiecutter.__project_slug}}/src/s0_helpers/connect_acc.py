@@ -5,10 +5,10 @@ import sqlalchemy as sa
 
 class ConnectAcc:
     def __init__(self, path: Path):
-        self.path = path
+        self._path = path
         self._engine = self._build_engine(path)
 
-    def _build_engine(self, path:Path):
+    def _build_engine(self, path: Path):
         """Create SQLAlchemy engine for MS Access.
 
         Args:
@@ -71,3 +71,6 @@ class ConnectAcc:
             a_qry = sa.text(qry)  # must use text to make it executable
             data = pd.read_sql(sql=a_qry, con=conn)
         return data
+    
+    def path(self):
+        return self._path
