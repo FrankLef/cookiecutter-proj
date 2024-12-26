@@ -10,7 +10,7 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 `{{ cookiecutter.description }}` objectives are to
 
 * extract, transform and load data (ETL)
-* process the data for business intelligence (BI)
+* do an exploratory data analysis (EDA)
 
 ## How to use
 
@@ -19,5 +19,5 @@ The details the command can be found with
 
 ```console
 cd ..\{{cookiecutter.__project_slug}}
-python -m src --help
+poetry run python -m src etl --help
 ```
