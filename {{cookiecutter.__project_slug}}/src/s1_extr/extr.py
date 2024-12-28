@@ -1,29 +1,18 @@
-import logging
-from time import gmtime, perf_counter, strftime
+"""Extract data from external source."""
 
-from rich.logging import RichHandler
+import importlib
+from pathlib import Path
 
-from .extr_test import main as extr_test
-
-logging.basicConfig(
-    level=logging.DEBUG,
-    format="%(message)s",
-    datefmt="[%X]",
-    handlers=[RichHandler()],
-)
-log = logging.getLogger("rich")
+from src.s0_helpers.richtools import print_modul
 
 
-def main(subprocess: str) -> int:
-    start = perf_counter()
-    if subprocess != "test":
-        n = 0
-    elif subprocess == "test":
-        n = extr_test(subprocess)
-    else:
-        msg = f"{subprocess} is an invalid subprocess."
-        raise ValueError(msg)
-    t = strftime("Elapsed time %H:%M:%S.", gmtime(perf_counter() - start))
-    log.info("'%s' extracted %d files.\n%s", subprocess, n, t)
+def main(subproc: str | None = None, pkg_pat: str = "extr*_*.py") -> int:
+    wd = Path(__file__).parent
+    names = sorted([f.stem for f in wd.glob(pkg_pat) if f.is_file()])
+    pkg = Path(__file__).parent.name
+    n: int = 0
+    for nm in names:
+        modul = importlib.import_module(name="." + nm, package=pkg)
+        print_modul(modul)
+        n += modul.main(subproc)
     return n
-

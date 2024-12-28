@@ -1,15 +1,10 @@
-tdict_etl = "tdict_etl_RL.xlsx"
-tdict_eda = "tdict_eda_RL.xlsx"
-chrono = "periods_RL.xlsx"
+tdict = "tdict.xlsx"
 
 [db]
-fn = "C:/Users/Public/MyJob/DesjCap_cies/RL/db_RL.accdb"
+fn = "C:/Users/Public/MyAcctg/xbrl/db_xbr.accdb"
 
 [raw_db]
-fn = "C:/Users/Public/MyJob/DesjCap_cies/RL/db_RL_raw.accdb"
-conso = "tbl_imp_conso"
-conso_qrtr = "tbl_imp_conso_qrtr"
-conso_rolly = "tbl_imp_conso_rolly"
+fn = "C:/Users/Public/MyAcctg/xbrl/db_xbr.accdb"
 
 [data_paths]
 temp = "d0_temp"

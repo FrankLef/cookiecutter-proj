@@ -1,7 +1,6 @@
-from src.s0_helpers.setup import tdict
+from src.s0_helpers.richtools import print_msg
 
 
-def main(subprocess: str) -> int:
-    specs = tdict.get_data()
-    print(specs.shape)
+def main(subproc: str) -> int:
+    print_msg(" ".join([__name__, subproc]), type="msg")
     return 0

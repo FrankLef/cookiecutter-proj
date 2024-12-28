@@ -150,7 +150,7 @@ def do_mult(data: pd.DataFrame, mtrx: pd.DataFrame) -> pd.DataFrame:
     check = [x != y for x, y in zip(list(mtrx.index), list(data.columns))]
     check = sum(check)
     if check:
-        msg = f"{check} indexes are not the same in data columns and matrix rows."
+        msg = f"{check} Data column names and matrix index must be the same. ¨{check} are invalid."
         raise AssertionError(msg)
     df = data.dot(mtrx)
     return df

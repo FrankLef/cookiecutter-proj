@@ -40,3 +40,13 @@ class PathFinder:
         if not a_path.exists():
             raise FileExistsError(f"{a_path} does not exist.")
         return a_path
+
+    @property
+    def paths(self) -> dict[str, str]:
+        """The dictionary of paths."""
+        return self._paths
+
+    @property
+    def base_path(self) -> Path:
+        """The base path."""
+        return self._base_path

@@ -40,13 +40,13 @@ is summarized in the following table.
 
 |Stage|Label|Command|Source Code|Data Set|Description
 |:-----|:-----|:-----|:-----|:-----|:-----
-|ETL|Extract|`extr`|..\s1_extr|..\d1_extr|Extract data from an external source
-|ETL|Transform|`transf`|..\s2_transf|..\d2_transf|Tranform the extracted data to a table format
-|ETL|Load|`load`|..\s3_load|..\d3_load|Upload to an external database
-|EDA|Raw|`raw`|..\s4_raw|..\d4_raw|Get raw data for EDA
-|EDA|Preprocessing|`pproc`|..\s5_pproc|..\d5_pproc|Preprocess data for EDA
-|EDA|E.D.A.|`eda`|..\s6_eda|..\d6_eda|Exploratory Data Analysis
-|EDA|Final|`final`|..\s7_final|..\d7_final|Finalize EDA
+|ETL|Extract|`extr`|`..\s1_extr`|`..\d1_extr`|Extract data from an external source
+|ETL|Transform|`transf`|`..\s2_transf`|`..\d2_transf`|Tranform the extracted data to a table format
+|ETL|Load|`load`|`..\s3_load`|`..\d3_load`|Upload to an external database
+|EDA|Raw|`raw`|`..\s4_raw`|`..\d4_raw`|Get raw data for EDA
+|EDA|Preprocessing|`pproc`|`..\s5_pproc`|`..\d5_pproc`|Preprocess data for EDA
+|EDA|E.D.A.|`eda`|`..\s6_eda`|`..\d6_eda`|Exploratory Data Analysis
+|EDA|Final|`final`|`..\s7_final`|`..\d7_final`|Finalize EDA
 
 To run a given command, you do
 

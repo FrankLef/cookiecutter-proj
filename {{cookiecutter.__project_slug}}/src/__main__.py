@@ -1,82 +1,127 @@
-"""Main entry point."""
-
-# ruff: noqa: E402
-
-import logging
+"""Main CLI entry point."""
 
 import typer
-from rich.logging import RichHandler
+import importlib
 
-from s1_extr.extr import main as do_extr
-from s2_transf.transf import main as do_transf
-from s3_load.load import main as do_load
-
-
-logging.basicConfig(
-    level=logging.DEBUG,
-    format="%(message)s",
-    datefmt="[%X]",
-    handlers=[RichHandler()],
-)
-log = logging.getLogger("rich")
+from src.s0_helpers.richtools import print_modul
 
 app = typer.Typer()
 
+the_moduls = {
+    "extr": "s1_extr.extr",
+    "transf": "s2_transf.transf",
+    "load": "s3_load.load",
+    "raw": "s4_raw.raw",
+    "pproc": "s5_pproc.pproc",
+    "eda": "s6_eda.eda",
+    "final": "s7_final.final",
+}
 
-@app.command()
-def extract(subprocess: str) -> int:
-    """Extract data from external source.
 
-    Args:
-        subprocess (str): Must be in ['test'].
-
-    Returns:
-        int: Number of files processed.
-    """
-    if subprocess in ["test"]:
-        n = do_extr(subprocess)
-    else:
-        msg = f"'{subprocess}' is an invalid extract `subprocess`."
-        log.error(msg)
-        raise ValueError(msg)
+def run_cmd(proc: str, subproc: str | None = None) -> int:
+    """Use this to run the primary modules."""
+    modul_nm = the_moduls[proc]
+    modul = importlib.import_module(name=modul_nm)
+    print_modul(modul)
+    n = modul.main(subproc)
     return n
 
 
 @app.command()
-def transform(subprocess: str) -> int:
-    """Transform data.
+def extr(subproc: str | None = None) -> int:
+    """Extract data from an external source.
 
     Args:
-        subprocess (str): Must be in ['test'].
+        subproc (str | None, optional): Name of the subprocess. Defaults to None.
 
     Returns:
-        int: Number of files processed.
+        int: Integer returned by the process.
     """
-    if subprocess in ["test"]:
-        n = do_transf(subprocess)
-    else:
-        msg = f"'{subprocess}' is an invalid transform `subprocess`."
-        log.error(msg)
-        raise ValueError(msg)
+    n = run_cmd(proc="extr", subproc=subproc)
     return n
 
 
 @app.command()
-def load(subprocess: str) -> int:
-    """Upload data to database.
+def transf(subproc: str | None = None) -> int:
+    """Tranform the extracted data to a table format.
 
     Args:
-        subprocess (str): Must be in ['test'].
+        subproc (str | None, optional): Name of the subprocess. Defaults to None.
 
     Returns:
-        int: Number of files processed.
+        int: Integer returned by the process.
     """
-    if subprocess in ["test"]:
-        n = do_load(subprocess)
-    else:
-        msg = f"'{subprocess}' is an invalid load `subprocess`."
-        log.error(msg)
-        raise ValueError(msg)
+    n = run_cmd(proc="transf", subproc=subproc)
+    return n
+
+
+@app.command()
+def load(subproc: str | None = None) -> int:
+    """Upload to an external database.
+
+    Args:
+        subproc (str | None, optional): Name of the subprocess. Defaults to None.
+
+    Returns:
+        int: Integer returned by the process.
+    """
+    n = run_cmd(proc="load", subproc=subproc)
+    return n
+
+
+@app.command()
+def raw(subproc: str | None = None) -> int:
+    """Get raw data for EDA.
+
+    Args:
+        subproc (str | None, optional): Name of the subprocess. Defaults to None.
+
+    Returns:
+        int: Integer returned by the process.
+    """
+    n = run_cmd(proc="raw", subproc=subproc)
+    return n
+
+
+@app.command()
+def pproc(subproc: str | None = None) -> int:
+    """Preprocess data for EDA.
+
+    Args:
+        subproc (str | None, optional): Name of the subprocess. Defaults to None.
+
+    Returns:
+        int: Integer returned by the process.
+    """
+    n = run_cmd(proc="pproc", subproc=subproc)
+    return n
+
+
+@app.command()
+def eda(subproc: str | None = None) -> int:
+    """Exploratory Data Analysis.
+
+    Args:
+        subproc (str | None, optional): Name of the subprocess. Defaults to None.
+
+    Returns:
+        int: Integer returned by the process.
+    """
+    n = run_cmd(proc="eda", subproc=subproc)
+    return n
+
+
+@app.command()
+def final(subproc: str | None = None) -> int:
+    """Finalize EDA.
+
+    Args:
+        subproc (str | None, optional): Name of the subprocess. Defaults to None.
+
+    Returns:
+        int: Integer returned by the process.
+    """
+    n = run_cmd(proc="final", subproc=subproc)
     return n
 
 

@@ -71,6 +71,11 @@ class ConnectAcc:
             a_qry = sa.text(qry)  # must use text to make it executable
             data = pd.read_sql(sql=a_qry, con=conn)
         return data
-    
-    def path(self):
+
+    @property
+    def path(self) -> Path:
         return self._path
+
+    @property
+    def engine(self):
+        return self._engine
