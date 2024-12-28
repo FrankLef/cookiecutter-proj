@@ -17,17 +17,13 @@ def data_path():
         raise NotADirectoryError(msg)
     return a_path
 
-pytest.mark.skipif(
-    condition=(not data_path().exists()),
-    reason="Data path must exists. Check the settings.")
+
 @pytest.fixture
 def pathfindr(data_paths, data_path):
     return pfr.PathFinder(paths=data_paths, base_path=data_path)
 
 
-pytest.mark.skipif(
-    condition=(not data_path().exists()),
-    reason="Data path must exists. Check the settings.")
+
 def test_get_data_path(pathfindr, id="extr"):
     a_path = pathfindr.get_path(id=id)
     target = Path(__file__).parents[1].joinpath("data", "d1_extr")
