@@ -25,16 +25,12 @@ def tdict(data_path):
     obj = tdict_cls.TDict(data)
     return obj
 
-pytest.mark.skipif(
-    condition=(not data_path().exists()),
-    reason="Data path must exists. Check the settings.")
+
 def test_tdict(tdict):
     specs = tdict.get_data()
     assert not specs.empty
 
-pytest.mark.skipif(
-    condition=(not data_path().exists()),
-    reason="Data path must exists. Check the settings.")
+
 def test_tdict_err(tdict):
     with pytest.raises(UserWarning):
         tdict.get_data(role="wrong")
