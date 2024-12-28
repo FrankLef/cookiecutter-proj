@@ -7,11 +7,6 @@ description = "Python project for RL"
 authors = ["François Lefebvre <flefebvre01@hotmail.com>"]
 license = "MIT"
 readme = "README.md"
-homepage = "https://github.com/FrankLef/pjRL.git"
-repository = "https://github.com/FrankLef/pjRL.git"
-packages = [
-{include = "pkrl", from = "C:/Users/Public/MyPy/Packages/pkrl"},
-]
 
 [tool.poetry.urls]
 Changelog = "https://github.com/FrankLef/pjRL.git/releases"
@@ -40,7 +35,6 @@ matplotlib = "^3.7.0"
 scipy = "^1.10.1"
 seaborn = "^0.12.2"
 openpyxl = "^3.1.5"
-pkrl = {path = "C:/Users/Public/MyPy/Packages/pkrl", develop = true}
 
 [tool.poetry.dev-dependencies]
 ruff = "^0.3.1"
