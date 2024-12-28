@@ -22,7 +22,7 @@ cd ..\{{cookiecutter.__project_slug}}
 poetry run python -m src etl --help
 ```
 
-## Concept and Usage
+## Concept
 
 The project is organized around the concept that
 
@@ -33,33 +33,36 @@ The project is organized around the concept that
   * a dedicated module and a
   * dedicated data set
 
-The command, source code location and data location associated with evert step
+## Usage
+
+The command, source code location and data location associated with every step
 is summarized in the following table.
 
-|Stage|Command|Source Code|Data Set|Description
-|:-----|:-----|:-----|:-----|:-----
-|ETL|extr|s1_extr|d1_extr|Extract data from an external source
-|ETL|transf|s2_transf|d2_transf|Tranform the extracted data to a table format
-|ETL|load|s3_load|d3_load|Upload to an external database
-|EDA|raw|s4_raw|d4_raw|Get raw data for EDA
-|EDA|pproc|s5_pproc|d5_pproc|Preprocess data for EDA
-|EDA|eda|s6_eda|d6_eda|Exploratory Data Analysis
-|EDA|final|s7_final|d7_final|Finalize EDA
+|Stage|Label|Command|Source Code|Data Set|Description
+|:-----|:-----|:-----|:-----|:-----|:-----
+|ETL|Extract|`extr`|..\s1_extr|..\d1_extr|Extract data from an external source
+|ETL|Transform|`transf`|..\s2_transf|..\d2_transf|Tranform the extracted data to a table format
+|ETL|Load|`load`|..\s3_load|..\d3_load|Upload to an external database
+|EDA|Raw|`raw`|..\s4_raw|..\d4_raw|Get raw data for EDA
+|EDA|Preprocessing|`pproc`|..\s5_pproc|..\d5_pproc|Preprocess data for EDA
+|EDA|E.D.A.|`eda`|..\s6_eda|..\d6_eda|Exploratory Data Analysis
+|EDA|Final|`final`|..\s7_final|..\d7_final|Finalize EDA
 
-To run a given *ETL* step, for example the *extract* you would do
-
-```console
-cd ..\{{cookiecutter.__project_slug}}
-poetry run python -m src etl extr <subprocess>
-```
-
-where *subprocess* is a string identiying a subprocess.
-
-To run a given *EDA* step, for example the *raw* you would do
+To run a given command, you do
 
 ```console
 cd ..\{{cookiecutter.__project_slug}}
-poetry run python -m src eda raw <subprocess>
+poetry run python -m src <command> --subproc <subprocess>
 ```
 
-where *subprocess* is a string identiying a subprocess.
+* `poetry run` is required when you have a package, for example an ***editable
+package*** installed in the virtual environment,
+* `subproc` is an optional string identifying a subprocess to be used by
+the command.
+
+for example the *extract* command `extr` with the subprocess *test* would be
+
+```console
+cd ..\{{cookiecutter.__project_slug}}
+poetry run python -m src extr --subproc test
+```
