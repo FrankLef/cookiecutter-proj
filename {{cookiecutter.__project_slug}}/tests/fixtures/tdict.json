@@ -1,0 +1,14 @@
+{
+	"path": ["C:/Users/Public/MyAcctg/xbrl","C:/Users/Public/MyAcctg/xbrl","C:/Users/Public/MyAcctg/xbrl"],
+	"file": ["xbr_concepts.xlsx", "xbr_concepts.xlsx", "db_xbr.accdb"],
+	"table": ["Balance Sheet", "Income Statement", "qryx_xbr_concepts"],
+	"name": ["balance sheet", "income statement", "concepts"],
+	"raw_name": ["balance sheet", "income statement", "concepts"],
+	"label": ["Balance Sheet", "Income Statement", "Concept"],
+	"dtype": ["xlsx", "xlsx", "accdb"],
+	"role": ["fs", "fs", "concept"],
+	"process": ["load", "load", "load"],
+	"rule": [null, null, null],
+	"desc": [null, null, null],
+	"note": [null, null, null]
+}
