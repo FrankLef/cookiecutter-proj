@@ -1,13 +1,6 @@
 import pytest
 from src.s0_helpers import file_namer as fnamer_cls
 
-from config import settings
-
-
-@pytest.fixture
-def data_paths():
-    return settings.data_paths
-
 
 @pytest.fixture
 def fnamer():
