@@ -22,19 +22,29 @@ progress_bar = Progress(
 )
 
 
-def create_msg(text: str, type: str = "msg") -> str:
-    """Create a string to output to console using `rich`.
+def create_msg(text: str, type: str|None = None) -> str:
+    """Format a string to output to console using `rich`.
 
     Args:
-        text (str): Text of the main body.
-        type (str, optional): Format id of the output. Defaults to "info".
+        text (str): Text of the main body..
+        type (str | None, optional): Format type. Defaults to None.
+
+    Raises:
+        ValueError: The type is invalid.
 
     Returns:
-        str: String in a format understood by `rich`.
+        str: Formatted string to use by `rich`.
     """
-    match type.lower():
+    if type is None:
+        # if type is None, do nothing and return the text as is.
+        return text
+    else:
+        a_type = type
+        a_type = a_type.lower()
+    
+    match a_type:
         case "msg":
-            fmt = ("[cyan3]", " ", "[/cyan3]")
+            fmt = ("[grey69]", " ", "[/grey69]")
         case "modul":
             # no space after symbol
             fmt = ("[purple]", "\u2022", "[/purple]")
@@ -52,7 +62,7 @@ def create_msg(text: str, type: str = "msg") -> str:
         case "process":
             fmt = ("[gold1]", "\u2026", "[/gold1]")
         case _:
-            raise ValueError(f"'{type}' is an invalid rich format type.")
+            raise ValueError(f"'{a_type}' is an invalid rich msg type.")
 
     if type != "process":
         msg = fmt[0] + " ".join([fmt[1], text]) + fmt[2]
