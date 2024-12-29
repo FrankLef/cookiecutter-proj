@@ -22,7 +22,7 @@ progress_bar = Progress(
 )
 
 
-def create_msg(text: str, type: str|None = None) -> str:
+def create_msg(text: str, type: str | None = None) -> str:
     """Format a string to output to console using `rich`.
 
     Args:
@@ -41,7 +41,7 @@ def create_msg(text: str, type: str|None = None) -> str:
     else:
         a_type = type
         a_type = a_type.lower()
-    
+
     match a_type:
         case "msg":
             fmt = ("[grey69]", " ", "[/grey69]")
@@ -71,15 +71,15 @@ def create_msg(text: str, type: str|None = None) -> str:
     return msg
 
 
-def print_msg(text: str, type: str = "msg") -> str:
+def print_msg(text: str, type: str|None = None) -> str:
     """Sent message to console using `rich`.
 
     Args:
-        text (str): _description_
-        type (str, optional): _description_. Defaults to "info".
+        text (str): The text to print.
+        type (str | None, optional): Format type. Defaults to None.
 
     Returns:
-        str: Message sent to the console.
+        str: Formatted string to use by `rich`.
     """
     msg = create_msg(text, type=type)
     rprint(msg)

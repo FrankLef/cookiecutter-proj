@@ -21,9 +21,9 @@ class TDict:
 
     def get_data(
         self,
-        role: str|None = None,
-        process: str|None = None,
-        rule: str|None = None,
+        role: str | None = None,
+        process: str | None = None,
+        rule: str | None = None,
         is_bound: bool = True,
     ) -> pd.DataFrame:
         """Get filtered data from a table dictionary.
@@ -43,36 +43,30 @@ class TDict:
         role_sel = self._find_rows(var="role", val=role, is_bound=is_bound)
         process_sel = self._find_rows(var="process", val=process, is_bound=is_bound)
         rule_sel = self._find_rows(var="rule", val=rule, is_bound=is_bound)
-        
-        sel = (role_sel & process_sel & rule_sel)
-        
+
+        sel = role_sel & process_sel & rule_sel
+
         df = self._data.loc[sel]
         if df.empty:
             msg = f"No data returned with {role=}, {process=}, {rule=}."
             raise UserWarning(msg)
         return df
 
-    def _with_bounds(self, x: str, is_bound: bool) -> str:
-        """Add regex boundaries to a word. 
+    def _find_rows(self, var: str, val: str | None, is_bound: bool) -> pd.Series:
+        """Find the rows in a columns that match the regex.
 
         Args:
-            x (str): Word to process.
+            var (str): Name of the column.
+            val (str | None): Searched string.
             is_bound (bool): True = add the boundaries.
 
         Returns:
-            str: Word with regex boundaries. 
+            pd.Series: Boolean series with True when value is found.
         """
-        if (x != ".*") & is_bound:
-            x = rf"\b{x}\b"
-        return x
-    
-    def _find_rows(self, var:str, val:str|None, is_bound:bool) -> pd.Series:
         assert var in self._data.columns
         if val:
-            val_rgx = self._with_bounds(val, is_bound=is_bound)
-            sel = self._data[var].str.contains(
-                val_rgx, flags=re.IGNORECASE, regex=True)
+            val_rgx = rf"\b{val}\b" if is_bound else val
+            sel = self._data[var].str.contains(val_rgx, flags=re.IGNORECASE, regex=True)
         else:
             sel = pd.Series(True, index=self._data.index, dtype=bool)
         return sel
-        
