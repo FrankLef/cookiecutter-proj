@@ -4,7 +4,21 @@ import re
 
 class TDict:
     """Table dictionary with tables' specs"""
-
+    
+    _SCHEMA = {
+            "path": str,
+            "file": str,
+            "table": str,
+            "name": str,
+            "raw_name": str,
+            "label": str,
+            "dtype": str,
+            "role": str,
+            "process": str,
+            "rule": str,
+            "desc": str,
+            "note": str,
+        }
     def __init__(self, data: pd.DataFrame):
         """Data dictionary
 
@@ -15,16 +29,13 @@ class TDict:
             ValueError: Required columns are missing.
         """
         data.columns = data.columns.str.lower()  # must be in lower case
-        cols = {
-            "path": str, "file": str, "table": str, "name": str, 
-            "raw_name": str, "label": str, "dtype": str, "role": str, "process": str, "rule": str, "desc": str, "note": str}
-        check = [x not in data.columns for x in cols.keys()].count(True)
+        check = sum([x not in data.columns for x in self._SCHEMA.keys()])
         if not check:
-            data = data.astype(cols)
+            data = data.astype(self._SCHEMA)
+            data.reset_index(drop=True, inplace=True)
             self._data = data
         else:
             raise ValueError(f"{check} required columns missing in the data.")
-            
 
     def get_data(
         self,
@@ -41,9 +52,6 @@ class TDict:
             rule (str | None, optional): Regex for the rule. Defaults to None.
             is_bound (bool, optional): Add regex boundaries. Defaults to True.
 
-        Raises:
-            UserWarning: The filtered data frame is empty.
-
         Returns:
             pd.DataFrame: Filtered data in a data frame.
         """
@@ -54,9 +62,6 @@ class TDict:
         sel = role_sel & process_sel & rule_sel
 
         df = self._data.loc[sel]
-        if df.empty:
-            msg = f"No data returned with {role=}, {process=}, {rule=}."
-            raise UserWarning(msg)
         return df
 
     def _find_rows(self, var: str, val: str | None, is_bound: bool) -> pd.Series:

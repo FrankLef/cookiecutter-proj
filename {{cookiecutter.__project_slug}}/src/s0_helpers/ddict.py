@@ -5,8 +5,24 @@ import numpy as np
 
 class DDict:
     """Data dictionary with specs by variable."""
-
-    def __init__(self, data: pd.DataFrame):
+    
+    _SCHEMA = {
+            "table": str,
+            "raw_name": str,
+            "name": str,
+            "label": str,
+            "raw_dtype": str,
+            "dtype": str,
+            "role": str,
+            "process": str,
+            "rule": str,
+            "desc": str,
+            "note": str,
+        }
+    
+    _SEP = "\u00AC"  # string separator. The '¬' sign.
+    
+    def __init__(self, data: pd.DataFrame | None = None):
         """Data dictionary
 
         Args:
@@ -15,39 +31,52 @@ class DDict:
         Raises:
             ValueError: Required columns are missing.
         """
-        
-        self._data = data
+        if data is not None:
+            self._data = data
+            self._validate_data()
+            self._data = self._set_ndx(self._data)
+            # self._data['idx'] = self._data['table'] + self._SEP + self._data['raw_name']
+            # self._data.set_index('idx', drop=True, inplace=True)
+        else:
+            self._data = pd.DataFrame(columns = self._SCHEMA.keys()).astype(self._SCHEMA)  # noqa
+    
+    def _set_ndx(self, data)-> pd.DataFrame:
+        data['idx'] = data['table'] + self._SEP + data["raw_name"]
+        data.set_index('idx', drop=True, inplace=True)
+        return data
+         
+    def _validate_data(self):
         self._validate_columns()
         self._trim()
         self._repl_ws()
-        self._validate_null(cols = ["table", "raw_name", "name"])
+        self._validate_null(schema=["table", "raw_name", "name"])
         self._validate_uniq()
-    
+        
+
     def _validate_columns(self):
-        self._data.columns = self._data.columns.str.lower()  # must be in lower case
-        cols = {
-            "table": str, "raw_name": str, "name": str, "label": str, "raw_dtype": str, "dtype": str, "role": str, "process": str, "rule": str, "desc": str, "note": str}
-        err_nb = sum([x not in self._data.columns for x in cols.keys()])
+        self._data.columns = self._data.columns.str.lower()
+        err_nb = sum([x not in self._data.columns for x in self._SCHEMA.keys()])
         if err_nb:
             raise ValueError(f"{err_nb} required columns missing in the data.")
         else:
-            self._data = self._data.astype(cols)
-            
+            self._data = self._data.astype(self._SCHEMA)
+
     def _trim(self):
         self._data = self._data.apply(lambda x: x.str.strip())
-        
+
     def _repl_ws(self):
-        self._data = self._data.apply(lambda x: x.replace(r'^\s*$|^None$', np.NaN, regex=True))
+        self._data = self._data.apply(
+            lambda x: x.replace(r"^\s*$|^None$", np.NaN, regex=True)
+        )
         # self._data.fillna("", inplace=True)
-    
-    def _validate_null(self, cols: list[str]):
-        # print(self._data)
-        for nm in cols:
+
+    def _validate_null(self, schema: list[str]):
+        for nm in schema:
             err_nb = sum(self._data[nm].isna())
             # print(nm, err_nb)
             if err_nb:
                 raise ValueError(f"{err_nb} NA values in the '{nm}' column.")
-    
+
     def _validate_uniq(self):
         raw_name_col = self._data["table"] + self._data["raw_name"]
         name_col = self._data["table"] + self._data["name"]
@@ -56,7 +85,7 @@ class DDict:
         if raw_name_nb | name_nb:
             msg = f"There are {raw_name_nb} duplicated values in 'raw_name' and {name_nb} values in 'name'."
             raise ValueError(msg)
-        
+
     def get_data(
         self,
         role: str | None = None,
@@ -85,9 +114,6 @@ class DDict:
         sel = role_sel & process_sel & rule_sel
 
         df = self._data.loc[sel]
-        if df.empty:
-            msg = f"No data returned with {role=}, {process=}, {rule=}."
-            raise UserWarning(msg)
         return df
 
     def _find_rows(self, var: str, val: str | None, is_bound: bool) -> pd.Series:
@@ -108,3 +134,57 @@ class DDict:
         else:
             sel = pd.Series(True, index=self._data.index, dtype=bool)
         return sel
+    
+    def get_ddict(self, data:pd.DataFrame, table_nm:str) -> pd.DataFrame:
+        """Create the data dictionary table describing a data frame.
+
+        Args:
+            data (pd.DataFrame): Data frame to process.
+            table_nm (str): Name of the table.
+
+        Returns:
+            pd.DataFrame: A data dictionary table.
+        """
+        the_names = [*data.dtypes.index.values]
+        the_dtypes = [str(x) for x in data.dtypes]
+        specs = pd.DataFrame({
+            'table': table_nm,
+            'raw_name': the_names,
+            'name': the_names,
+            'label': np.NaN,
+            'raw_dtype': the_dtypes,
+            'dtype': the_dtypes,
+            'role': np.NaN,
+            'process': np.NaN,
+            'rule': np.NaN,
+            'desc': np.NaN,
+            'note': np.NaN,
+        }, index=[*range(len(the_names))])
+        # set the index to be the table name and the name
+        specs = self._set_ndx(specs)
+        # specs['idx'] = table_nm + sep + specs['raw_name']
+        # specs.set_index('idx', drop=True, inplace=True)
+        return specs
+    
+    def update(self, data: pd.DataFrame, table_nm: str):
+        """Update the data dictionary object.
+
+        Args:
+            data (pd.DataFrame): Data frame to process.
+            table_nm (str): Name of the table.
+        """
+        # get dictionary of source data
+        src_ddict = self.get_ddict(data, table_nm=table_nm)
+        
+        # Get the raw_name and name index from the destination ddict
+        raw_idx = self._data["table"] + self._SEP + self._data["raw_name"]
+        nm_idx = self._data["table"] + self._SEP + self._data["name"]
+        # Find the source key in the destination raw_name and name
+        raw_find = [x not in raw_idx for x  in src_ddict.index]
+        nm_find = [x not in nm_idx for x  in src_ddict.index]
+        # must not exist in both raw_name and name to be selected
+        select_find = [x & y for x, y in zip(raw_find, nm_find)]
+        select_df = src_ddict.loc[select_find]
+        # concatenate the new specs to the existing (old) ones
+        self._data = pd.concat([self._data, select_df], ignore_index=False, axis=0)
+        self._data = self._set_ndx(self._data)

@@ -18,6 +18,7 @@ def data_path():
     a_path = Path(__file__).parents[1].joinpath("data")
     return a_path
 
+
 @pytest.fixture
 def tdict_df():
     df = pd.read_json("tests/fixtures/tdict.json")
@@ -29,12 +30,29 @@ def ddict_df():
     df = pd.read_json("tests/fixtures/ddict.json")
     return df
 
+
 @pytest.fixture
 def ddict_err1_df():
     df = pd.read_json("tests/fixtures/ddict_err1.json")
     return df
 
+
 @pytest.fixture
 def ddict_err2_df():
     df = pd.read_json("tests/fixtures/ddict_err2.json")
+    return df
+
+@pytest.fixture
+def df1():
+    df = pd.read_json("tests/fixtures/df1.json")
+    return df
+
+@pytest.fixture
+def df1a():
+    df = pd.read_json("tests/fixtures/df1a.json")
+    return df
+
+@pytest.fixture
+def df2():
+    df = pd.read_json("tests/fixtures/df2.json")
     return df
