@@ -1,9 +1,10 @@
 import pandas as pd
 import re
+import numpy as np
 
 
-class TDict:
-    """Table dictionary with tables' specs"""
+class DDict:
+    """Data dictionary with specs by variable."""
 
     def __init__(self, data: pd.DataFrame):
         """Data dictionary
@@ -14,18 +15,48 @@ class TDict:
         Raises:
             ValueError: Required columns are missing.
         """
-        data.columns = data.columns.str.lower()  # must be in lower case
+        
+        self._data = data
+        self._validate_columns()
+        self._trim()
+        self._repl_ws()
+        self._validate_null(cols = ["table", "raw_name", "name"])
+        self._validate_uniq()
+    
+    def _validate_columns(self):
+        self._data.columns = self._data.columns.str.lower()  # must be in lower case
         cols = {
-            "path": str, "file": str, "table": str, "name": str, 
-            "raw_name": str, "label": str, "dtype": str, "role": str, "process": str, "rule": str, "desc": str, "note": str}
-        check = [x not in data.columns for x in cols.keys()].count(True)
-        if not check:
-            data = data.astype(cols)
-            self._data = data
+            "table": str, "raw_name": str, "name": str, "label": str, "raw_dtype": str, "dtype": str, "role": str, "process": str, "rule": str, "desc": str, "note": str}
+        err_nb = sum([x not in self._data.columns for x in cols.keys()])
+        if err_nb:
+            raise ValueError(f"{err_nb} required columns missing in the data.")
         else:
-            raise ValueError(f"{check} required columns missing in the data.")
+            self._data = self._data.astype(cols)
             
-
+    def _trim(self):
+        self._data = self._data.apply(lambda x: x.str.strip())
+        
+    def _repl_ws(self):
+        self._data = self._data.apply(lambda x: x.replace(r'^\s*$|^None$', np.NaN, regex=True))
+        # self._data.fillna("", inplace=True)
+    
+    def _validate_null(self, cols: list[str]):
+        # print(self._data)
+        for nm in cols:
+            err_nb = sum(self._data[nm].isna())
+            # print(nm, err_nb)
+            if err_nb:
+                raise ValueError(f"{err_nb} NA values in the '{nm}' column.")
+    
+    def _validate_uniq(self):
+        raw_name_col = self._data["table"] + self._data["raw_name"]
+        name_col = self._data["table"] + self._data["name"]
+        raw_name_nb = raw_name_col.duplicated().sum()
+        name_nb = name_col.duplicated().sum()
+        if raw_name_nb | name_nb:
+            msg = f"There are {raw_name_nb} duplicated values in 'raw_name' and {name_nb} values in 'name'."
+            raise ValueError(msg)
+        
     def get_data(
         self,
         role: str | None = None,
@@ -33,7 +64,7 @@ class TDict:
         rule: str | None = None,
         is_bound: bool = True,
     ) -> pd.DataFrame:
-        """Get filtered data from a table dictionary.
+        """Get filtered data from a data dictionary.
 
         Args:
             role (str | None, optional): Regex for the role. Defaults to None.
