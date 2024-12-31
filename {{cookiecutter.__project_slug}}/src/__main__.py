@@ -3,6 +3,7 @@
 import typer
 import importlib
 
+from pkrl import main as utils
 from src.s0_helpers.richtools import print_msg, print_modul
 
 app = typer.Typer()
@@ -16,6 +17,13 @@ MODULS = {
     "eda": "s6_eda.eda",
     "final": "s7_final.final",
 }
+
+
+@app.command()
+def say_hello():
+    """This a test to validate the import of pkrl."""
+    msg = utils.hello()
+    return msg
 
 
 def run_cmd(proc: str, subproc: str | None = None) -> int:
@@ -48,8 +56,8 @@ def pipe(tasks: str, subproc: str | None = None) -> int:
         subproc (str | None, optional): Subprocess pased on to the command.. Defaults to None.
 
     Raises:
-        ValueError: There are invalid task id.
-        ValueError: There are too many tasks.
+        KeyError: There are invalid task id.
+        IndexError: There are too many tasks.
         ValueError: The `tasks` argument is empty.
 
     Returns:
@@ -65,9 +73,9 @@ def pipe(tasks: str, subproc: str | None = None) -> int:
         "ed": "eda",
         "fi": "final",
     }
-    
+
     tasks = tasks.replace(" ", "")
-    
+
     if tasks:
         tasks_todo = tasks.split(sep=SEP)
         ntasks_todo = len(tasks_todo)
@@ -76,10 +84,10 @@ def pipe(tasks: str, subproc: str | None = None) -> int:
             err_nb = sum([x not in TASKS.keys() for x in tasks_todo])
             if err_nb:
                 msg = f"There are {err_nb} invalid tasks in '{tasks}'.\nThe task first 2 characters must be in {TASKS.keys()}."
-                raise ValueError(msg)
+                raise KeyError(msg)
         else:
             msg = f"There are {ntasks_todo} tasks. There must be no more than {len(TASKS)}."
-            raise ValueError(msg)
+            raise IndexError(msg)
     else:
         raise ValueError("The `tasks` argument must be provided.")
 
