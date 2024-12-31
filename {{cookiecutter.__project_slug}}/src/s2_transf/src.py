@@ -1,4 +1,4 @@
-"""Finalize EDA."""
+"""Tranform the extracted data to a table format."""
 
 import importlib
 from pathlib import Path
@@ -6,10 +6,11 @@ from pathlib import Path
 from src.s0_helpers.richtools import print_modul
 
 
-def main(subproc: str | None = None, pkg_pat: str = "final*_*.py") -> int:
-    wd = Path(__file__).parent
-    names = sorted([f.stem for f in wd.glob(pkg_pat) if f.is_file()])
+def main(subproc: str | None = None) -> int:
+    PAT = "src*_*.py"
     pkg = Path(__file__).parent.name
+    wd = Path(__file__).parent
+    names = sorted([f.stem for f in wd.glob(PAT) if f.is_file()])
     n: int = 0
     for nm in names:
         modul = importlib.import_module(name="." + nm, package=pkg)
