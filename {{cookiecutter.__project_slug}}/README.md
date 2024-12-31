@@ -7,18 +7,18 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 
 ## Introduction
 
-`{{cookiecutter.__project_slug}}` objectives are to
+`Python project for RL` objectives are to
 
 * extract, transform and load data (ETL)
 * do an exploratory data analysis (EDA)
 
 ## How to use
 
-The entry point is in `{{cookiecutter.__project_slug}}\src\__main__.py`.
+The entry point is in `pjrl\src\__main__.py`.
 For help with the commands the usual `--help` option is available.
 
 ```console
-cd ..\{{cookiecutter.__project_slug}}
+cd ..\pjrl
 poetry run python -m src --help
 ```
 
@@ -33,7 +33,7 @@ The project is organized around the concept that
   * a dedicated module and a
   * dedicated data set
 
-## Usage
+## Commands
 
 **Important**: This section describes the command to use on their own. Am easier
 way which allows to run these commands in a pipe can be found at [pipe](#Pipe)
@@ -55,7 +55,7 @@ is summarized in the following table.
 To run a given command, you do
 
 ```console
-cd ..\{{cookiecutter.__project_slug}}
+cd ..\pjrl
 poetry run python -m src <command> --subproc <subprocess>
 ```
 
@@ -67,14 +67,14 @@ the command.
 for example the *extract* command `extr` with the subprocess *test* would be
 
 ```console
-cd ..\{{cookiecutter.__project_slug}}
+cd ..\pjrl
 poetry run python -m src extr --subproc test
 ```
 
 ## Pipe
 
 The `pipe` command allows to process commands, called *tasks* in this context,
-in a chain using a comma-delimited string with an id for each task. The `pipe` 
+in a chain using a comma-delimited string with an id for each task. The `pipe`
 command syntax is
 
 ```console
@@ -109,7 +109,7 @@ used, only the first 2 letters will be used. The **table of task id** is
 |***ed***|6|`eda`|E.D.A.
 |***fi***|7|`final`|Finalize
 
-The commands are the same as found in [usage](#Usage) above.
+The commands are the same as found in [commands](#Commands) above.
 
 For example the command
 
