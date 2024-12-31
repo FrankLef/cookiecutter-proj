@@ -47,9 +47,9 @@ def create_msg(text: str, type: str | None = None) -> str:
             fmt = ("[grey69]", " ", "[/grey69]")
         case "modul":
             # no space after symbol
-            fmt = ("[purple]", "\u2022", "[/purple]")
+            fmt = ("[gold3]", "\u2022", "[/gold3]")
         case "doc":
-            fmt = ("[dim purple]", " ", "[/dim purple]")
+            fmt = ("[dim gold3]", " ", "[/dim gold3]")
         case "info":
             fmt = ("[cyan]", "\u2139 ", "[/cyan]")
         case "success":
@@ -60,18 +60,15 @@ def create_msg(text: str, type: str | None = None) -> str:
         case "fail":
             fmt = ("[red]", "\u2716 ", "[/red]")
         case "process":
-            fmt = ("[gold1]", "\u2026", "[/gold1]")
+            fmt = ("[gold1]", "\u2022", "[/gold1]")
         case _:
             raise ValueError(f"'{a_type}' is an invalid rich msg type.")
-
-    if type != "process":
-        msg = fmt[0] + " ".join([fmt[1], text]) + fmt[2]
-    else:
-        msg = fmt[0] + " ".join([text, fmt[1]]) + fmt[2]
+        
+    msg = fmt[0] + " ".join([fmt[1], text]) + fmt[2]
     return msg
 
 
-def print_msg(text: str, type: str|None = None) -> str:
+def print_msg(text: str, type: str | None = None) -> str:
     """Sent message to console using `rich`.
 
     Args:
@@ -90,7 +87,7 @@ def print_modul(
     modul, modul_type: str = "modul", doc_type: str = "doc", verbose: bool = True
 ) -> str:
     """Print message for module. Usually with `importlib`."""
-    msg = f"Module '{modul.__name__}' is imported"
+    msg = f"Processing '{modul.__name__}' \u2026"
     msg = create_msg(msg, type=modul_type)
     if verbose & (modul.__doc__ is not None):
         msg = msg + "\n" + create_msg(modul.__doc__, type=doc_type)
