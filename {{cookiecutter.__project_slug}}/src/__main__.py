@@ -3,7 +3,6 @@
 import typer
 import importlib
 
-from pkrl import main as utils
 from src.s0_helpers.richtools import print_msg, print_modul
 
 app = typer.Typer()
@@ -19,13 +18,6 @@ MODULS = {
 }
 
 
-@app.command()
-def say_hello():
-    """This a test to validate the import of pkrl."""
-    msg = utils.hello()
-    return msg
-
-
 def run_cmd(proc: str, subproc: str | None = None) -> int:
     """Run the main modules.
 
@@ -36,63 +28,69 @@ def run_cmd(proc: str, subproc: str | None = None) -> int:
     Returns:
         int: Integer returned by the mian module.
     """
-    
+
     modul_nm = MODULS[proc]
     modul = importlib.import_module(name=modul_nm)
     print_modul(modul)
     n = modul.main(subproc)
     return n
 
+
 @app.command()
 def pipe(tasks: str, subproc: str | None = None) -> int:
     """Run a pipe of commands.
-    
-    The `tasks` argument is '|'-separated string with the task ids. Task id must be one of 'ex', 'tr', 'lo', 'ra', 'pp', 'ed', 'fi'. For example, you
-    can use 'ex|tr' for 'extract' then 'transform'. The order does not matter.
-    The `tasks` is case-insensitive. The task id could be any word as long as it starts with the proper to letter. For example 'transform_is|EXT' is the
-    same as 'ex|tr'.  If a task appear more that once, it will be processed only once.
+
+    The `tasks` argument is a comma-separated string with the task ids. Task ids must be one of 'ex', 'tr', 'lo', 'ra', 'pp', 'ed', 'fi'. For example, you can use 'ex,tr' for 'extract' then 'transform'. The order does not matter.
+    The `tasks` is case-insensitive. All spaces are removed. The task id could be any word as long as it starts with the proper two letter. For example 'transform_it, EXT' is the same as 'ex,tr'.  If a task appears more that once, it will be processed only once.
 
     Args:
-        tasks (str): '|'-separated string with the task.
+        tasks (str): comma-separated string with the task.
         subproc (str | None, optional): Subprocess pased on to the command.. Defaults to None.
 
     Raises:
         ValueError: There are invalid task id.
+        ValueError: There are too many tasks.
         ValueError: The `tasks` argument is empty.
 
     Returns:
         int: The sum of all the integers returned by the tasks.
     """
-    SEP: str = ','
+    SEP: str = ","
     TASKS = {
-        'ex': 'extr',
-        'tr': 'transf',
-        'lo': 'load',
-        'ra': 'raw',
-        'pp': 'pproc',
-        'ed': 'eda',
-        'fi': 'final'
+        "ex": "extr",
+        "tr": "transf",
+        "lo": "load",
+        "ra": "raw",
+        "pp": "pproc",
+        "ed": "eda",
+        "fi": "final",
     }
+    
+    tasks = tasks.replace(" ", "")
     
     if tasks:
         tasks_todo = tasks.split(sep=SEP)
-        tasks_todo = [x.lower()[:2] for x in tasks_todo]
-        err_nb = sum([x not in TASKS.keys() for x in tasks_todo])
-        if err_nb:
-            msg = f"There are {err_nb} invalid tasks in '{tasks}'.\nThe task first 2 characters must be in {TASKS.keys()}."
+        ntasks_todo = len(tasks_todo)
+        if ntasks_todo <= len(TASKS):
+            tasks_todo = [x.lower()[:2] for x in tasks_todo]
+            err_nb = sum([x not in TASKS.keys() for x in tasks_todo])
+            if err_nb:
+                msg = f"There are {err_nb} invalid tasks in '{tasks}'.\nThe task first 2 characters must be in {TASKS.keys()}."
+                raise ValueError(msg)
+        else:
+            msg = f"There are {ntasks_todo} tasks. There must be no more than {len(TASKS)}."
             raise ValueError(msg)
     else:
         raise ValueError("The `tasks` argument must be provided.")
-    
+
     # run the command in the order in which they are in the tasks dictionary
-    print_msg(f"Processing {len(tasks_todo)} tasks \u2026", type = "process")
+    print_msg(f"Processing {ntasks_todo} tasks \u2026", type="process")
     n: int = 0
     for key, val in TASKS.items():
         if key in tasks_todo:
             n += run_cmd(proc=val, subproc=subproc)
-    
-    return n
 
+    return n
 
 
 @app.command()
