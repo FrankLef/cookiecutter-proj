@@ -8,16 +8,6 @@ from src.s0_helpers.richtools import print_msg, print_modul
 
 app = typer.Typer()
 
-MODULS = {
-    "extr": "s1_extr.extr",
-    "transf": "s2_transf.transf",
-    "load": "s3_load.load",
-    "raw": "s4_raw.raw",
-    "pproc": "s5_pproc.pproc",
-    "eda": "s6_eda.eda",
-    "final": "s7_final.final",
-}
-
 
 @app.command()
 def say_hello():
@@ -36,7 +26,16 @@ def run_cmd(proc: str, subproc: str | None = None) -> int:
     Returns:
         int: Integer returned by the mian module.
     """
-
+    MODULS = {
+    "extr": "s1_extr.extr",
+    "transf": "s2_transf.transf",
+    "load": "s3_load.load",
+    "raw": "s4_raw.raw",
+    "pproc": "s5_pproc.pproc",
+    "eda": "s6_eda.eda",
+    "final": "s7_final.final",
+    }
+    
     modul_nm = MODULS[proc]
     modul = importlib.import_module(name=modul_nm)
     print_modul(modul)
@@ -92,7 +91,7 @@ def pipe(tasks: str, subproc: str | None = None) -> int:
         raise ValueError("The `tasks` argument must be provided.")
 
     # run the command in the order in which they are in the tasks dictionary
-    print_msg(f"Processing {ntasks_todo} tasks \u2026", type="process")
+    print_msg(f"Processing {ntasks_todo} main tasks \u2026", type="process")
     n: int = 0
     for key, val in TASKS.items():
         if key in tasks_todo:
