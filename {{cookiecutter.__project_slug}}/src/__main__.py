@@ -3,17 +3,9 @@
 import typer
 import importlib
 
-from pkrl import main as utils
 from src.s0_helpers.richtools import print_msg, print_modul
 
 app = typer.Typer()
-
-
-@app.command()
-def say_hello():
-    """This a test to validate the import of pkrl."""
-    msg = utils.hello()
-    return msg
 
 
 def run_cmd(proc: str, subproc: str | None = None) -> int:

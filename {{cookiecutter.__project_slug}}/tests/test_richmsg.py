@@ -12,6 +12,6 @@ def test_cli_info():
 
 def test_cli_process():
     text = "Processing something"
-    target = "[gold1]" + " ".join([text, "\u2026"]) + "[/gold1]"
+    target = "[gold1]" + " ".join(["\u2022", text]) + "[/gold1]"
     out = richtools.create_msg(text=text, type="process")
     assert out == target
