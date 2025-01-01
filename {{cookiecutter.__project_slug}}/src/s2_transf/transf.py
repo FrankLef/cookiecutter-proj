@@ -7,7 +7,7 @@ from src.s0_helpers.richtools import print_modul
 
 
 def main(subproc: str | None = None) -> int:
-    PAT = "src*_*.py"
+    PAT = "transf*_*.py"
     pkg = Path(__file__).parent.name
     wd = Path(__file__).parent
     names = sorted([f.stem for f in wd.glob(PAT) if f.is_file()])

@@ -19,13 +19,13 @@ def run_cmd(proc: str, subproc: str | None = None) -> int:
         int: Integer returned by the mian module.
     """
     MODULS = {
-    "extr": "s1_extr.src",
-    "transf": "s2_transf.src",
-    "load": "s3_load.src",
-    "raw": "s4_raw.src",
-    "pproc": "s5_pproc.src",
-    "eda": "s6_eda.src",
-    "final": "s7_final.src",
+    "extr": "s1_extr.extr",
+    "transf": "s2_transf.transf",
+    "load": "s3_load.load",
+    "raw": "s4_raw.raw",
+    "pproc": "s5_pproc.pproc",
+    "eda": "s6_eda.eda",
+    "final": "s7_final.final",
     }
     
     modul_nm = MODULS[proc]
