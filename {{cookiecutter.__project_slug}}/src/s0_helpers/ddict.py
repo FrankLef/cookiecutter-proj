@@ -13,6 +13,8 @@ class DDict:
         "label": str,
         "raw_dtype": str,
         "dtype": str,
+        "key": bool,
+        "activ": bool,
         "role": str,
         "process": str,
         "rule": str,
@@ -46,24 +48,22 @@ class DDict:
 
     def _validate_data(self):
         self._validate_columns()
-        self._trim()
         self._repl_ws()
         self._validate_null(schema=["table", "raw_name", "name"])
         self._validate_uniq()
 
     def _validate_columns(self):
         self._data.columns = self._data.columns.str.lower()
-        err_nb = sum([x not in self._data.columns for x in type(self)._SCHEMA.keys()])
+        check = [x not in self._data.columns for x in type(self)._SCHEMA.keys()]
+        err_nb = sum(check)
         if err_nb:
             raise ValueError(f"{err_nb} required columns missing in the data.")
         else:
             self._data = self._data.astype(type(self)._SCHEMA)
 
-    def _trim(self):
-        self._data = self._data.apply(lambda x: x.str.strip())
-
     def _repl_ws(self):
-        self._data = self._data.apply(
+        cols = self._data.select_dtypes(include=['object', 'string']).columns
+        self._data[cols] = self._data[cols].apply(
             lambda x: x.replace(to_replace=r"^\s*$|^None$", value="", regex=True)
         )
 
@@ -87,6 +87,8 @@ class DDict:
         role: str | None = None,
         process: str | None = None,
         rule: str | None = None,
+        key: bool | None = None,
+        activ: bool | None = None,
         is_bound: bool = True,
     ) -> pd.DataFrame:
         """Get filtered data from a data dictionary.
@@ -110,6 +112,11 @@ class DDict:
         sel = role_sel & process_sel & rule_sel
 
         df = self._data.loc[sel]
+        if key is not None:
+            df = df.loc[df["key"]==key]
+        if activ is not None:
+            df = df.loc[df["activ"]==activ]
+        
         return df
 
     def _find_rows(self, var: str, val: str | None, is_bound: bool) -> pd.Series:
@@ -151,6 +158,8 @@ class DDict:
                 "label": pd.NA,
                 "raw_dtype": the_dtypes,
                 "dtype": the_dtypes,
+                "key": False,
+                "activ": True,
                 "role": pd.NA,
                 "process": pd.NA,
                 "rule": pd.NA,
