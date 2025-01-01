@@ -67,9 +67,8 @@ class DDict:
 
     def _repl_ws(self):
         self._data = self._data.apply(
-            lambda x: x.replace(r"^\s*$|^None$", "", regex=True)
+            lambda x: x.replace(to_replace=r"^\s*$|^None$", value="", regex=True)
         )
-        # self._data.fillna("", inplace=True)
 
     def _validate_null(self, schema: list[str]):
         for nm in schema:
@@ -189,17 +188,20 @@ class DDict:
         # concatenate the new specs to the existing (old) ones
         self._data = pd.concat([self._data, select_df], ignore_index=False, axis=0)
         self._data = self._set_ndx(self._data)
-    
+
     def clean(self):
-        """Clean the ddict to remove NaN, etc."""
-        cols = self._data.select_dtypes(include='object').columns
-        self._data[cols] = self._data[cols].replace(to_replace='nan', value='')
-    
+        """Clean the ddict to convert to string,  remove NaN, etc."""
+        rgx = re.compile(r"^nan$|^none$", flags=re.IGNORECASE)
+        # all object columns should be string in ddict
+        cols = self._data.select_dtypes(include="object").columns
+        self._data[cols] = self._data[cols].astype('string')
+        self._data[cols] = self._data[cols].replace(regex=rgx, value=pd.NA)
+
     @property
     def path(self):
         """Get path for the DDict file."""
         return self._path
-    
+
     @path.setter
     def path(self, path: Path) -> Path:
         """Set path for the DDict file."""
