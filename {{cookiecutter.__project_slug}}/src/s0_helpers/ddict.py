@@ -1,27 +1,27 @@
+from pathlib import Path
 import pandas as pd
 import re
-import numpy as np
 
 
 class DDict:
     """Data dictionary with specs by variable."""
-    
+
     _SCHEMA = {
-            "table": str,
-            "raw_name": str,
-            "name": str,
-            "label": str,
-            "raw_dtype": str,
-            "dtype": str,
-            "role": str,
-            "process": str,
-            "rule": str,
-            "desc": str,
-            "note": str,
-        }
-    
-    _SEP = "\u00AC"  # string separator. The '¬' sign.
-    
+        "table": str,
+        "raw_name": str,
+        "name": str,
+        "label": str,
+        "raw_dtype": str,
+        "dtype": str,
+        "role": str,
+        "process": str,
+        "rule": str,
+        "desc": str,
+        "note": str,
+    }
+
+    _SEP = "\u00ac"  # string separator. The not '¬' sign.
+
     def __init__(self, data: pd.DataFrame | None = None):
         """Data dictionary
 
@@ -32,48 +32,48 @@ class DDict:
             ValueError: Required columns are missing.
         """
         if data is not None:
+            msg = f"Input must be a data frame. It is a {type(data)}"
+            assert isinstance(data, pd.DataFrame), msg
             self._data = data
             self._validate_data()
             self._data = self._set_ndx(self._data)
-            # self._data['idx'] = self._data['table'] + self._SEP + self._data['raw_name']
-            # self._data.set_index('idx', drop=True, inplace=True)
         else:
-            self._data = pd.DataFrame(columns = self._SCHEMA.keys()).astype(self._SCHEMA)  # noqa
-    
-    def _set_ndx(self, data)-> pd.DataFrame:
-        data['idx'] = data['table'] + self._SEP + data["raw_name"]
-        data.set_index('idx', drop=True, inplace=True)
+            self._data = pd.DataFrame(columns=type(self)._SCHEMA.keys()).astype(
+                type(self)._SCHEMA
+            )
+
+    def _set_ndx(self, data) -> pd.DataFrame:
+        data["idx"] = data["table"] + type(self)._SEP + data["raw_name"]
+        data.set_index("idx", drop=True, inplace=True)
         return data
-         
+
     def _validate_data(self):
         self._validate_columns()
         self._trim()
         self._repl_ws()
         self._validate_null(schema=["table", "raw_name", "name"])
         self._validate_uniq()
-        
 
     def _validate_columns(self):
         self._data.columns = self._data.columns.str.lower()
-        err_nb = sum([x not in self._data.columns for x in self._SCHEMA.keys()])
+        err_nb = sum([x not in self._data.columns for x in type(self)._SCHEMA.keys()])
         if err_nb:
             raise ValueError(f"{err_nb} required columns missing in the data.")
         else:
-            self._data = self._data.astype(self._SCHEMA)
+            self._data = self._data.astype(type(self)._SCHEMA)
 
     def _trim(self):
         self._data = self._data.apply(lambda x: x.str.strip())
 
     def _repl_ws(self):
         self._data = self._data.apply(
-            lambda x: x.replace(r"^\s*$|^None$", np.NaN, regex=True)
+            lambda x: x.replace(r"^\s*$|^None$", "", regex=True)
         )
         # self._data.fillna("", inplace=True)
 
     def _validate_null(self, schema: list[str]):
         for nm in schema:
             err_nb = sum(self._data[nm].isna())
-            # print(nm, err_nb)
             if err_nb:
                 raise ValueError(f"{err_nb} NA values in the '{nm}' column.")
 
@@ -134,8 +134,8 @@ class DDict:
         else:
             sel = pd.Series(True, index=self._data.index, dtype=bool)
         return sel
-    
-    def get_ddict(self, data:pd.DataFrame, table_nm:str) -> pd.DataFrame:
+
+    def get_ddict(self, data: pd.DataFrame, table_nm: str) -> pd.DataFrame:
         """Create the data dictionary table describing a data frame.
 
         Args:
@@ -147,25 +147,26 @@ class DDict:
         """
         the_names = [*data.dtypes.index.values]
         the_dtypes = [str(x) for x in data.dtypes]
-        specs = pd.DataFrame({
-            'table': table_nm,
-            'raw_name': the_names,
-            'name': the_names,
-            'label': np.NaN,
-            'raw_dtype': the_dtypes,
-            'dtype': the_dtypes,
-            'role': np.NaN,
-            'process': np.NaN,
-            'rule': np.NaN,
-            'desc': np.NaN,
-            'note': np.NaN,
-        }, index=[*range(len(the_names))])
+        specs = pd.DataFrame(
+            {
+                "table": table_nm,
+                "raw_name": the_names,
+                "name": the_names,
+                "label": None,
+                "raw_dtype": the_dtypes,
+                "dtype": the_dtypes,
+                "role": None,
+                "process": None,
+                "rule": None,
+                "desc": None,
+                "note": None,
+            },
+            index=[*range(len(the_names))],
+        )
         # set the index to be the table name and the name
         specs = self._set_ndx(specs)
-        # specs['idx'] = table_nm + sep + specs['raw_name']
-        # specs.set_index('idx', drop=True, inplace=True)
         return specs
-    
+
     def update(self, data: pd.DataFrame, table_nm: str):
         """Update the data dictionary object.
 
@@ -175,16 +176,33 @@ class DDict:
         """
         # get dictionary of source data
         src_ddict = self.get_ddict(data, table_nm=table_nm)
-        
+
         # Get the raw_name and name index from the destination ddict
-        raw_idx = self._data["table"] + self._SEP + self._data["raw_name"]
-        nm_idx = self._data["table"] + self._SEP + self._data["name"]
+        raw_idx = self._data["table"] + type(self)._SEP + self._data["raw_name"]
+        nm_idx = self._data["table"] + type(self)._SEP + self._data["name"]
         # Find the source key in the destination raw_name and name
-        raw_find = [x not in raw_idx for x  in src_ddict.index]
-        nm_find = [x not in nm_idx for x  in src_ddict.index]
+        raw_find = [x not in raw_idx for x in src_ddict.index]
+        nm_find = [x not in nm_idx for x in src_ddict.index]
         # must not exist in both raw_name and name to be selected
         select_find = [x & y for x, y in zip(raw_find, nm_find)]
         select_df = src_ddict.loc[select_find]
         # concatenate the new specs to the existing (old) ones
         self._data = pd.concat([self._data, select_df], ignore_index=False, axis=0)
         self._data = self._set_ndx(self._data)
+    
+    def clean(self):
+        """Clean the ddict to remove NaN, etc."""
+        cols = self._data.select_dtypes(include='object').columns
+        self._data[cols] = self._data[cols].replace(to_replace='nan', value='')
+    
+    @property
+    def path(self):
+        """Get path for the DDict file."""
+        return self._path
+    
+    @path.setter
+    def path(self, path: Path) -> Path:
+        """Set path for the DDict file."""
+        assert isinstance(path, Path), "`path` must be a Path object."
+        self._path = path
+        return self._path

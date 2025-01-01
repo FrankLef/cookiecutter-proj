@@ -18,8 +18,11 @@ pathfindr = path_finder.PathFinder(paths=data_paths, base_path=data_path)
 # the TDict instance used in the project
 tdict_path = data_path.joinpath(settings.tdict)
 a_tdict = tdict.TDict(pd.read_excel(tdict_path))
+a_tdict.path = tdict_path
 
-a_ddict = ddict.DDict()
+ddict_path = data_path.joinpath(settings.ddict)
+a_ddict = ddict.DDict(pd.read_excel(ddict_path))
+a_ddict.path = ddict_path
 
 # the FileNamer instances used in the project
 fnamer_xl = file_namer.FileNamer(ext=".xlsx")

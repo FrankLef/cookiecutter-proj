@@ -1,24 +1,25 @@
+from pathlib import Path
 import pandas as pd
 import re
 
-
 class TDict:
     """Table dictionary with tables' specs"""
-    
+
     _SCHEMA = {
-            "path": str,
-            "file": str,
-            "table": str,
-            "name": str,
-            "raw_name": str,
-            "label": str,
-            "dtype": str,
-            "role": str,
-            "process": str,
-            "rule": str,
-            "desc": str,
-            "note": str,
-        }
+        "path": str,
+        "file": str,
+        "table": str,
+        "name": str,
+        "raw_name": str,
+        "label": str,
+        "dtype": str,
+        "role": str,
+        "process": str,
+        "rule": str,
+        "desc": str,
+        "note": str,
+    }
+
     def __init__(self, data: pd.DataFrame):
         """Data dictionary
 
@@ -82,3 +83,15 @@ class TDict:
         else:
             sel = pd.Series(True, index=self._data.index, dtype=bool)
         return sel
+    
+    @property
+    def path(self):
+        """Get path for the TDict file."""
+        return self._path
+    
+    @path.setter
+    def path(self, path: Path) -> Path:
+        """Set path for the TDict file."""
+        assert isinstance(path, Path), "`path` must be a Path object."
+        self._path = path
+        return self._path
