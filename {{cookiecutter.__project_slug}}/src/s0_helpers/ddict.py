@@ -40,7 +40,7 @@ class DDict:
             assert isinstance(data, pd.DataFrame), msg
             self._data = data
             self._validate_data()
-            self._data.set_index(keys=self._KEYS, drop=False, inplace=True)
+            self._data.set_index(keys=type(self)._KEYS, drop=False, inplace=True)
         else:
             self._data = pd.DataFrame(columns=type(self)._SCHEMA.keys()).astype(
                 type(self)._SCHEMA
@@ -74,8 +74,8 @@ class DDict:
                 raise ValueError(f"{err_nb} NA values in the '{nm}' column.")
 
     def _validate_uniq(self):
-        raw_name_col = self._data["table"] + self._SEP + self._data["raw_name"]
-        name_col = self._data["table"] + self._SEP + self._data["name"]
+        raw_name_col = self._data["table"] + type(self)._SEP + self._data["raw_name"]
+        name_col = self._data["table"] + type(self)._SEP + self._data["name"]
         raw_name_nb = raw_name_col.duplicated().sum()
         name_nb = name_col.duplicated().sum()
         if raw_name_nb | name_nb:
@@ -167,7 +167,7 @@ class DDict:
             },
             index=[*range(len(the_names))],
         )
-        specs.set_index(keys=self._KEYS, drop=False, inplace=True)
+        specs.set_index(keys=type(self)._KEYS, drop=False, inplace=True)
         return specs
 
     def update(self, data: pd.DataFrame, table_nm: str):
@@ -183,7 +183,7 @@ class DDict:
         sel = ~src_ddict.index.isin(self._data.index)
         src_ddict_sel = src_ddict[sel]
         self._data = pd.concat([self._data, src_ddict_sel])
-        self._data.set_index(keys=self._KEYS, drop=False, inplace=True)
+        self._data.set_index(keys=type(self)._KEYS, drop=False, inplace=True)
 
     def clean(self):
         """Clean the ddict to convert to string,  remove NaN, etc."""

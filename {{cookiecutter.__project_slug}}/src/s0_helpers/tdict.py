@@ -32,9 +32,9 @@ class TDict:
             ValueError: Required columns are missing.
         """
         data.columns = data.columns.str.lower()  # must be in lower case
-        check = sum([x not in data.columns for x in self._SCHEMA.keys()])
+        check = sum([x not in data.columns for x in type(self)._SCHEMA.keys()])
         if not check:
-            data = data.astype(self._SCHEMA)
+            data = data.astype(type(self)._SCHEMA)
             data.reset_index(drop=True, inplace=True)
             self._data = data
         else:
@@ -69,7 +69,7 @@ class TDict:
         df = self._data.loc[sel]
         if activ is not None:
             df = df.loc[df["activ"] == activ]
-            
+
         return df
 
     def _find_rows(self, var: str, val: str | None, is_bound: bool) -> pd.Series:
