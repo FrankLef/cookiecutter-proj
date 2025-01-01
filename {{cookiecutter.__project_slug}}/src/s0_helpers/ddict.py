@@ -19,7 +19,7 @@ class DDict:
         "desc": str,
         "note": str,
     }
-    
+
     _KEYS = ["table", "name"]
 
     _SEP = "\u00ac"  # string separator. The not '¬' sign.
@@ -38,14 +38,11 @@ class DDict:
             assert isinstance(data, pd.DataFrame), msg
             self._data = data
             self._validate_data()
-            self._set_ndx()
+            self._data.set_index(keys=self._KEYS, drop=False, inplace=True)
         else:
             self._data = pd.DataFrame(columns=type(self)._SCHEMA.keys()).astype(
                 type(self)._SCHEMA
             )
-
-    def _set_ndx(self) -> pd.DataFrame:
-        self._data.set_index(keys=self._KEYS, drop=False, inplace=True)
 
     def _validate_data(self):
         self._validate_columns()
@@ -174,12 +171,11 @@ class DDict:
         """
         # get dictionary of source data
         src_ddict = self.get_ddict(data, table_nm=table_nm)
-        
-        sel=~src_ddict.index.isin(self._data.index)
+
+        sel = ~src_ddict.index.isin(self._data.index)
         src_ddict_sel = src_ddict[sel]
         self._data = pd.concat([self._data, src_ddict_sel])
-        
-        self._set_ndx()
+        self._data.set_index(keys=self._KEYS, drop=False, inplace=True)
 
     def clean(self):
         """Clean the ddict to convert to string,  remove NaN, etc."""
