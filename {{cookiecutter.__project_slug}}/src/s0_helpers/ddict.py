@@ -19,6 +19,8 @@ class DDict:
         "desc": str,
         "note": str,
     }
+    
+    _KEYS = ["table", "name"]
 
     _SEP = "\u00ac"  # string separator. The not '¬' sign.
 
@@ -36,16 +38,14 @@ class DDict:
             assert isinstance(data, pd.DataFrame), msg
             self._data = data
             self._validate_data()
-            self._data = self._set_ndx(self._data)
+            self._set_ndx()
         else:
             self._data = pd.DataFrame(columns=type(self)._SCHEMA.keys()).astype(
                 type(self)._SCHEMA
             )
 
-    def _set_ndx(self, data) -> pd.DataFrame:
-        data["idx"] = data["table"] + type(self)._SEP + data["raw_name"]
-        data.set_index("idx", drop=True, inplace=True)
-        return data
+    def _set_ndx(self) -> pd.DataFrame:
+        self._data.set_index(keys=self._KEYS, drop=False, inplace=True)
 
     def _validate_data(self):
         self._validate_columns()
@@ -77,8 +77,8 @@ class DDict:
                 raise ValueError(f"{err_nb} NA values in the '{nm}' column.")
 
     def _validate_uniq(self):
-        raw_name_col = self._data["table"] + self._data["raw_name"]
-        name_col = self._data["table"] + self._data["name"]
+        raw_name_col = self._data["table"] + self._SEP + self._data["raw_name"]
+        name_col = self._data["table"] + self._SEP + self._data["name"]
         raw_name_nb = raw_name_col.duplicated().sum()
         name_nb = name_col.duplicated().sum()
         if raw_name_nb | name_nb:
@@ -151,19 +151,18 @@ class DDict:
                 "table": table_nm,
                 "raw_name": the_names,
                 "name": the_names,
-                "label": None,
+                "label": pd.NA,
                 "raw_dtype": the_dtypes,
                 "dtype": the_dtypes,
-                "role": None,
-                "process": None,
-                "rule": None,
-                "desc": None,
-                "note": None,
+                "role": pd.NA,
+                "process": pd.NA,
+                "rule": pd.NA,
+                "desc": pd.NA,
+                "note": pd.NA,
             },
             index=[*range(len(the_names))],
         )
-        # set the index to be the table name and the name
-        specs = self._set_ndx(specs)
+        specs.set_index(keys=self._KEYS, drop=False, inplace=True)
         return specs
 
     def update(self, data: pd.DataFrame, table_nm: str):
@@ -175,26 +174,19 @@ class DDict:
         """
         # get dictionary of source data
         src_ddict = self.get_ddict(data, table_nm=table_nm)
-
-        # Get the raw_name and name index from the destination ddict
-        raw_idx = self._data["table"] + type(self)._SEP + self._data["raw_name"]
-        nm_idx = self._data["table"] + type(self)._SEP + self._data["name"]
-        # Find the source key in the destination raw_name and name
-        raw_find = [x not in raw_idx for x in src_ddict.index]
-        nm_find = [x not in nm_idx for x in src_ddict.index]
-        # must not exist in both raw_name and name to be selected
-        select_find = [x & y for x, y in zip(raw_find, nm_find)]
-        select_df = src_ddict.loc[select_find]
-        # concatenate the new specs to the existing (old) ones
-        self._data = pd.concat([self._data, select_df], ignore_index=False, axis=0)
-        self._data = self._set_ndx(self._data)
+        
+        sel=~src_ddict.index.isin(self._data.index)
+        src_ddict_sel = src_ddict[sel]
+        self._data = pd.concat([self._data, src_ddict_sel])
+        
+        self._set_ndx()
 
     def clean(self):
         """Clean the ddict to convert to string,  remove NaN, etc."""
         rgx = re.compile(r"^nan$|^none$", flags=re.IGNORECASE)
         # all object columns should be string in ddict
         cols = self._data.select_dtypes(include="object").columns
-        self._data[cols] = self._data[cols].astype('string')
+        self._data[cols] = self._data[cols].astype("string")
         self._data[cols] = self._data[cols].replace(regex=rgx, value=pd.NA)
 
     @property
