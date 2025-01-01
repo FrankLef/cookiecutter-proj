@@ -2,6 +2,7 @@ from pathlib import Path
 import pandas as pd
 import re
 
+
 class TDict:
     """Table dictionary with tables' specs"""
 
@@ -9,10 +10,11 @@ class TDict:
         "path": str,
         "file": str,
         "table": str,
-        "name": str,
         "raw_name": str,
+        "name": str,
         "label": str,
         "dtype": str,
+        "activ": bool,
         "role": str,
         "process": str,
         "rule": str,
@@ -43,18 +45,20 @@ class TDict:
         role: str | None = None,
         process: str | None = None,
         rule: str | None = None,
+        activ: bool | None = None,
         is_bound: bool = True,
     ) -> pd.DataFrame:
         """Get filtered data from a table dictionary.
 
         Args:
-            role (str | None, optional): Regex for the role. Defaults to None.
-            process (str | None, optional): Regex for the process. Defaults to None.
-            rule (str | None, optional): Regex for the rule. Defaults to None.
-            is_bound (bool, optional): Add regex boundaries. Defaults to True.
+            role (str | None, optional): Name of the role. Defaults to None.
+            process (str | None, optional): Name of the process. Defaults to None.
+            rule (str | None, optional): Name of the rule. Defaults to None.
+            activ (bool | None, optional): Activ flag. Defaults to None.
+            is_bound (bool, optional): Use bounds around the names. Defaults to True.
 
         Returns:
-            pd.DataFrame: Filtered data in a data frame.
+            pd.DataFrame: Filtered data frame.
         """
         role_sel = self._find_rows(var="role", val=role, is_bound=is_bound)
         process_sel = self._find_rows(var="process", val=process, is_bound=is_bound)
@@ -63,6 +67,9 @@ class TDict:
         sel = role_sel & process_sel & rule_sel
 
         df = self._data.loc[sel]
+        if activ is not None:
+            df = df.loc[df["activ"] == activ]
+            
         return df
 
     def _find_rows(self, var: str, val: str | None, is_bound: bool) -> pd.Series:
@@ -83,12 +90,12 @@ class TDict:
         else:
             sel = pd.Series(True, index=self._data.index, dtype=bool)
         return sel
-    
+
     @property
     def path(self):
         """Get path for the TDict file."""
         return self._path
-    
+
     @path.setter
     def path(self, path: Path) -> Path:
         """Set path for the TDict file."""

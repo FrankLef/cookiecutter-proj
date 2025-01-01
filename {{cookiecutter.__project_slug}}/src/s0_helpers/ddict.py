@@ -62,7 +62,7 @@ class DDict:
             self._data = self._data.astype(type(self)._SCHEMA)
 
     def _repl_ws(self):
-        cols = self._data.select_dtypes(include=['object', 'string']).columns
+        cols = self._data.select_dtypes(include=["object", "string"]).columns
         self._data[cols] = self._data[cols].apply(
             lambda x: x.replace(to_replace=r"^\s*$|^None$", value="", regex=True)
         )
@@ -94,16 +94,15 @@ class DDict:
         """Get filtered data from a data dictionary.
 
         Args:
-            role (str | None, optional): Regex for the role. Defaults to None.
-            process (str | None, optional): Regex for the process. Defaults to None.
-            rule (str | None, optional): Regex for the rule. Defaults to None.
-            is_bound (bool, optional): Add regex boundaries. Defaults to True.
-
-        Raises:
-            UserWarning: The filtered data frame is empty.
+            role (str | None, optional): Name of the role. Defaults to None.
+            process (str | None, optional): Name of the porcess. Defaults to None.
+            rule (str | None, optional): Name of the rule. Defaults to None.
+            key (bool | None, optional): Key flag. Defaults to None.
+            activ (bool | None, optional): Activ flag. Defaults to None.
+            is_bound (bool, optional): Word boundaries flag. Defaults to True.
 
         Returns:
-            pd.DataFrame: Filtered data in a data frame.
+            pd.DataFrame: Filtered data frame.
         """
         role_sel = self._find_rows(var="role", val=role, is_bound=is_bound)
         process_sel = self._find_rows(var="process", val=process, is_bound=is_bound)
@@ -113,10 +112,10 @@ class DDict:
 
         df = self._data.loc[sel]
         if key is not None:
-            df = df.loc[df["key"]==key]
+            df = df.loc[df["key"] == key]
         if activ is not None:
-            df = df.loc[df["activ"]==activ]
-        
+            df = df.loc[df["activ"] == activ]
+
         return df
 
     def _find_rows(self, var: str, val: str | None, is_bound: bool) -> pd.Series:
