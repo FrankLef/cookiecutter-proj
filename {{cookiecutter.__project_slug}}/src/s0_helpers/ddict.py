@@ -84,58 +84,59 @@ class DDict:
 
     def get_data(
         self,
+        table: str | None = None,
         role: str | None = None,
         process: str | None = None,
         rule: str | None = None,
         key: bool | None = None,
         activ: bool | None = None,
-        is_bound: bool = True,
     ) -> pd.DataFrame:
         """Get filtered data from a data dictionary.
 
         Args:
-            role (str | None, optional): Name of the role. Defaults to None.
-            process (str | None, optional): Name of the porcess. Defaults to None.
-            rule (str | None, optional): Name of the rule. Defaults to None.
-            key (bool | None, optional): Key flag. Defaults to None.
-            activ (bool | None, optional): Activ flag. Defaults to None.
-            is_bound (bool, optional): Word boundaries flag. Defaults to True.
+            table (str | None, optional): Regexp to filter the table. Defaults to None.
+            role (str | None, optional): Regexp to filter the role. Defaults to None.
+            process (str | None, optional): Regexp to filter the process. Defaults to None.
+            rule (str | None, optional): Regexp to filter the rule. Defaults to None.
+            key (bool | None, optional): Select the key flag. Defaults to None.
+            activ (bool | None, optional): Select the activ flag. Defaults to None.
 
         Returns:
-            pd.DataFrame: Filtered data frame.
+            pd.DataFrame: Filtered data dictionary.
         """
-        role_sel = self._find_rows(var="role", val=role, is_bound=is_bound)
-        process_sel = self._find_rows(var="process", val=process, is_bound=is_bound)
-        rule_sel = self._find_rows(var="rule", val=rule, is_bound=is_bound)
+        assert isinstance(activ, bool | None)
+        assert isinstance(key, bool | None)
+        df = self._data
+        if table:
+            sel = df.table.str.contains(
+                pat=table, flags=re.IGNORECASE, regex=True, na=True
+            )
+            df = df[sel]
 
-        sel = role_sel & process_sel & rule_sel
+        if role:
+            sel = df.role.str.contains(
+                pat=role, flags=re.IGNORECASE, regex=True, na=True
+            )
+            df = df[sel]
 
-        df = self._data.loc[sel]
+        if process:
+            sel = df.process.str.contains(
+                pat=process, flags=re.IGNORECASE, regex=True, na=True
+            )
+            df = df[sel]
+
+        if rule:
+            sel = df.rule.str.contains(
+                pat=rule, flags=re.IGNORECASE, regex=True, na=True
+            )
+            df = df[sel]
+
         if key is not None:
-            df = df.loc[df["key"] == key]
+            df = df.loc[df.key == key]
         if activ is not None:
-            df = df.loc[df["activ"] == activ]
+            df = df.loc[df.activ == activ]
 
         return df
-
-    def _find_rows(self, var: str, val: str | None, is_bound: bool) -> pd.Series:
-        """Find the rows in a columns that match the regex.
-
-        Args:
-            var (str): Name of the column.
-            val (str | None): Searched string.
-            is_bound (bool): True = add the boundaries.
-
-        Returns:
-            pd.Series: Boolean series with True when value is found.
-        """
-        assert var in self._data.columns
-        if val:
-            val_rgx = rf"\b{val}\b" if is_bound else val
-            sel = self._data[var].str.contains(val_rgx, flags=re.IGNORECASE, regex=True)
-        else:
-            sel = pd.Series(True, index=self._data.index, dtype=bool)
-        return sel
 
     def get_ddict(self, data: pd.DataFrame, table_nm: str) -> pd.DataFrame:
         """Create the data dictionary table describing a data frame.
