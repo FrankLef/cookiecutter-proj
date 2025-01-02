@@ -188,12 +188,19 @@ class DDict:
 
     def clean(self):
         """Clean the ddict to convert to string,  remove NaN, etc."""
-        rgx = re.compile(r"^nan$|^none$", flags=re.IGNORECASE)
+        rgx = re.compile(r"^\s*$|^nan$|^none$", flags=re.IGNORECASE)
         # all object columns should be string in ddict
         cols = self._data.select_dtypes(include="object").columns
         self._data[cols] = self._data[cols].astype("string")
         self._data[cols] = self._data[cols].replace(regex=rgx, value=pd.NA)
-
+        
+    def audit(self):
+        """Check for logical error in the data dictionary."""
+        err_if = self._data.key & ~self._data.activ
+        err_nb = sum(err_if)
+        if err_nb:
+            raise AssertionError(f"{err_nb} keys have 'activ' set to False.")
+        
     @property
     def path(self):
         """Get path for the DDict file."""

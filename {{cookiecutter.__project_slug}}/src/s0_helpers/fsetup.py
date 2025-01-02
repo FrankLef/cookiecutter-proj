@@ -23,6 +23,7 @@ a_tdict.path = tdict_path
 ddict_path = data_path.joinpath(settings.ddict)
 a_ddict = ddict.DDict(pd.read_excel(ddict_path))
 a_ddict.path = ddict_path
+a_ddict.audit()
 
 # the FileNamer instances used in the project
 fnamer_xl = file_namer.FileNamer(ext=".xlsx")
