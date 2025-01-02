@@ -5,6 +5,8 @@
 	"label": ["A", "B", "C", "D", "E", "F"],
 	"raw_dtype": ["str", "str", "str", "bool", "bool", "bool"],
 	"dtype": ["str", "str", "str", "bool", "bool", "bool"],
+	"key": [true, false, false, true, false, false],
+	"activ": [true, false, true, true, false, true],
 	"role": ["pred", "pred", null, "out", "out", null],
 	"process": ["extr", null, "extr", "load", null, null],
 	"rule": [null, null, null, null, null, null],

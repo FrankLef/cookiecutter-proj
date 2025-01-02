@@ -64,7 +64,7 @@ class DDict:
     def _repl_ws(self):
         cols = self._data.select_dtypes(include=["object", "string"]).columns
         self._data[cols] = self._data[cols].apply(
-            lambda x: x.replace(to_replace=r"^\s*$|^None$", value="", regex=True)
+            lambda x: x.replace(to_replace=r"^\s*$|^None$", value=pd.NA, regex=True)
         )
 
     def _validate_null(self, schema: list[str]):
