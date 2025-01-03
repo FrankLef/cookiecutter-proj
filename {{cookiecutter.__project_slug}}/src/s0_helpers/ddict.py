@@ -40,7 +40,7 @@ class DDict:
             assert isinstance(data, pd.DataFrame), msg
             self._data = data
             self._validate_data()
-            self._data.set_index(keys=type(self)._KEYS, drop=False, inplace=True)
+            self._data.set_index(keys=type(self)._KEYS, inplace=True)
         else:
             self._data = pd.DataFrame(columns=type(self)._SCHEMA.keys()).astype(
                 type(self)._SCHEMA
@@ -108,7 +108,7 @@ class DDict:
         assert isinstance(key, bool | None)
         df = self._data
         if table:
-            sel = df.table.str.contains(
+            sel = df.index.get_level_values("table").str.contains(
                 pat=table, flags=re.IGNORECASE, regex=True, na=True
             )
             df = df[sel]
@@ -168,7 +168,7 @@ class DDict:
             },
             index=[*range(len(the_names))],
         )
-        specs.set_index(keys=type(self)._KEYS, drop=False, inplace=True)
+        specs.set_index(keys=type(self)._KEYS, inplace=True)
         return specs
 
     def update(self, data: pd.DataFrame, table_nm: str):
@@ -180,11 +180,11 @@ class DDict:
         """
         # get dictionary of source data
         src_ddict = self.get_ddict(data, table_nm=table_nm)
-
         sel = ~src_ddict.index.isin(self._data.index)
         src_ddict_sel = src_ddict[sel]
-        self._data = pd.concat([self._data, src_ddict_sel])
-        self._data.set_index(keys=type(self)._KEYS, drop=False, inplace=True)
+        # Important: Must concatenate first to avoid index problem when
+        # self._data is empty.
+        self._data = pd.concat([src_ddict_sel, self._data])
 
     def clean(self):
         """Clean the ddict to convert to string,  remove NaN, etc."""
@@ -193,14 +193,14 @@ class DDict:
         cols = self._data.select_dtypes(include="object").columns
         self._data[cols] = self._data[cols].astype("string")
         self._data[cols] = self._data[cols].replace(regex=rgx, value=pd.NA)
-        
+
     def audit(self):
         """Check for logical error in the data dictionary."""
         err_if = self._data.key & ~self._data.activ
         err_nb = sum(err_if)
         if err_nb:
             raise AssertionError(f"{err_nb} keys have 'activ' set to False.")
-        
+
     @property
     def path(self):
         """Get path for the DDict file."""
