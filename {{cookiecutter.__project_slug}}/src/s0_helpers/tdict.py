@@ -32,13 +32,14 @@ class TDict:
             ValueError: Required columns are missing.
         """
         data.columns = data.columns.str.lower()  # must be in lower case
-        check = sum([x not in data.columns for x in type(self)._SCHEMA.keys()])
-        if not check:
+        err_if = ~data.columns.isin(type(self)._SCHEMA.keys())
+        err_nb = sum(err_if)
+        if not err_nb:
             data = data.astype(type(self)._SCHEMA)
             data.reset_index(drop=True, inplace=True)
             self._data = data
         else:
-            raise ValueError(f"{check} required columns missing in the data.")
+            raise ValueError(f"{err_nb} required columns missing in the data.")
 
     def get_data(
         self,
