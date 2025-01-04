@@ -1,45 +1,40 @@
 from pathlib import Path
 import pandas as pd
+import pandera as pa
 import re
 
 
 class TDict:
     """Table dictionary with tables' specs"""
 
-    _SCHEMA = {
-        "path": str,
-        "file": str,
-        "table": str,
-        "raw_name": str,
-        "name": str,
-        "label": str,
-        "dtype": str,
-        "activ": bool,
-        "role": str,
-        "process": str,
-        "rule": str,
-        "desc": str,
-        "note": str,
-    }
+    _SCHEMA = pa.DataFrameSchema(
+        {
+            "path": pa.Column(str),
+            "file": pa.Column(str),
+            "table": pa.Column(str),
+            "raw_name": pa.Column(str),
+            "name": pa.Column(str),
+            "label": pa.Column(str, nullable=True),
+            "dtype": pa.Column(str, nullable=True),
+            "activ": pa.Column(bool),
+            "role": pa.Column(str, nullable=True),
+            "process": pa.Column(str, nullable=True),
+            "rule": pa.Column(str, nullable=True),
+            "desc": pa.Column(str, nullable=True),
+            "note": pa.Column(str, nullable=True),
+        },
+        coerce=True,
+        strict=True,
+    )
 
     def __init__(self, data: pd.DataFrame):
-        """Data dictionary
+        """Table dictionary
 
         Args:
-            data (pd.DataFrame): Data dictionary in a data frame.
-
-        Raises:
-            ValueError: Required columns are missing.
+            data (pd.DataFrame): Dictionary data.
         """
-        data.columns = data.columns.str.lower()  # must be in lower case
-        err_if = ~data.columns.isin(type(self)._SCHEMA.keys())
-        err_nb = sum(err_if)
-        if not err_nb:
-            data = data.astype(type(self)._SCHEMA)
-            data.reset_index(drop=True, inplace=True)
-            self._data = data
-        else:
-            raise ValueError(f"{err_nb} required columns missing in the data.")
+        self._data = data.copy()
+        self._SCHEMA.validate(self._data)
 
     def get_data(
         self,
