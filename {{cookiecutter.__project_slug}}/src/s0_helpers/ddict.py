@@ -14,16 +14,16 @@ class DDict:
             "table": pa.Column(str),
             "raw_name": pa.Column(str),
             "name": pa.Column(str),
-            "label": pa.Column(str, nullable=True),
-            "raw_dtype": pa.Column(str, nullable=True),
-            "dtype": pa.Column(str, nullable=True),
-            "key": pa.Column(bool),
-            "activ": pa.Column(bool),
-            "role": pa.Column(str, nullable=True),
-            "process": pa.Column(str, nullable=True),
-            "rule": pa.Column(str, nullable=True),
-            "desc": pa.Column(str, nullable=True),
-            "note": pa.Column(str, nullable=True),
+            "label": pa.Column(str, nullable=True, default=pd.NA),
+            "raw_dtype": pa.Column(str, nullable=True, default=pd.NA),
+            "dtype": pa.Column(str, nullable=True, default=pd.NA),
+            "key": pa.Column(bool, default=False),
+            "activ": pa.Column(bool, default=True),
+            "role": pa.Column(str, nullable=True, default=pd.NA),
+            "process": pa.Column(str, nullable=True, default=pd.NA),
+            "rule": pa.Column(str, nullable=True, default=pd.NA),
+            "desc": pa.Column(str, nullable=True, default=pd.NA),
+            "note": pa.Column(str, nullable=True, default=pd.NA),
         },
         unique=_KEYS,
         coerce=True,
@@ -167,6 +167,36 @@ class DDict:
         err_nb = sum(err_if)
         if err_nb:
             raise AssertionError(f"{err_nb} keys have 'activ' set to False.")
+    
+    
+    def get_schema(self, table:str, coerce=True, strict=True):
+        """Get a basic DataFrameSchema objectfrom the data dictionary."""
+        tbl = self.get_data(table = table)
+        if tbl.empty:
+            raise ValueError(f"'{tbl}' is empty.")
+        tbl.reset_index(inplace=True)
+        the_cols = {}
+        the_keys = []
+        for row in tbl.itertuples():
+            the_cols[row.name] = pa.Column(
+                name = row.name,
+                dtype=row.dtype,
+                title = row.label,
+                description=row.desc)
+            if row.key:
+                the_keys.append(row.name)
+        
+        the_keys = None if not the_keys else the_keys  # type: ignore
+        
+        schema = pa.DataFrameSchema(
+            columns=the_cols,
+            coerce=coerce,
+            strict=strict,
+            unique=the_keys
+        )
+        
+        return schema
+        
 
     @property
     def path(self):
