@@ -1,6 +1,7 @@
 from pathlib import Path
 import pandas as pd
 import pandera as pa
+from typing import Literal
 import re
 
 
@@ -178,7 +179,9 @@ class DDict:
         if err_nb:
             raise AssertionError(f"{err_nb} keys have 'null_ok' set to True.")
 
-    def get_schema(self, table: str, coerce=True, strict=False):
+    def get_schema(
+        self, table: str, coerce: bool, strict: bool | Literal["filter"]
+    ) -> pa.api.pandas.container.DataFrameSchema:
         """Get a DataFrameSchema object from the data dictionary."""
         tbl = self.get_data(table=table)
         if tbl.empty:
@@ -214,6 +217,19 @@ class DDict:
     @path.setter
     def path(self, path: Path) -> Path:
         """Set path for the DDict file."""
-        assert isinstance(path, Path), "`path` must be a Path object."
+        if not isinstance(path, Path):
+            msg = f"`path` must be a Path object. It is a {type(path)}."
+            raise AssertionError(msg)
         self._path = path
         return self._path
+
+    def get_schemas(
+        self, coerce: bool = True, strict: bool | Literal["filter"] = True
+    ) -> dict[str, pa.api.pandas.container.DataFrameSchema]:
+        tbl = self.get_data()
+        out = dict.fromkeys(tbl.index.get_level_values("table"))
+        schemas = {
+            key: self.get_schema(table=key, coerce=coerce, strict=strict)
+            for key in out.keys()
+        }  # type: ignore
+        return schemas
