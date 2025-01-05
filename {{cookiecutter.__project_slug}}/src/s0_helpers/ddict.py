@@ -17,8 +17,9 @@ class DDict:
             "label": pa.Column(str, nullable=True, default=pd.NA),
             "raw_dtype": pa.Column(str, nullable=True, default=pd.NA),
             "dtype": pa.Column(str, nullable=True, default=pd.NA),
-            "key": pa.Column(bool, default=False),
             "activ": pa.Column(bool, default=True),
+            "key": pa.Column(bool, default=False),
+            "null_ok": pa.Column(bool, default=True),
             "role": pa.Column(str, nullable=True, default=pd.NA),
             "process": pa.Column(str, nullable=True, default=pd.NA),
             "rule": pa.Column(str, nullable=True, default=pd.NA),
@@ -53,8 +54,8 @@ class DDict:
         role: str | None = None,
         process: str | None = None,
         rule: str | None = None,
-        key: bool | None = None,
         activ: bool | None = None,
+        key: bool | None = None,
     ) -> pd.DataFrame:
         """Get filtered data from a data dictionary.
 
@@ -63,14 +64,16 @@ class DDict:
             role (str | None, optional): Regexp to filter the role. Defaults to None.
             process (str | None, optional): Regexp to filter the process. Defaults to None.
             rule (str | None, optional): Regexp to filter the rule. Defaults to None.
-            key (bool | None, optional): Select the key flag. Defaults to None.
             activ (bool | None, optional): Select the activ flag. Defaults to None.
+            key (bool | None, optional): Select the key flag. Defaults to None.
 
         Returns:
             pd.DataFrame: Filtered data dictionary.
         """
-        assert isinstance(activ, bool | None)
-        assert isinstance(key, bool | None)
+        if not isinstance(activ, bool | None):
+            raise TypeError(f"'{activ}' has invalid type '{type(activ)}'.")
+        if not isinstance(key, bool | None):
+            raise TypeError(f"'{key}' has invalid type '{type(key)}'.")
         df = self._data
         if table:
             sel = df.index.get_level_values("table").str.contains(
@@ -96,10 +99,12 @@ class DDict:
             )
             df = df[sel]
 
-        if key is not None:
-            df = df.loc[df.key == key]
         if activ is not None:
             df = df.loc[df.activ == activ]
+
+        if key is not None:
+            df = df.loc[df.key == key]
+
         return df
 
     def get_ddict(self, data: pd.DataFrame, table_nm: str) -> pd.DataFrame:
@@ -125,8 +130,9 @@ class DDict:
         df.label = pd.NA
         df.raw_dtype = the_dtypes
         df.dtype = the_dtypes
-        df.key = False
         df.activ = True
+        df.key = False
+        df.null_ok = True
         df.role = pd.NA
         df.process = pd.NA
         df.rule = pd.NA
@@ -167,36 +173,38 @@ class DDict:
         err_nb = sum(err_if)
         if err_nb:
             raise AssertionError(f"{err_nb} keys have 'activ' set to False.")
-    
-    
-    def get_schema(self, table:str, coerce=True, strict=True):
-        """Get a basic DataFrameSchema objectfrom the data dictionary."""
-        tbl = self.get_data(table = table)
+        err_if = self._data.key & self._data.null_ok
+        err_nb = sum(err_if)
+        if err_nb:
+            raise AssertionError(f"{err_nb} keys have 'null_ok' set to True.")
+
+    def get_schema(self, table: str, coerce=True, strict=False):
+        """Get a DataFrameSchema object from the data dictionary."""
+        tbl = self.get_data(table=table)
         if tbl.empty:
             raise ValueError(f"'{tbl}' is empty.")
         tbl.reset_index(inplace=True)
         the_cols = {}
         the_keys = []
         for row in tbl.itertuples():
-            the_cols[row.name] = pa.Column(
-                name = row.name,
-                dtype=row.dtype,
-                title = row.label,
-                description=row.desc)
-            if row.key:
-                the_keys.append(row.name)
-        
+            if row.activ:
+                the_cols[row.name] = pa.Column(
+                    name=row.name,
+                    dtype=row.dtype,
+                    nullable=row.null_ok,
+                    title=row.label,
+                    description=row.desc,
+                )
+                if row.key:
+                    the_keys.append(row.name)
+
         the_keys = None if not the_keys else the_keys  # type: ignore
-        
+
         schema = pa.DataFrameSchema(
-            columns=the_cols,
-            coerce=coerce,
-            strict=strict,
-            unique=the_keys
+            columns=the_cols, coerce=coerce, strict=strict, unique=the_keys
         )
-        
+
         return schema
-        
 
     @property
     def path(self):
