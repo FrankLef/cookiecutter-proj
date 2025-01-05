@@ -24,7 +24,7 @@ class TDict:
             "note": pa.Column(str, nullable=True),
         },
         coerce=True,
-        strict=True,
+        strict=False,
     )
 
     def __init__(self, data: pd.DataFrame):
@@ -54,7 +54,9 @@ class TDict:
         Returns:
             pd.DataFrame: Filtered table dictionary.
         """
-        assert isinstance(activ, bool | None)
+        if not isinstance(activ, bool | None):
+            msg = f"`activ` must be boolean. It is of type '{type(activ)}'."
+            raise AssertionError(msg)
         df = self._data
         if role:
             sel = df.role.str.contains(

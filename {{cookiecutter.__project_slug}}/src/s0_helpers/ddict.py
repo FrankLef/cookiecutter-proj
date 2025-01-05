@@ -210,7 +210,7 @@ class DDict:
         return schema
 
     def get_schemas(
-        self, coerce: bool = True, strict: bool | Literal["filter"] = True
+        self, coerce: bool = True, strict: bool | Literal["filter"] = False
     ) -> dict[str, pa.api.pandas.container.DataFrameSchema]:
         tbl = self.get_data()
         out = dict.fromkeys(tbl.index.get_level_values("table"))
@@ -219,7 +219,7 @@ class DDict:
             for key in out.keys()
         }  # type: ignore
         return schemas
-    
+
     @property
     def path(self):
         """Get path for the DDict file."""
@@ -233,5 +233,3 @@ class DDict:
             raise AssertionError(msg)
         self._path = path
         return self._path
-
-
