@@ -209,6 +209,17 @@ class DDict:
 
         return schema
 
+    def get_schemas(
+        self, coerce: bool = True, strict: bool | Literal["filter"] = True
+    ) -> dict[str, pa.api.pandas.container.DataFrameSchema]:
+        tbl = self.get_data()
+        out = dict.fromkeys(tbl.index.get_level_values("table"))
+        schemas = {
+            key: self.get_schema(table=key, coerce=coerce, strict=strict)
+            for key in out.keys()
+        }  # type: ignore
+        return schemas
+    
     @property
     def path(self):
         """Get path for the DDict file."""
@@ -223,13 +234,4 @@ class DDict:
         self._path = path
         return self._path
 
-    def get_schemas(
-        self, coerce: bool = True, strict: bool | Literal["filter"] = True
-    ) -> dict[str, pa.api.pandas.container.DataFrameSchema]:
-        tbl = self.get_data()
-        out = dict.fromkeys(tbl.index.get_level_values("table"))
-        schemas = {
-            key: self.get_schema(table=key, coerce=coerce, strict=strict)
-            for key in out.keys()
-        }  # type: ignore
-        return schemas
+
