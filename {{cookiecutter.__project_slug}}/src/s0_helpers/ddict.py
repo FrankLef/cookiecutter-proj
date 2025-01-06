@@ -44,7 +44,6 @@ class DDict:
         if data is not None:
             self._data = data.copy()
             self._SCHEMA.validate(self._data)
-            self._data.set_index(keys=type(self)._KEYS, inplace=True)
         else:
             dt = {key: str(val) for key, val in self._SCHEMA.dtypes.items()}
             self._data = pd.DataFrame(columns=dt.keys()).astype(dt)
@@ -77,7 +76,7 @@ class DDict:
             raise TypeError(f"'{key}' has invalid type '{type(key)}'.")
         df = self._data
         if table:
-            sel = df.index.get_level_values("table").str.contains(
+            sel = df.table.str.contains(
                 pat=table, flags=re.IGNORECASE, regex=True, na=True
             )
             df = df[sel]
@@ -142,7 +141,6 @@ class DDict:
 
         self._SCHEMA.validate(df)
 
-        df.set_index(keys=type(self)._KEYS, inplace=True)
         return df
 
     def update(self, data: pd.DataFrame, table_nm: str):
@@ -152,13 +150,19 @@ class DDict:
             data (pd.DataFrame): Data frame to process.
             table_nm (str): Name of the table.
         """
+        # get dictionary of destination data
+        dst_df = self._data.set_index(keys=self._KEYS)
         # get dictionary of source data
-        src_ddict = self.get_ddict(data, table_nm=table_nm)
-        sel = ~src_ddict.index.isin(self._data.index)
-        src_ddict_sel = src_ddict[sel]
+        src_df = self.get_ddict(data, table_nm=table_nm)
+        src_df = src_df.set_index(keys=self._KEYS)
+        # find the missing rows
+        sel = ~src_df.index.isin(dst_df.index)
+        src_df_sel = src_df[sel]
         # Important: Must concatenate first to avoid index problem when
         # self._data is empty.
-        self._data = pd.concat([src_ddict_sel, self._data])
+        updated_df = pd.concat([src_df_sel, dst_df])
+        updated_df.reset_index(inplace=True)
+        self._data = updated_df
 
     def clean(self):
         """Clean the ddict to convert to string,  remove NaN, etc."""
@@ -186,7 +190,6 @@ class DDict:
         tbl = self.get_data(table=table)
         if tbl.empty:
             raise ValueError(f"'{tbl}' is empty.")
-        tbl.reset_index(inplace=True)
         the_cols = {}
         the_keys = []
         for row in tbl.itertuples():
@@ -213,7 +216,7 @@ class DDict:
         self, coerce: bool = True, strict: bool | Literal["filter"] = False
     ) -> dict[str, pa.api.pandas.container.DataFrameSchema]:
         tbl = self.get_data()
-        out = dict.fromkeys(tbl.index.get_level_values("table"))
+        out = dict.fromkeys(tbl.table)
         schemas = {
             key: self.get_schema(table=key, coerce=coerce, strict=strict)
             for key in out.keys()
