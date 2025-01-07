@@ -43,9 +43,9 @@ class DDict:
         """
         if data is not None:
             self._data = data.copy()
-            self._SCHEMA.validate(self._data)
+            type(self)._SCHEMA.validate(self._data)
         else:
-            dt = {key: str(val) for key, val in self._SCHEMA.dtypes.items()}
+            dt = {key: str(val) for key, val in type(self)._SCHEMA.dtypes.items()}
             self._data = pd.DataFrame(columns=dt.keys()).astype(dt)
 
     def get_data(
@@ -122,7 +122,7 @@ class DDict:
 
         n = len(the_names)
 
-        dt = {key: str(val) for key, val in self._SCHEMA.dtypes.items()}
+        dt = {key: str(val) for key, val in type(self)._SCHEMA.dtypes.items()}
         df = pd.DataFrame(columns=dt.keys()).astype(dt)
         df.table = [table_nm] * n
         df.raw_name = the_names
@@ -139,7 +139,7 @@ class DDict:
         df.desc = pd.NA
         df.note = pd.NA
 
-        self._SCHEMA.validate(df)
+        type(self)._SCHEMA.validate(df)
 
         return df
 
@@ -151,10 +151,10 @@ class DDict:
             table_nm (str): Name of the table.
         """
         # get dictionary of destination data
-        dst_df = self._data.set_index(keys=self._KEYS)
+        dst_df = self._data.set_index(keys=type(self)._KEYS)
         # get dictionary of source data
         src_df = self.get_ddict(data, table_nm=table_nm)
-        src_df = src_df.set_index(keys=self._KEYS)
+        src_df = src_df.set_index(keys=type(self)._KEYS)
         # find the missing rows
         sel = ~src_df.index.isin(dst_df.index)
         src_df_sel = src_df[sel]

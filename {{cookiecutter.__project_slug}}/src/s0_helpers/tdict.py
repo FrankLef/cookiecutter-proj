@@ -34,7 +34,7 @@ class TDict:
             data (pd.DataFrame): Dictionary data.
         """
         self._data = data.copy()
-        self._SCHEMA.validate(self._data)
+        type(self)._SCHEMA.validate(self._data)
 
     def get_data(
         self,
