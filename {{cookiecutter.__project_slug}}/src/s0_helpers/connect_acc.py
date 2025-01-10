@@ -4,6 +4,7 @@ import sqlalchemy as sa
 
 
 class ConnectAcc:
+    """Connect to MS Access using SQLAlchemy."""
     def __init__(self, path: Path):
         self._path = path
         self._engine = self._build_engine(path)
@@ -37,28 +38,41 @@ class ConnectAcc:
             with self._engine.connect() as conn:
                 conn.execute(sa.text("SELECT 1"))
         except (sa.exc.DBAPIError, sa.exc.OperationalError) as e:
-            print(f"CONNECTION FAILED:\n{e}")
-            return False
+            msg = f"CONNECTION FAILED:\n{e}"
+            raise sa.exc.DBAPIError(msg)
+        finally:
+            self._engine.dispose()
         return True
 
     def load(self, data: pd.DataFrame, tbl: str) -> pd.DataFrame:
-        """Load data to MS Access.
+        """Upload data to MS Access.
+        
+        IMPORTANT: The `con` parameter actually take an SQLAlchemy engine,
+        NOT a connection!!  This is different than for `pandas.read_sql` and
+        what is usually done.  This is in the description of the `con` argument
+        and is EASILY MISSED.  See https://stackoverflow.com/questions/51170169/clean-up-database-connection-with-sqlalchemy-in-pandas for a discussion.
 
         Args:
-            data (pd.DataFrame): Data frame to upload.
-            tbl (str): Name of table to upload to MS Access.
+            data (pd.DataFrame): Data to upload to MS Access.
+            tbl (str): Name of the table in MS Access.
 
         Returns:
-            pd.Dataframe: Dataframe of uploaded data.
+            pd.DataFrame: The original data is returned as is.
         """
-        assert isinstance(data, pd.DataFrame)
-        assert len(tbl) != 0
-        with self._engine.connect() as conn:
-            data.to_sql(name=tbl, con=conn, index=False, if_exists="replace")
+        if not isinstance(data, pd.DataFrame):
+            raise TypeError("'data' must be a pandas dataframe.")
+        if len(tbl) == 0:
+            raise ValueError("The table is an empty string.")
+        # Important: `con` argument takes en engine, not a connection!
+        data.to_sql(name=tbl, con=self._engine, index=False,if_exists='replace')
+        self._engine.dispose()
         return data
 
     def read(self, qry: str) -> pd.DataFrame:
-        """Read  data from MS Access.
+        """Download  data from MS Access.
+        
+        IMPORTANT: Make sure you use SQLAlchemy `text()` to format the query so
+        that it is useable by the engine.
 
         Args:
             qry (str): SQL query to download from MS Access.
@@ -66,16 +80,14 @@ class ConnectAcc:
         Returns:
             pd.Dataframe: Dataframe of downloaded data.
         """
-        assert len(qry) != 0
+        if len(qry) == 0:
+            raise ValueError("The query is an empty string.")
         with self._engine.connect() as conn:
-            a_qry = sa.text(qry)  # must use text to make it executable
+            a_qry = sa.text(qry)  # Important: use sa.text().
             data = pd.read_sql(sql=a_qry, con=conn)
+        self._engine.dispose()
         return data
 
     @property
     def path(self) -> Path:
         return self._path
-
-    @property
-    def engine(self):
-        return self._engine

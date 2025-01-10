@@ -7,7 +7,7 @@ from pathlib import Path
 import pandas as pd
 from config import settings
 
-from src.s0_helpers import tdict, ddict, path_finder, file_namer, connect_acc
+from src.s0_helpers import connect_acc, tdict, ddict, path_finder, file_namer
 
 data_paths = settings.data_paths
 data_path = settings.paths.data
@@ -21,13 +21,16 @@ a_tdict = tdict.TDict(pd.read_excel(tdict_path))
 a_tdict.path = tdict_path
 
 ddict_path = data_path.joinpath(settings.ddict)
-a_ddict = ddict.DDict(pd.read_excel(ddict_path))
+ddict_df = pd.read_excel(ddict_path)
+# print(ddict_df)
+# raise KeyboardInterrupt()
+a_ddict = ddict.DDict(ddict_df)
 a_ddict.path = ddict_path
 a_ddict.audit()
 
 # the FileNamer instances used in the project
 fnamer_xl = file_namer.FileNamer(ext=".xlsx")
-fnamer_fea = file_namer.FileNamer(ext=".feather")
+fnamer_pkl = file_namer.FileNamer(ext=".pkl")
 
 # the database connections
 db_path = Path(settings.db.fn)
