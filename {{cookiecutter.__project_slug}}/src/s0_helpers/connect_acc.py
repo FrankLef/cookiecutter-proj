@@ -5,6 +5,7 @@ import sqlalchemy as sa
 
 class ConnectAcc:
     """Connect to MS Access using SQLAlchemy."""
+
     def __init__(self, path: Path):
         self._path = path
         self._engine = self._build_engine(path)
@@ -56,6 +57,10 @@ class ConnectAcc:
             data (pd.DataFrame): Data to upload to MS Access.
             tbl (str): Name of the table in MS Access.
 
+        Raises:
+            TypeError: `data` argument must be a pandas data frame.
+            ValueError: Name of the table is empty.
+
         Returns:
             pd.DataFrame: The original data is returned as is.
         """
@@ -64,7 +69,7 @@ class ConnectAcc:
         if len(tbl) == 0:
             raise ValueError("The table is an empty string.")
         # Important: `con` argument takes en engine, not a connection!
-        data.to_sql(name=tbl, con=self._engine, index=False,if_exists='replace')
+        data.to_sql(name=tbl, con=self._engine, index=False, if_exists="replace")
         self._engine.dispose()
         return data
 
@@ -77,8 +82,11 @@ class ConnectAcc:
         Args:
             qry (str): SQL query to download from MS Access.
 
+        Raises:
+            ValueError: The query is an empty string.
+
         Returns:
-            pd.Dataframe: Dataframe of downloaded data.
+            pd.DataFrame: Data frame of downloaded data.
         """
         if len(qry) == 0:
             raise ValueError("The query is an empty string.")
