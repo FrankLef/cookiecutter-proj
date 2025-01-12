@@ -24,6 +24,17 @@ class CalcSum:
         self._validate_mat()
 
     def _validate_mat(self) -> bool:
+        """Validate matrix for CalcSum.
+
+        Raises:
+            ValueError: The matrix is empty.
+            TypeError: A variable name is empty.
+            KeyError: A variable name is not in the matrix.`
+            TypeError: `calc_var` is empty.
+
+        Returns:
+            bool: _description_
+        """
         if self._mat.empty:
             raise ValueError("`mat` must not be empty.")
         vars = {
@@ -78,22 +89,32 @@ class CalcSum:
             raise KeyError(msg)
         return True
 
-    def _clean_mat(self):
-        # raise error when some index in data don't exist in the matrix.
-        missing_id = self._audit_results["missing_id"]
+    def _clean_mat(self, miss_ok: bool)-> pd.DataFrame:
+        """Validate the matrix and create a clen one.
+        
+        Args:
+            miss_ok (bool):  True if the id_var must all be found in the matrix.
+            
+        Raises:
+            ValueError: Values from the data are not found in the matrix.
+        
+        Returns:
+            pd.DataFrame: Clean matrix.
+        """
+        missing_id = self._audit_results["missing_id"]  # type: ignore
         missing_id_nb = len(missing_id)
-        if missing_id_nb:
+        if (not miss_ok) & missing_id_nb:
             msg = f"""There are {missing_id_nb} values of {self._id_var} in
             `data` that are not found `mat`. Add them to `mat` or drop them."""
             raise ValueError(msg)
         # remove id_var that do not have enough amounts from data.
         mat_clean = self._mat
-        not_todo = self._audit_results["not_todo"]
+        not_todo = self._audit_results["not_todo"]  # type: ignore
         sel = mat_clean[self._new_var].isin(not_todo)
         mat_clean.loc[sel, self._coef_var] = float("NaN")
         self._mat_clean = mat_clean
 
-    def _audit_merge(self, tol: float = 1e-8):
+    def _audit_merge(self, tol: float = 1e-8)-> dict[str, list[str]]:
         df_merged = self._mat.merge(
             right=self._data, how="outer", on=self._id_var, indicator=True
         )
@@ -117,21 +138,26 @@ class CalcSum:
         self._audit_results = out
         return out
 
-    def calculate(self) -> pd.DataFrame:
+    def calculate(self, miss_ok: bool) -> pd.DataFrame:
         """Perform the sum of the products.
+        
+        Args:
+        miss_ok (bool): True if the id_var must all be found in the matrix.
 
         Returns:
             pd.DataFrame: Results of the calculations.
         """
         self._audit_merge()
-        self._clean_mat()
+        self._clean_mat(miss_ok=miss_ok)
         out = self._mat_clean.merge(right=self._data, how="inner", on=self._id_var)
         out[self._calc_var] = out[self._coef_var] * out[self._amt_var]
         augment_group_vars = self._group_vars + [self._new_var]
         # IMPORTANT: must set min_count=1 to keep the NaN!
         # NOTE: skipna arguments is not implemented when using groupby!
         # Source: https://stackoverflow.com/questions/71515697/pandas-groupby-sum-is-not-ignoring-none-empty-np-nan-values
-        out = out.groupby(by=augment_group_vars, as_index=False)[self._calc_var].sum(min_count=1)
+        out = out.groupby(by=augment_group_vars, as_index=False)[self._calc_var].sum(
+            min_count=1
+        )
         return out
 
     def set_data(
