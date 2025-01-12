@@ -89,15 +89,15 @@ class CalcSum:
             raise KeyError(msg)
         return True
 
-    def _clean_mat(self, miss_ok: bool)-> pd.DataFrame:
-        """Validate the matrix and create a clen one.
-        
+    def _clean_mat(self, miss_ok: bool) -> pd.DataFrame:
+        """Validate the matrix and create a clean one.
+
         Args:
             miss_ok (bool):  True if the id_var must all be found in the matrix.
-            
+
         Raises:
             ValueError: Values from the data are not found in the matrix.
-        
+
         Returns:
             pd.DataFrame: Clean matrix.
         """
@@ -114,7 +114,7 @@ class CalcSum:
         mat_clean.loc[sel, self._coef_var] = float("NaN")
         self._mat_clean = mat_clean
 
-    def _audit_merge(self, tol: float = 1e-8)-> dict[str, list[str]]:
+    def _audit_merge(self, tol: float = 1e-8) -> dict[str, list[str]]:
         df_merged = self._mat.merge(
             right=self._data, how="outer", on=self._id_var, indicator=True
         )
@@ -138,11 +138,12 @@ class CalcSum:
         self._audit_results = out
         return out
 
-    def calculate(self, miss_ok: bool) -> pd.DataFrame:
+    def calculate(self, miss_ok: bool, drop_na: bool) -> pd.DataFrame:
         """Perform the sum of the products.
-        
+
         Args:
-        miss_ok (bool): True if the id_var must all be found in the matrix.
+            miss_ok (bool): True if the id_var must all be found in the matrix.
+            drop_na (bool): Drop the rows where `calc_var` is `NaN`.
 
         Returns:
             pd.DataFrame: Results of the calculations.
@@ -158,6 +159,8 @@ class CalcSum:
         out = out.groupby(by=augment_group_vars, as_index=False)[self._calc_var].sum(
             min_count=1
         )
+        if drop_na:
+            out.dropna(subset=self._calc_var, inplace=True)
         return out
 
     def set_data(
