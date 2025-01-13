@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 
 
 class CalcSum:
@@ -49,7 +50,7 @@ class CalcSum:
             if val not in self._mat.columns:
                 msg = f"'{val}' is not in the columns of `mat`."
                 raise KeyError(msg)
-        # calc_var is the extra column that will be created
+        # calc_var is the extra column that will have the new amounts.
         if not self._calc_var:
             msg = f"`{self._calc_var}` is an empty string."
             raise TypeError(msg)
@@ -89,76 +90,31 @@ class CalcSum:
             raise KeyError(msg)
         return True
 
-    def _clean_mat(self, miss_ok: bool) -> pd.DataFrame:
-        """Validate the matrix and create a clean one.
 
-        Args:
-            miss_ok (bool):  True if the id_var must all be found in the matrix.
-
-        Raises:
-            ValueError: Values from the data are not found in the matrix.
-
-        Returns:
-            pd.DataFrame: Clean matrix.
-        """
-        missing_id = self._audit_results["missing_id"]  # type: ignore
-        missing_id_nb = len(missing_id)
-        if (not miss_ok) & missing_id_nb:
-            msg = f"""There are {missing_id_nb} values of {self._id_var} in
-            `data` that are not found `mat`. Add them to `mat` or drop them."""
-            raise ValueError(msg)
-        # remove id_var that do not have enough amounts from data.
-        mat_clean = self._mat
-        not_todo = self._audit_results["not_todo"]  # type: ignore
-        sel = mat_clean[self._new_var].isin(not_todo)
-        mat_clean.loc[sel, self._coef_var] = float("NaN")
-        self._mat_clean = mat_clean
-
-    def _audit_merge(self, tol: float = 1e-8) -> dict[str, list[str]]:
-        df_merged = self._mat.merge(
-            right=self._data, how="outer", on=self._id_var, indicator=True
-        )
-        sel = (df_merged["_merge"] != "both") & (abs(df_merged[self._coef_var]) >= tol)
-        df_merged_sel = df_merged.loc[sel]
-        # get the variables that will be set to NaN because there is missing id_var.
-        not_todo = (
-            df_merged_sel.loc[df_merged_sel["_merge"] == "left_only", self._new_var]
-            .unique()
-            .tolist()
-        )
-        # get the values in data's id_vars that are not found in the mat's id_var
-        sel = df_merged["_merge"] != "both"
-        df_merged_sel = df_merged.loc[sel]
-        missing_id = (
-            df_merged_sel.loc[df_merged_sel["_merge"] == "right_only", self._id_var]
-            .unique()
-            .tolist()
-        )
-        out = {"not_todo": not_todo, "missing_id": missing_id}
-        self._audit_results = out
-        return out
-
-    def calculate(self, miss_ok: bool, drop_na: bool) -> pd.DataFrame:
+    def calculate(self, drop_na: bool, tol:float=1e-8) -> pd.DataFrame:
         """Perform the sum of the products.
 
         Args:
-            miss_ok (bool): True if the id_var must all be found in the matrix.
             drop_na (bool): Drop the rows where `calc_var` is `NaN`.
 
         Returns:
             pd.DataFrame: Results of the calculations.
         """
-        self._audit_merge()
-        self._clean_mat(miss_ok=miss_ok)
-        out = self._mat_clean.merge(right=self._data, how="inner", on=self._id_var)
+        out = self._mat.merge(right=self._data, how='inner', on=self._id_var)
+        
+        # IMPORTANT: Must remove zero from matrix column to avoid all NaN by row in the result.
+        sel = abs(out[self._coef_var]) < tol
+        out.drop(index=out[sel].index, inplace=True)
+        
+        # do the multiply
         out[self._calc_var] = out[self._coef_var] * out[self._amt_var]
+        
+        # NOTE: To have sum return NaN as soon as there is any in a group
+        # the np. sum with an array MUST be used!
+        # source: https://github.com/pandas-dev/pandas/issues/15674
         augment_group_vars = self._group_vars + [self._new_var]
-        # IMPORTANT: must set min_count=1 to keep the NaN!
-        # NOTE: skipna arguments is not implemented when using groupby!
-        # Source: https://stackoverflow.com/questions/71515697/pandas-groupby-sum-is-not-ignoring-none-empty-np-nan-values
-        out = out.groupby(by=augment_group_vars, as_index=False)[self._calc_var].sum(
-            min_count=1
-        )
+        out = out.groupby(by=augment_group_vars, as_index=False)[self._calc_var].apply(lambda x: np.sum(np.array(x)))
+        
         if drop_na:
             out.dropna(subset=self._calc_var, inplace=True)
         return out
