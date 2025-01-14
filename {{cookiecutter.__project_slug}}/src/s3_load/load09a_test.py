@@ -1,3 +1,5 @@
+"""Test `load`"""
+
 from src.s0_helpers.richtools import print_msg
 
 
