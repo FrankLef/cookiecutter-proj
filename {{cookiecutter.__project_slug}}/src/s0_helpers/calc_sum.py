@@ -90,31 +90,58 @@ class CalcSum:
             raise KeyError(msg)
         return True
 
-
-    def calculate(self, drop_na: bool, tol:float=1e-8) -> pd.DataFrame:
-        """Perform the sum of the products.
+    def calculate(self, drop_na: bool, with_na:bool, tol: float = 1e-8) -> pd.DataFrame:
+        """Calculate the sumproduct of the data with the given matrix.add()
+        
+        The `with_na` argument is very important.
+        
+        If you wnats sums of amounts, you should use `with_na=True` to make sure NaN will be put where to replace missing data and make the aum not add any variable where missing data is.
+        
+        If you want to have sum of chronological data, i.e. consider missing data as zero, then you should use `with_na=False`.  In this case, check
+        the results, very often the last period will be incorrect and should
+        be removed.
 
         Args:
-            drop_na (bool): Drop the rows where `calc_var` is `NaN`.
+            drop_na (bool): Drop NaN rows from the reult.
+            with_na (bool): Should the data replace missing with NaN.
+            tol (float, optional): _description_. Defaults to 1e-8.
 
         Returns:
-            pd.DataFrame: Results of the calculations.
+            pd.DataFrame: Resulting computations.
         """
-        out = self._mat.merge(right=self._data, how='inner', on=self._id_var)
+        if with_na:
+            out = self._data_na
+        else:
+            out = self._data
         
+        out = self._mat.merge(right=out, how="inner", on=self._id_var)
+
         # IMPORTANT: Must remove zero from matrix column to avoid all NaN by row in the result.
         sel = abs(out[self._coef_var]) < tol
         out.drop(index=out[sel].index, inplace=True)
-        
+
         # do the multiply
         out[self._calc_var] = out[self._coef_var] * out[self._amt_var]
+        
+        # save the merged data fro DEBUG
+        self._data_merged = out
+        
+        augment_group_vars = self._group_vars + [self._new_var]
+        
+        
+        # NOTE: another way to do it.
+        # SOURCE: https://stackoverflow.com/questions/18429491/pandas-groupby-columns-with-nan-missing-values (at th end)
+        # dfgrouped = out.groupby(by=augment_group_vars, as_index=False)[self._calc_var].agg(['sum','size','count'])
+        # dfgrouped['sum'][dfgrouped['size']!=dfgrouped['count']] = float('NaN')
+        
         
         # NOTE: To have sum return NaN as soon as there is any in a group
         # the np. sum with an array MUST be used!
         # source: https://github.com/pandas-dev/pandas/issues/15674
-        augment_group_vars = self._group_vars + [self._new_var]
-        out = out.groupby(by=augment_group_vars, as_index=False)[self._calc_var].apply(lambda x: np.sum(np.array(x)))
-        
+        out = out.groupby(by=augment_group_vars, as_index=False)[self._calc_var].apply(
+            lambda x: np.sum(np.array(x))
+        )
+
         if drop_na:
             out.dropna(subset=self._calc_var, inplace=True)
         return out
@@ -133,6 +160,21 @@ class CalcSum:
         else:
             msg = "Validation of `data` failed."
             raise RuntimeError(msg)
+        self._set_data_na()
+        
+        
+    def _set_data_na(self):
+        # format wide to create the NaN when data is missing
+        data_na_wide = self._data.pivot(
+            index=self._group_vars, columns=self._id_var, values=self._amt_var)
+        data_na_wide = data_na_wide.reset_index()
+        # format long to get the original dat but with NaN when values are missing
+        data_na = data_na_wide.melt(
+            id_vars=self._group_vars, var_name=self._id_var, value_name=self._amt_var)
+        data_na = data_na.reset_index()
+        data_na.drop(columns='index', inplace=True)
+        self._data_na = data_na
+
 
     @property
     def mat(self):
@@ -140,11 +182,19 @@ class CalcSum:
         return self._mat
 
     @property
-    def mat_clean(self):
-        """The matrix net of missing index used to calculate."""
-        return self._mat_clean
-
-    @property
     def data(self):
-        """The input data to multiply by the clean matrix."""
+        """The original input data."""
         return self._data
+    
+    @property
+    def data_na(self):
+        """The input data augmented with naN when a value is missing.
+        
+        This is because we ABSOLUTELY need NaN whenever a value is missing
+        when doing the join in `calculate`.
+        """
+        return self._data_na
+    
+    @property
+    def data_merged(self):
+        return self._data_merged
