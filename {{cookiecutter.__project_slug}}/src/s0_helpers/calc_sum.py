@@ -111,12 +111,14 @@ class CalcSum:
         Returns:
             pd.DataFrame: Resulting computations.
         """
+        self._rm_missing_new_var()
+        mat_clean = self._mat_clean
         if with_na:
             out = self._set_data_na()
         else:
             out = self._data
 
-        out = self._mat.merge(right=out, how="inner", on=self._id_var)
+        out = mat_clean.merge(right=out, how="inner", on=self._id_var)
 
         # IMPORTANT: Must remove zero from matrix column to avoid all NaN by row in the result.
         sel = abs(out[self._coef_var]) < tol
@@ -175,11 +177,46 @@ class CalcSum:
         data_na = data_na.reset_index()
         data_na.drop(columns="index", inplace=True)
         return data_na
+    
+    def _find_missing_vars(self, tol:float=1e-8):
+        mat_merged = self._mat.merge(right=self._data, how='left', on=self._id_var, indicator=True)
+        sel = (mat_merged['_merge'] == 'left_only') & (abs(mat_merged[self._coef_var]) < tol)
+        mat_merged = mat_merged[sel]
+        miss_id = mat_merged[self._id_var].unique().tolist()
+        miss_new_var = mat_merged[self._new_var].unique().tolist()
+        missing_vars = {
+            'id': miss_id,
+            'new_var': miss_new_var
+        }
+        self._missing_vars = missing_vars
+    
+    def _rm_missing_new_var(self):
+        self._find_missing_vars()
+        missing_new_var = self._missing_vars['new_var']
+        mat_clean = self._mat
+        if missing_new_var:
+            sel = mat_clean[self._new_var].isin(missing_new_var)
+            mat_clean.drop(index=mat_clean[sel].index, inplace=True)
+        self._mat_clean = mat_clean
+
 
     @property
     def mat(self):
         """The origin input matrix."""
         return self._mat
+    
+    @property
+    def mat_clean(self):
+        """For debugging. Matrix with non-existing `new_var` removed."""
+        self._rm_missing_new_var()
+        return self._mat_clean
+    
+    @property
+    def missing_vars(self):
+        """Dictionary of missing variables."""
+        self._find_missing_vars()
+        return self._missing_vars
+        
 
     @property
     def data(self):
