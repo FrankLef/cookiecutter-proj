@@ -6,54 +6,50 @@ class CalcSum:
     """Calculate the product and sum to create new amounts."""
 
     def __init__(
-        self, mat: pd.DataFrame, id_var: str, new_var: str, coef_var: str, calc_var: str
+        self, defs: pd.DataFrame, id_var: str, new_var: str, coef_var: str, calc_var: str
     ):
-        """Matrix (in long form) that will be used to do the sum of products.
+        """Data frame (in long form) defining the sum of products.
 
         Args:
-            mat (pd.DataFrame): Matrix in long form.
+            defs (pd.DataFrame): Matrix in long form.
             id_var (str): Variable used to join the matrix with the data.
             new_var (str): Name of new variable created by the calculations.
             coef_var (str): Name of variable with the coefficients used.
             calc_var (str): Name of new amount created by the sum product.
         """
-        self._mat = mat
+        self._defs = defs
         self._id_var = id_var
         self._new_var = new_var
         self._coef_var = coef_var
         self._calc_var = calc_var
-        self._validate_mat()
+        self._validate_defs()
 
-    def _validate_mat(self) -> bool:
-        """Validate matrix for CalcSum.
+    def _validate_defs(self) -> bool:
+        """Validate the definitions data frame.
 
         Raises:
             ValueError: The matrix is empty.
             TypeError: A variable name is empty.
-            KeyError: A variable name is not in the matrix.`
+            KeyError: A variable name is not a columns of `defs`.
             TypeError: `calc_var` is empty.
 
         Returns:
-            bool: _description_
+            bool: True if all validation are ok.
         """
-        if self._mat.empty:
-            raise ValueError("`mat` must not be empty.")
+        if self._defs.empty:
+            raise ValueError("`defs` must not be empty.")
         vars = {
-            "id_var": self._id_var,
-            "new_var": self._new_var,
-            "coef_var": self._coef_var,
+            'id_var': self._id_var,
+            'new_var': self._new_var,
+            'coef_var': self._coef_var,
         }
         for key, val in vars.items():
             if not val:
-                msg = f"`{key}` is an empty string."
-                raise TypeError(msg)
-            if val not in self._mat.columns:
-                msg = f"'{val}' is not in the columns of `mat`."
-                raise KeyError(msg)
-        # calc_var is the extra column that will have the new amounts.
+                raise TypeError(f"`{key}` is an empty string.")
+            if val not in self._defs.columns:
+                raise KeyError(f"'{val}' is not a column of `defs`.")
         if not self._calc_var:
-            msg = f"`{self._calc_var}` is an empty string."
-            raise TypeError(msg)
+            raise TypeError(f"`{self._calc_var}` is an empty string.")
         return True
 
     def _validate_data(
@@ -63,7 +59,7 @@ class CalcSum:
             raise ValueError("`data` must not be empty.")
         # check the id_var
         if id_var != self._id_var:
-            msg = f"""The data's id_var '{id_var}' must be the same as the mat's id_var which is '{self._id_var}'"""
+            msg = f"""The data's id_var '{id_var}' must be the same as the defs' id_var which is '{self._id_var}'"""
             raise KeyError(msg)
         vars = {"id_var": id_var, "amt_var": amt_var}
         for key, val in vars.items():
@@ -80,7 +76,7 @@ class CalcSum:
         }
         for key, val in vars.items():
             if val in data.columns:
-                msg = f"""The column name '{val}' is in `mat` as well as in `data`. It must be found in only one of the two."""
+                msg = f"""The column name '{val}' is in `defs` as well as in `data`. It must be found in only one of the two."""
                 raise KeyError(msg)
         # check the group variables
         err_if = [x not in data.columns for x in group_vars]
@@ -112,13 +108,13 @@ class CalcSum:
             pd.DataFrame: Resulting computations.
         """
         self._rm_missing_new_var()
-        mat_clean = self._mat_clean
+        defs_clean = self._defs_clean
         if with_na:
             out = self._set_data_na()
         else:
             out = self._data
 
-        out = mat_clean.merge(right=out, how="inner", on=self._id_var)
+        out = defs_clean.merge(right=out, how="inner", on=self._id_var)
 
         # IMPORTANT: Must remove zero from matrix column to avoid all NaN by row in the result.
         sel = abs(out[self._coef_var]) < tol
@@ -151,11 +147,11 @@ class CalcSum:
     def set_data(
         self, data: pd.DataFrame, id_var: str, amt_var: str, group_vars: list[str]
     ):
-        out = self._validate_data(
+        is_ok = self._validate_data(
             data, id_var=id_var, amt_var=amt_var, group_vars=group_vars
         )
-        if out:
-            # NOTE: No need to assign `id_var` as it should be in mat already.
+        if is_ok:
+            # NOTE: No need to assign `id_var` as it should be in defs already.
             self._data = data
             self._amt_var = amt_var
             self._group_vars = group_vars
@@ -177,46 +173,45 @@ class CalcSum:
         data_na = data_na.reset_index()
         data_na.drop(columns="index", inplace=True)
         return data_na
-    
-    def _find_missing_vars(self, tol:float=1e-8):
-        mat_merged = self._mat.merge(right=self._data, how='left', on=self._id_var, indicator=True)
-        sel = (mat_merged['_merge'] == 'left_only') & (abs(mat_merged[self._coef_var]) < tol)
+
+    def _find_missing_vars(self, tol: float = 1e-8):
+        mat_merged = self._defs.merge(
+            right=self._data, how="left", on=self._id_var, indicator=True
+        )
+        sel = (mat_merged["_merge"] == "left_only") & (
+            abs(mat_merged[self._coef_var]) < tol
+        )
         mat_merged = mat_merged[sel]
         miss_id = mat_merged[self._id_var].unique().tolist()
         miss_new_var = mat_merged[self._new_var].unique().tolist()
-        missing_vars = {
-            'id': miss_id,
-            'new_var': miss_new_var
-        }
+        missing_vars = {"id": miss_id, "new_var": miss_new_var}
         self._missing_vars = missing_vars
-    
+
     def _rm_missing_new_var(self):
         self._find_missing_vars()
-        missing_new_var = self._missing_vars['new_var']
-        mat_clean = self._mat
+        missing_new_var = self._missing_vars["new_var"]
+        defs_clean = self._defs
         if missing_new_var:
-            sel = mat_clean[self._new_var].isin(missing_new_var)
-            mat_clean.drop(index=mat_clean[sel].index, inplace=True)
-        self._mat_clean = mat_clean
-
+            sel = defs_clean[self._new_var].isin(missing_new_var)
+            defs_clean.drop(index=defs_clean[sel].index, inplace=True)
+        self._defs_clean = defs_clean
 
     @property
-    def mat(self):
-        """The origin input matrix."""
-        return self._mat
-    
+    def defs(self):
+        """The original definitions."""
+        return self._defs
+
     @property
-    def mat_clean(self):
-        """For debugging. Matrix with non-existing `new_var` removed."""
+    def defs_clean(self):
+        """For debugging. Definitions with non-existing `new_var` removed."""
         self._rm_missing_new_var()
-        return self._mat_clean
-    
+        return self._defs_clean
+
     @property
     def missing_vars(self):
         """Dictionary of missing variables."""
         self._find_missing_vars()
         return self._missing_vars
-        
 
     @property
     def data(self):
