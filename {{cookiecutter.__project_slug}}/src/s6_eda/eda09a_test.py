@@ -10,3 +10,6 @@ def main(subproc: str | None = None) -> int:
         msg = __name__
     print_msg(msg, type="info")
     return 0
+
+if __name__ == "__main__":
+    main()
