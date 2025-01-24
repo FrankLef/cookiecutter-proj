@@ -4,7 +4,7 @@ import pandas as pd
 class CalcRatio:
     """Calculate the quotient to create new ratios."""
 
-    TERMS_NM = ('den_var', 'num_var')
+    TERMS_NM = ("den_var", "num_var")
 
     def __init__(
         self,
@@ -46,9 +46,9 @@ class CalcRatio:
         if self._defs.empty:
             raise ValueError("`defs` must not be empty.")
         vars = {
-            'id_var': self._id_var,
-            'new_var': self._new_var,
-            'quotient_var': self._quotient_var,
+            "id_var": self._id_var,
+            "new_var": self._new_var,
+            "quotient_var": self._quotient_var,
         }
         for key, val in vars.items():
             if not val:
@@ -82,8 +82,8 @@ class CalcRatio:
                 msg = f"'{val}' is not in the columns of `data`."
                 raise KeyError(msg)
         vars = {
-            'new_var': self._new_var,
-            'calc_var': self._calc_var,
+            "new_var": self._new_var,
+            "calc_var": self._calc_var,
         }
         for key, val in vars.items():
             if val in data.columns:
@@ -98,7 +98,7 @@ class CalcRatio:
         return True
 
     def calculate(self, drop_na: bool) -> pd.DataFrame:
-        out = self._data.merge(right=self._defs, how='inner', on=self._id_var)
+        out = self._data.merge(right=self._defs, how="inner", on=self._id_var)
         self._data_merged = out
 
         ndx_vars = [self._new_var] + self._group_vars
@@ -109,7 +109,7 @@ class CalcRatio:
             .reset_index()
         )
         try:
-            out[self._calc_var] = out[terms_nm[1]] / out[terms_nm[1]]
+            out[self._calc_var] = out[terms_nm[1]] / out[terms_nm[0]]
         except KeyError:
             msg = f"""'{terms_nm[0]}' and/or '{terms_nm[1]}' are not found.
             Not enough match between the data and the ratio definitions.
