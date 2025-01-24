@@ -3,11 +3,16 @@ import pandas as pd
 
 class CalcRatio:
     """Calculate the quotient to create new ratios."""
-    
-    TERMS_NM = ['den', 'num']
+
+    TERMS_NM = ('den_var', 'num_var')
 
     def __init__(
-        self, defs: pd.DataFrame, id_var: str, new_var: str, quotient_var: str, calc_var: str
+        self,
+        defs: pd.DataFrame,
+        id_var: str,
+        new_var: str,
+        quotient_var: str,
+        calc_var: str,
     ):
         """Data frame (in long form) defining the ratios.
 
@@ -52,7 +57,7 @@ class CalcRatio:
                 raise KeyError(f"'{val}' is not a column of `defs`.")
         if not self._calc_var:
             raise TypeError(f"`{self._calc_var}` is an empty string.")
-        the_terms = sorted(self._defs[self._quotient_var].unique().tolist())
+        the_terms = tuple(sorted(self._defs[self._quotient_var].unique()))
         terms_nm = type(self).TERMS_NM
         if the_terms != terms_nm:
             msg = f"The terms in '{self._quotient_var}' are not in {terms_nm}."
@@ -77,8 +82,8 @@ class CalcRatio:
                 msg = f"'{val}' is not in the columns of `data`."
                 raise KeyError(msg)
         vars = {
-            "new_var": self._new_var,
-            "calc_var": self._calc_var,
+            'new_var': self._new_var,
+            'calc_var': self._calc_var,
         }
         for key, val in vars.items():
             if val in data.columns:
@@ -93,21 +98,24 @@ class CalcRatio:
         return True
 
     def calculate(self, drop_na: bool) -> pd.DataFrame:
-        
-        out = self._defs.merge(right=self._data, on=self._id_var)
+        out = self._data.merge(right=self._defs, how='inner', on=self._id_var)
         self._data_merged = out
-        
-        cols = [self._new_var] + self._group_vars
-        terms_nm = type(self).TERMS_NM
-        eval_str = f"{self._calc_var} = {terms_nm[1]} / {terms_nm[0]}"
-        out = (
-            out
-            .drop(columns=self._id_var)
-            .pivot(index=cols, columns=self._quotient_var, values=self._amt_var)
-            .eval(eval_str)
-            .reset_index()
-            )
 
+        ndx_vars = [self._new_var] + self._group_vars
+        terms_nm = type(self).TERMS_NM
+        out = (
+            out.drop(columns=self._id_var)
+            .pivot(index=ndx_vars, columns=self._quotient_var, values=self._amt_var)
+            .reset_index()
+        )
+        try:
+            out[self._calc_var] = out[terms_nm[1]] / out[terms_nm[1]]
+        except KeyError:
+            msg = f"""'{terms_nm[0]}' and/or '{terms_nm[1]}' are not found.
+            Not enough match between the data and the ratio definitions.
+            You should skip this data set."""
+            # NOTE: Use this specific error to avoid confusion with other KeyError. It is the error raised when we used `eval()`.
+            raise UnboundLocalError(msg)
         if drop_na:
             out.dropna(subset=self._calc_var, inplace=True)
         return out
@@ -129,7 +137,6 @@ class CalcRatio:
         else:
             msg = "Validation of `data` failed."
             raise RuntimeError(msg)
-
 
     @property
     def defs(self):
