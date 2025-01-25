@@ -6,7 +6,12 @@ class CalcSum:
     """Calculate the product and sum to create new amounts."""
 
     def __init__(
-        self, defs: pd.DataFrame, id_var: str, new_var: str, coef_var: str, calc_var: str
+        self,
+        defs: pd.DataFrame,
+        id_var: str,
+        new_var: str,
+        coef_var: str,
+        calc_var: str,
     ):
         """Data frame (in long form) defining the sum of products.
 
@@ -39,9 +44,9 @@ class CalcSum:
         if self._defs.empty:
             raise ValueError("`defs` must not be empty.")
         vars = {
-            'id_var': self._id_var,
-            'new_var': self._new_var,
-            'coef_var': self._coef_var,
+            "id_var": self._id_var,
+            "new_var": self._new_var,
+            "coef_var": self._coef_var,
         }
         for key, val in vars.items():
             if not val:
