@@ -37,3 +37,43 @@ db_path = Path(settings.db.fn)
 conn_acc_db = connect_acc.ConnectAcc(path=db_path)
 rawdb_path = Path(settings.raw_db.fn)
 conn_acc_rawdb = connect_acc.ConnectAcc(path=rawdb_path)
+
+def read_pkl(path: Path, name: str, suffix: str |None = None) -> pd.DataFrame:
+    if suffix is not None:
+        fn = fnamer_pkl.get_name(name, suffix)
+    else:
+        fn = fnamer_pkl.get_name(name)
+    path_fn = path.joinpath(fn)
+    out = pd.read_pickle(path_fn)
+    assert not out.empty, "Input data must not be empty."
+    return out
+
+def write_pkl(data: pd.DataFrame, path: Path, name: str, suffix:str|None = None) -> Path:
+    assert not data.empty, "Output data must not be empty."
+    if suffix is not None:
+        fn = fnamer_pkl.get_name(name, suffix)
+    else:
+        fn = fnamer_pkl.get_name(name)
+    path_fn = path.joinpath(fn)
+    data.to_pickle(path_fn)
+    return path_fn
+
+def read_xl(path: Path, name: str, suffix: str |None = None) -> pd.DataFrame:
+    if suffix is not None:
+        fn = fnamer_xl.get_name(name, suffix)
+    else:
+        fn = fnamer_xl.get_name(name)
+    path_fn = path.joinpath(fn)
+    out = pd.read_pickle(path_fn)
+    assert not out.empty, "Input data must not be empty."
+    return out
+
+def write_xl(data: pd.DataFrame, path: Path, name: str, suffix:str|None = None, xl_index: bool=False) -> Path:
+    assert not data.empty, "Output data must not be empty."
+    if suffix is not None:
+        fn = fnamer_xl.get_name(name, suffix)
+    else:
+        fn = fnamer_xl.get_name(name)
+    path_fn = path.joinpath(fn)
+    data.to_excel(path_fn, index=xl_index)
+    return path_fn
