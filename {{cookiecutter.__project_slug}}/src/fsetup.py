@@ -63,7 +63,9 @@ def write_pkl(
     return path_fn
 
 
-def read_xl(path: Path, name: str, suffix: str | None = None,sheet_nm:str|None=None) -> pd.DataFrame:
+def read_xl(
+    path: Path, name: str, suffix: str | None = None, sheet_nm: str | int = 0
+) -> pd.DataFrame:
     if suffix is not None:
         fn = fnamer_xl.get_name(name, suffix)
     else:
@@ -79,7 +81,7 @@ def write_xl(
     path: Path,
     name: str,
     suffix: str | None = None,
-    sheet_nm:str='Sheet1',
+    sheet_nm: str = "Sheet1",
     with_index: bool = False,
 ) -> Path:
     assert not data.empty, "Output data must not be empty."
