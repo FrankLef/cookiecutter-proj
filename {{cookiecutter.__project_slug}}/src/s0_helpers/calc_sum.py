@@ -92,29 +92,31 @@ class CalcSum:
         return True
 
     def calculate(
-        self, with_na: bool, drop_na: bool, tol: float = 1e-8
+        self, sum_na: bool, drop_na: bool, tol: float = 1e-8
     ) -> pd.DataFrame:
         """Calculate the sumproduct of the data with the given matrix.
 
         The `with_na` argument is very important. See the notebook 'calcsum01a.ipynb' for more details.
 
-        If you wants sums of amounts, you should use `with_na=True` to make sure NaN will be put where to replace missing data and make the aum not add any variable where missing data is.
+        If `sum_na=True` then `NaN` will replace missing data and the `sum` will return `NaN` when there is missing data.
+        
+        If `sum_na=False` then `sum` will assume the missing data is equivalent to zero.
 
-        If you want to have sum of chronological data, i.e. consider missing data as zero, then you should use `with_na=False`.  In this case, check
+        If you want to have sum of chronological data, i.e. consider missing data as zero, then you should use `sum_na=False`.  In this case, check
         the results, very often the last period will be incorrect and should
         be removed.
 
         Args:
-            with_na (bool): Should the data replace missing with NaN.
-            drop_na (bool): Drop NaN rows from the reult.
-            tol (float, optional): _description_. Defaults to 1e-8.
+            sum_na (bool): If True, `NaN` propagate with `sum`. See details.
+            drop_na (bool): If True, drop `NaN` rows from final result.
+            tol (float, optional): Tolerance. Defaults to 1e-8.
 
         Returns:
-            pd.DataFrame: Resulting computations.
+            pd.DataFrame: Data frame of resulting computations.
         """
         self._rm_missing_new_var()
         defs_clean = self._defs_clean
-        if with_na:
+        if sum_na:
             out = self._set_data_na()
         else:
             out = self._data
@@ -138,13 +140,18 @@ class CalcSum:
         # dfgrouped = out.groupby(by=augment_group_vars, as_index=False)[self._calc_var].agg(['sum','size','count'])
         # dfgrouped['sum'][dfgrouped['size']!=dfgrouped['count']] = float('NaN')
 
-        # NOTE: To have sum return NaN as soon as there is any in a group
-        # the np. sum with an array MUST be used!
-        # source: https://github.com/pandas-dev/pandas/issues/15674
-        out = out.groupby(by=augment_group_vars, as_index=False)[self._calc_var].apply(
-            lambda x: np.sum(np.array(x))
-        )
-
+        if sum_na:
+            # NOTE: To have sum return NaN as soon as there is any in a group
+            # the np. sum with an array MUST be used!
+            # source: https://github.com/pandas-dev/pandas/issues/15674
+            out = out.groupby(by=augment_group_vars, as_index=False)[
+                self._calc_var
+            ].apply(lambda x: np.sum(np.array(x)))
+        else:
+            # NOTE: Finally, Must treat the missing values as zeros for finance
+            out = out.groupby(by=augment_group_vars, as_index=False)[
+                self._calc_var
+            ].sum()
         if drop_na:
             out.dropna(subset=self._calc_var, inplace=True)
         return out
