@@ -3,7 +3,7 @@
 import importlib
 from pathlib import Path
 
-from src.s0_helpers.richtools import print_modul
+import src.s0_helpers.richtools as rt
 
 
 def main(subproc: str | None = None) -> int:
@@ -14,6 +14,6 @@ def main(subproc: str | None = None) -> int:
     n: int = 0
     for nm in names:
         modul = importlib.import_module(name="." + nm, package=pkg)
-        print_modul(modul)
+        rt.print_modul(modul)
         n += modul.main(subproc)
     return n
