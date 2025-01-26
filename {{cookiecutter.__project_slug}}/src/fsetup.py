@@ -40,6 +40,16 @@ conn_acc_rawdb = connect_acc.ConnectAcc(path=rawdb_path)
 
 
 def read_pkl(path: Path, name: str, suffix: str | None = None) -> pd.DataFrame:
+    """Build a file name and read it with pickle.
+
+    Args:
+        path (Path): Path where file is located.
+        name (str): The stem of the file name.
+        suffix (str | None, optional): Suffix to file name. Defaults to None.
+
+    Returns:
+        pd.DataFrame: Data frame.
+    """
     if suffix is not None:
         fn = fnamer_pkl.get_name(name, suffix)
     else:
@@ -53,6 +63,17 @@ def read_pkl(path: Path, name: str, suffix: str | None = None) -> pd.DataFrame:
 def write_pkl(
     data: pd.DataFrame, path: Path, name: str, suffix: str | None = None
 ) -> Path:
+    """Build a file name and write it with pickle.
+
+    Args:
+        data (pd.DataFrame): Data frame.
+        path (Path): Path where file is located.
+        name (str): The stem of the file name.
+        suffix (str | None, optional): Suffix to file name. Defaults to None.
+
+    Returns:
+        Path: Data frame.
+    """
     assert not data.empty, "Output data must not be empty."
     if suffix is not None:
         fn = fnamer_pkl.get_name(name, suffix)
@@ -66,6 +87,17 @@ def write_pkl(
 def read_xl(
     path: Path, name: str, suffix: str | None = None, sheet_nm: str | int = 0
 ) -> pd.DataFrame:
+    """Build a file name and read it with excel.
+
+    Args:
+        path (Path): Path where file is located.
+        name (str): The stem of the file name.
+        suffix (str | None, optional): Suffix to file name. Defaults to None.
+        sheet_nm (str | int, optional): Sheet name or number. Defaults to 0.
+
+    Returns:
+        pd.DataFrame: Data frame.
+    """
     if suffix is not None:
         fn = fnamer_xl.get_name(name, suffix)
     else:
@@ -84,6 +116,19 @@ def write_xl(
     sheet_nm: str = "Sheet1",
     with_index: bool = False,
 ) -> Path:
+    """Build a file name and write it with excel.
+
+    Args:
+        data (pd.DataFrame): Data frame.
+        path (Path): Path where file is located.
+        name (str): The stem of the file name.
+        suffix (str | None, optional): Suffix to file name. Defaults to None.
+        sheet_nm (str, optional): Sheet name. Defaults to "Sheet1".
+        with_index (bool, optional): Write index. Defaults to False.
+
+    Returns:
+        Path: Data frame.
+    """
     assert not data.empty, "Output data must not be empty."
     if suffix is not None:
         fn = fnamer_xl.get_name(name, suffix)
