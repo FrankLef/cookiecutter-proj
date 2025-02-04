@@ -139,4 +139,5 @@ dask-worker-space
 
 # custom directories
 data/
+reports/
 
