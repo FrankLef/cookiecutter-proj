@@ -76,6 +76,7 @@ testpaths = [
 # use this option if you want 'strict' style which is a bit too much
 # select = ["ALL"]
 nativeServer = "auto"
+extend-include = ["*.ipynb"]
 
 
 # https://mypy.readthedocs.io/en/stable/config_file.html#config-file
