@@ -1,6 +1,6 @@
-git_user := "FrankLef"
-git_email := "https://github.com/FrankLef"
-git_repo := "https://github.com/FrankLef/pjRL.git"
+git_user := "{{cookiecutter.git_user}}"
+git_email := "{{cookiecutter.git_email}}"
+git_repo := "{{cookiecutter.git_repo}}"
 
 # the first target is the default
 all: hello
