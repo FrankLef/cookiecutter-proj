@@ -2,10 +2,24 @@
 
 import typer
 import importlib
+import winsound
 
 from src.s0_helpers.richtools import print_msg, print_modul
 
 app = typer.Typer()
+
+
+def play_note(song: str, duration: int = 500, wake: bool = True):
+    """Play a sequence of notes."""
+    assert len(song) != 0, "The song must have at keast one note."
+    notes = {"C": 0, "D": 2, "E": 4, "F": 5, "G": 7, "A": 9, "B": 11}
+    if wake:
+        # NOTE: Windows sound are inconsistent from computer to computer
+        # to ensure the first note plays, play a system sound before the song
+        winsound.PlaySound("SystemAsterisk", winsound.SND_ALIAS)
+    for note in song.upper().split():
+        freq = int(256 * (2 ** (notes[note] / 12)))
+        winsound.Beep(frequency=freq, duration=duration)
 
 
 def run_cmd(proc: str, subproc: str | None = None) -> int:
@@ -19,15 +33,15 @@ def run_cmd(proc: str, subproc: str | None = None) -> int:
         int: Integer returned by the mian module.
     """
     MODULS = {
-    "extr": "s1_extr.extr",
-    "transf": "s2_transf.transf",
-    "load": "s3_load.load",
-    "raw": "s4_raw.raw",
-    "pproc": "s5_pproc.pproc",
-    "eda": "s6_eda.eda",
-    "final": "s7_final.final",
+        "extr": "s1_extr.extr",
+        "transf": "s2_transf.transf",
+        "load": "s3_load.load",
+        "raw": "s4_raw.raw",
+        "pproc": "s5_pproc.pproc",
+        "eda": "s6_eda.eda",
+        "final": "s7_final.final",
     }
-    
+
     modul_nm = MODULS[proc]
     modul = importlib.import_module(name=modul_nm)
     print_modul(modul)
@@ -68,10 +82,10 @@ def pipe(tasks: str, subproc: str | None = None) -> int:
     tasks = tasks.replace(" ", "")
 
     if tasks:
-        tasks_todo = tasks.split(sep=SEP)
+        tasks_todo = tasks.lower().split(sep=SEP)
+        tasks_todo = [x[:2] for x in tasks_todo]
         ntasks_todo = len(tasks_todo)
         if ntasks_todo <= len(TASKS):
-            tasks_todo = [x.lower()[:2] for x in tasks_todo]
             err_nb = sum([x not in TASKS.keys() for x in tasks_todo])
             if err_nb:
                 msg = f"There are {err_nb} invalid tasks in '{tasks}'.\nThe task first 2 characters must be in {TASKS.keys()}."
@@ -88,7 +102,7 @@ def pipe(tasks: str, subproc: str | None = None) -> int:
     for key, val in TASKS.items():
         if key in tasks_todo:
             n += run_cmd(proc=val, subproc=subproc)
-
+    play_note(song="E C")
     return n
 
 
