@@ -19,6 +19,7 @@ progress_bar = Progress(
     TimeElapsedColumn(),
     TextColumn("•"),
     TimeRemainingColumn(),
+    transient=True,
 )
 
 
