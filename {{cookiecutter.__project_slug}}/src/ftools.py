@@ -2,19 +2,37 @@
 
 from pathlib import Path
 import pandas as pd
+from functools import partial
 
-from src.s0_helpers import path_finder, file_namer
 from config import settings
 
 data_paths = settings.data_paths
 data_path = settings.paths.data
 
-# the PathFinder instance used in the project
-pathfindr = path_finder.PathFinder(paths=data_paths, base_path=data_path)
 
-# the FileNamer instances used in the project
-fnamer_xl = file_namer.FileNamer(ext=".xlsx")
-fnamer_pkl = file_namer.FileNamer(ext=".pkl")
+def pathfindr(id: str, *other: str) -> Path:
+    if id in data_paths.keys():
+        path = data_path.joinpath(data_paths[id])
+        path = path.joinpath(*other)
+    else:
+        raise KeyError(f"'{id}' is an invalid data path id.")
+    if not path.exists():
+        raise FileExistsError(f"{path} does not exist.")
+    return path
+
+
+def fnamer(name: str, *suffix, ext: str):
+    SEP = "_"
+    if not name:
+        raise ValueError("A file name must be provided.")
+    a_join = (name,) + suffix
+    fn = SEP.join(a_join) + ext
+    return fn
+
+
+fnamer_pkl = partial(fnamer, ext=".pkl")
+fnamer_xl = partial(fnamer, ext=".xlsx")
+
 
 def read_pkl(path: Path, name: str, suffix: str | None = None) -> pd.DataFrame:
     """Build a file name and read it with pickle.
@@ -28,9 +46,9 @@ def read_pkl(path: Path, name: str, suffix: str | None = None) -> pd.DataFrame:
         pd.DataFrame: Data frame.
     """
     if suffix is not None:
-        fn = fnamer_pkl.get_name(name, suffix)
+        fn = fnamer_pkl(name, suffix)
     else:
-        fn = fnamer_pkl.get_name(name)
+        fn = fnamer_pkl(name)
     path_fn = path.joinpath(fn)
     out = pd.read_pickle(path_fn)
     assert not out.empty, "Input data must not be empty."
@@ -53,9 +71,9 @@ def write_pkl(
     """
     assert not data.empty, "Output data must not be empty."
     if suffix is not None:
-        fn = fnamer_pkl.get_name(name, suffix)
+        fn = fnamer_pkl(name, suffix)
     else:
-        fn = fnamer_pkl.get_name(name)
+        fn = fnamer_pkl(name)
     path_fn = path.joinpath(fn)
     data.to_pickle(path_fn)
     return path_fn
@@ -76,9 +94,9 @@ def read_xl(
         pd.DataFrame: Data frame.
     """
     if suffix is not None:
-        fn = fnamer_xl.get_name(name, suffix)
+        fn = fnamer_xl(name, suffix)
     else:
-        fn = fnamer_xl.get_name(name)
+        fn = fnamer_xl(name)
     path_fn = path.joinpath(fn)
     out = pd.read_excel(path_fn, sheet_name=sheet_nm)
     assert not out.empty, "Input data must not be empty."
@@ -108,9 +126,9 @@ def write_xl(
     """
     assert not data.empty, "Output data must not be empty."
     if suffix is not None:
-        fn = fnamer_xl.get_name(name, suffix)
+        fn = fnamer_xl(name, suffix)
     else:
-        fn = fnamer_xl.get_name(name)
+        fn = fnamer_xl(name)
     path_fn = path.joinpath(fn)
     data.to_excel(path_fn, sheet_name=sheet_nm, index=with_index)
     return path_fn
