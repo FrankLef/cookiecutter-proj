@@ -7,14 +7,14 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 
 ## Introduction
 
-`Python project for RL` objectives are to
+`Python project for {{cookiecutter.__project_slug}}` objectives are to
 
 * extract, transform and load data (ETL)
 * do an exploratory data analysis (EDA)
 
 ## How to use
 
-The entry point is in `pjrl\src\__main__.py`.
+The entry point is in `..\{{cookiecutter.__project_slug}}\src\__main__.py`.
 For help with the commands the usual `--help` option is available.
 
 ```console
@@ -55,7 +55,7 @@ is summarized in the following table.
 To run a given command, you do
 
 ```console
-cd ..\pjrl
+cd ..\{{cookiecutter.__project_slug}}
 poetry run python -m src <command> --subproc <subprocess>
 ```
 
@@ -67,7 +67,7 @@ the command.
 for example the *extract* command `extr` with the subprocess *test* would be
 
 ```console
-cd ..\pjrl
+cd ..\{{cookiecutter.__project_slug}}
 poetry run python -m src extr --subproc test
 ```
 
