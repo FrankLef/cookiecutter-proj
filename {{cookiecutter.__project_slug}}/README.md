@@ -1,4 +1,4 @@
-# Pjrl
+# {{cookiecutter.__project_slug}}
 
 <!-- badges: start -->
 [![Lifecycle:
@@ -18,7 +18,7 @@ The entry point is in `..\{{cookiecutter.__project_slug}}\src\__main__.py`.
 For help with the commands the usual `--help` option is available.
 
 ```console
-cd ..\pjrl
+cd ..\{{cookiecutter.__project_slug}}
 poetry run python -m src --help
 ```
 
@@ -36,7 +36,7 @@ The project is organized around the concept that
 ## Commands
 
 **Important**: This section describes the command to use on their own. Am easier
-way which allows to run these commands in a pipe can be found at [pipe](#Pipe)
+way which allows to run these commands in a pipe can be found at [pipe](#pipe)
 below.
 
 The command, source code location and data location associated with every step
@@ -56,19 +56,18 @@ To run a given command, you do
 
 ```console
 cd ..\{{cookiecutter.__project_slug}}
-poetry run python -m src <command> --subproc <subprocess>
+poetry run python -m src <command> --pat <glob pattern>
 ```
 
 * `poetry run` is required when you have a package, for example an ***editable
 package*** installed in the virtual environment,
-* `subproc` is an optional string identifying a subprocess to be used by
-the command.
+* `pat` is an optional string with a glob pattern to use selcted scripts.
 
 for example the *extract* command `extr` with the subprocess *test* would be
 
 ```console
 cd ..\{{cookiecutter.__project_slug}}
-poetry run python -m src extr --subproc test
+poetry run python -m src extr --pat test*
 ```
 
 ## Pipe
@@ -78,14 +77,14 @@ in a chain using a comma-delimited string with an id for each task. The `pipe`
 command syntax is
 
 ```console
-poetry run python -m src pipe <tasks> --subproc <subproc>
+poetry run python -m src pipe <tasks> --pat <glob pattern>
 ```
 
-For example to `extract` then `transform` a subprocess called `test` we would
+For example to `extract` then `transform` the scripts with `test` we would
 use
 
 ```console
-poetry run python -m src pipe extract,transform --subproc test
+poetry run python -m src pipe extract,transform --path test*
 ```
 
 To get help you can use
@@ -109,18 +108,18 @@ used, only the first 2 letters will be used. The **table of task id** is
 |***ed***|6|`eda`|E.D.A.
 |***fi***|7|`final`|Finalize
 
-The commands are the same as found in [commands](#Commands) above.
+The commands are the same as found in [commands](#commands) above.
 
 For example the command
 
 ```console
-poetry run python -m src pipe extract,transform --subproc test
+poetry run python -m src pipe extract,transform --pat test*
 ```
 
 is the same as
 
 ```console
-poetry run python -m src pipe ex,tr --subproc test
+poetry run python -m src pipe ex,tr --pat test*
 ```
 
 The task ids are arranged in a comma-separated string with the following rules:
@@ -135,11 +134,11 @@ in the table of task id above.
 For example the command
 
 ```console
-poetry run python -m src pipe TRANSForm,loDAing,extract --subproc test
+poetry run python -m src pipe TRANSForm,loDAing,extract --pat test*
 ```
 
 is processed internally as
 
 ```console
-poetry run python -m src pipe ex,tr,lo --subproc test
+poetry run python -m src pipe ex,tr,lo --pat test*
 ```

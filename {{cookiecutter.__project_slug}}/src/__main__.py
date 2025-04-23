@@ -22,12 +22,12 @@ def play_note(song: str, duration: int = 500, wake: bool = True):
         winsound.Beep(frequency=freq, duration=duration)
 
 
-def run_cmd(proc: str, subproc: str | None = None) -> int:
+def run_cmd(proc: str, pat: str | None = None) -> int:
     """Run the main modules.
 
     Args:
         proc (str): Name of the main module to run.
-        subproc (str | None, optional): Name of subprocess pased on to the main module. Defaults to None.
+        pat (str | None, optional): Patttern passed on to the command to fitler files. Defaults to None.
 
     Returns:
         int: Integer returned by the mian module.
@@ -45,12 +45,12 @@ def run_cmd(proc: str, subproc: str | None = None) -> int:
     modul_nm = MODULS[proc]
     modul = importlib.import_module(name=modul_nm)
     print_modul(modul)
-    n = modul.main(subproc)
+    n = modul.main(pat)
     return n
 
 
 @app.command()
-def pipe(tasks: str, subproc: str | None = None) -> int:
+def pipe(tasks: str, pat: str | None = None) -> int:
     """Run a pipe of commands.
 
     The `tasks` argument is a comma-separated string with the task ids. Task ids must be one of 'ex', 'tr', 'lo', 'ra', 'pp', 'ed', 'fi'. For example, you can use 'ex,tr' for 'extract' then 'transform'. The order does not matter.
@@ -58,7 +58,7 @@ def pipe(tasks: str, subproc: str | None = None) -> int:
 
     Args:
         tasks (str): comma-separated string with the task.
-        subproc (str | None, optional): Subprocess pased on to the command.. Defaults to None.
+        pat (str | None, optional): Patttern passed on to the command to fitler files. Defaults to None.
 
     Raises:
         KeyError: There are invalid task id.
@@ -70,13 +70,13 @@ def pipe(tasks: str, subproc: str | None = None) -> int:
     """
     SEP: str = ","
     TASKS = {
-        "ex": "extr",
-        "tr": "transf",
-        "lo": "load",
-        "ra": "raw",
-        "pp": "pproc",
-        "ed": "eda",
-        "fi": "final",
+        "ex": ("extr", "C"),
+        "tr": ("transf", "D"),
+        "lo": ("load", "E"),
+        "ra": ("raw", "F"),
+        "pp": ("pproc", "G"),
+        "ed": ("eda", "A"),
+        "fi": ("final", "B"),
     }
 
     tasks = tasks.replace(" ", "")
@@ -101,106 +101,106 @@ def pipe(tasks: str, subproc: str | None = None) -> int:
     n: int = 0
     for key, val in TASKS.items():
         if key in tasks_todo:
-            n += run_cmd(proc=val, subproc=subproc)
-    play_note(song="E C")
+            n += run_cmd(proc=val[0], pat=pat)
+            play_note(song=val[1])
     return n
 
 
 @app.command()
-def extr(subproc: str | None = None) -> int:
+def extr(pat: str | None = None) -> int:
     """Extract data from an external source.
 
     Args:
-        subproc (str | None, optional): Name of the subprocess. Defaults to None.
+        pat (str | None, optional): Patttern passed on to the command to fitler files. Defaults to None.
 
     Returns:
         int: Integer returned by the process.
     """
-    n = run_cmd(proc="extr", subproc=subproc)
+    n = run_cmd(proc="extr", pat=pat)
     return n
 
 
 @app.command()
-def transf(subproc: str | None = None) -> int:
+def transf(pat: str | None = None) -> int:
     """Tranform the extracted data to a table format.
 
     Args:
-        subproc (str | None, optional): Name of the subprocess. Defaults to None.
+        pat (str | None, optional): Patttern passed on to the command to fitler files. Defaults to None.
 
     Returns:
         int: Integer returned by the process.
     """
-    n = run_cmd(proc="transf", subproc=subproc)
+    n = run_cmd(proc="transf", pat=pat)
     return n
 
 
 @app.command()
-def load(subproc: str | None = None) -> int:
+def load(pat: str | None = None) -> int:
     """Upload to an external database.
 
     Args:
-        subproc (str | None, optional): Name of the subprocess. Defaults to None.
+        pat (str | None, optional): Patttern passed on to the command to fitler files. Defaults to None.
 
     Returns:
         int: Integer returned by the process.
     """
-    n = run_cmd(proc="load", subproc=subproc)
+    n = run_cmd(proc="load", pat=pat)
     return n
 
 
 @app.command()
-def raw(subproc: str | None = None) -> int:
+def raw(pat: str | None = None) -> int:
     """Get raw data for EDA.
 
     Args:
-        subproc (str | None, optional): Name of the subprocess. Defaults to None.
+        pat (str | None, optional): Patttern passed on to the command to fitler files. Defaults to None.
 
     Returns:
         int: Integer returned by the process.
     """
-    n = run_cmd(proc="raw", subproc=subproc)
+    n = run_cmd(proc="raw", pat=pat)
     return n
 
 
 @app.command()
-def pproc(subproc: str | None = None) -> int:
+def pproc(pat: str | None = None) -> int:
     """Preprocess data for EDA.
 
     Args:
-        subproc (str | None, optional): Name of the subprocess. Defaults to None.
+        pat (str | None, optional): Patttern passed on to the command to fitler files. Defaults to None.
 
     Returns:
         int: Integer returned by the process.
     """
-    n = run_cmd(proc="pproc", subproc=subproc)
+    n = run_cmd(proc="pproc", pat=pat)
     return n
 
 
 @app.command()
-def eda(subproc: str | None = None) -> int:
+def eda(pat: str | None = None) -> int:
     """Exploratory Data Analysis.
 
     Args:
-        subproc (str | None, optional): Name of the subprocess. Defaults to None.
+        pat (str | None, optional): Patttern passed on to the command to fitler files. Defaults to None.
 
     Returns:
         int: Integer returned by the process.
     """
-    n = run_cmd(proc="eda", subproc=subproc)
+    n = run_cmd(proc="eda", pat=pat)
     return n
 
 
 @app.command()
-def final(subproc: str | None = None) -> int:
+def final(pat: str | None = None) -> int:
     """Finalize EDA.
 
     Args:
-        subproc (str | None, optional): Name of the subprocess. Defaults to None.
+        pat (str | None, optional): Patttern passed on to the command to fitler files. Defaults to None.
 
     Returns:
         int: Integer returned by the process.
     """
-    n = run_cmd(proc="final", subproc=subproc)
+    n = run_cmd(proc="final", pat=pat)
     return n
 
 
