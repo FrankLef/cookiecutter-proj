@@ -1,52 +1,12 @@
 """Main CLI entry point."""
 
+from typing import Final
 import typer
-import importlib
-import winsound
 
-from src.s0_helpers.richtools import print_msg, print_modul
+from .run_moduls import main as run_cmd
+from src.s0_helpers.richtools import print_msg
 
 app = typer.Typer()
-
-
-def play_note(song: str, duration: int = 500, wake: bool = True):
-    """Play a sequence of notes."""
-    assert len(song) != 0, "The song must have at keast one note."
-    notes = {"C": 0, "D": 2, "E": 4, "F": 5, "G": 7, "A": 9, "B": 11}
-    if wake:
-        # NOTE: Windows sound are inconsistent from computer to computer
-        # to ensure the first note plays, play a system sound before the song
-        winsound.PlaySound("SystemAsterisk", winsound.SND_ALIAS)
-    for note in song.upper().split():
-        freq = int(256 * (2 ** (notes[note] / 12)))
-        winsound.Beep(frequency=freq, duration=duration)
-
-
-def run_cmd(proc: str, pat: str | None = None) -> int:
-    """Run the main modules.
-
-    Args:
-        proc (str): Name of the main module to run.
-        pat (str | None, optional): Patttern passed on to the command to fitler files. Defaults to None.
-
-    Returns:
-        int: Integer returned by the mian module.
-    """
-    MODULS = {
-        "extr": "s1_extr.extr",
-        "transf": "s2_transf.transf",
-        "load": "s3_load.load",
-        "raw": "s4_raw.raw",
-        "pproc": "s5_pproc.pproc",
-        "eda": "s6_eda.eda",
-        "final": "s7_final.final",
-    }
-
-    modul_nm = MODULS[proc]
-    modul = importlib.import_module(name=modul_nm)
-    print_modul(modul)
-    n = modul.main(pat)
-    return n
 
 
 @app.command()
@@ -68,15 +28,15 @@ def pipe(tasks: str, pat: str | None = None) -> int:
     Returns:
         int: The sum of all the integers returned by the tasks.
     """
-    SEP: str = ","
-    TASKS = {
-        "ex": ("extr", "C"),
-        "tr": ("transf", "D"),
-        "lo": ("load", "E"),
-        "ra": ("raw", "F"),
-        "pp": ("pproc", "G"),
-        "ed": ("eda", "A"),
-        "fi": ("final", "B"),
+    SEP: Final[str] = ","
+    TASKS: Final[dict[str, str]] = {
+        "ex": "extr",
+        "tr": "transf",
+        "lo": "load",
+        "ra": "raw",
+        "pp": "pproc",
+        "ed": "eda",
+        "fi": "final",
     }
 
     tasks = tasks.replace(" ", "")
@@ -101,8 +61,7 @@ def pipe(tasks: str, pat: str | None = None) -> int:
     n: int = 0
     for key, val in TASKS.items():
         if key in tasks_todo:
-            n += run_cmd(proc=val[0], pat=pat)
-            play_note(song=val[1])
+            n += run_cmd(proc=val, pat=pat)
     return n
 
 
