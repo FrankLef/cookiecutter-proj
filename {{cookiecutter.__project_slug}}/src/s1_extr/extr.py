@@ -19,5 +19,9 @@ def main(pat: str | None = None) -> int:
     for nm in names:
         modul = importlib.import_module(name="." + nm, package=pkg)
         rt.print_modul(modul)
-        n += modul.main()
+        try:
+            n += modul.main()
+        except TypeError:
+            msg = f"The return value from '{nm}' must be an integer."
+            raise TypeError(msg)
     return n
