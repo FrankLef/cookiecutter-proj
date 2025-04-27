@@ -21,4 +21,5 @@ settings.paths = {
     "data_pproc": project_path.joinpath("data", "d5_pproc"),
     "data_eda": project_path.joinpath("data", "d6_eda"),
     "data_final": project_path.joinpath("data", "d7_final"),
+    "data_reports": project_path.joinpath("reports", "data"),
 }
