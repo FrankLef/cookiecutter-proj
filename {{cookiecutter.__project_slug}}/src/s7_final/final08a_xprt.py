@@ -1,5 +1,6 @@
 """Export files to reports."""
 
+import warnings
 import shutil
 from rich import print as rprint
 
@@ -26,7 +27,10 @@ def get_xprt():
     return out
 
 
-def main() -> int:
+def main(is_skipped: bool = True) -> int:
+    if is_skipped:
+        warnings.warn(f"{__name__} is skipped.", category=UserWarning)
+        return 0
     xprt = get_xprt()
     if not len(xprt):
         raise ValueError("No file to export.")

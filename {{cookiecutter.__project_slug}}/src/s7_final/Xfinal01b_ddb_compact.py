@@ -1,7 +1,8 @@
 """Compacting duckdb database by copying"""
+
 # source:
 # https://duckdb.org/docs/operations_manual/footprint_of_duckdb/reclaiming_space
-
+import warnings
 import duckdb
 import sys
 from pathlib import Path
@@ -46,7 +47,11 @@ def test_db(tbl: str = "trialbal"):
         print(f"{len(data)} tables in '{duckdb_path.name}'.")
 
 
-def main():
+def main(is_skipped: bool = False):
+    if is_skipped:
+        msg = f"{__name__} is skipped."
+        warnings.warn(msg, category=UserWarning)
+        return 0
     print(f"Compacting {duckdb_path}.")
     copy_db()
     ren_db()
