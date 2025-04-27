@@ -1,4 +1,4 @@
-"""Settings configuration used by dynaconf"""
+"""Configuration settings used by dynaconf"""
 from dynaconf import Dynaconf  # type: ignore
 from pathlib import Path
 
