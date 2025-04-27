@@ -2,7 +2,7 @@
 
 import os
 
-def say_hello() -> str:
+def msg_hello() -> str:
     """Example function for the registry.
 
     Args:
