@@ -58,8 +58,9 @@ def get_specs(proc: str, pat: str | None = None) -> tuple[str,str]:
     specs = MODULS[proc]
     return specs
 
-def main(proc: str, pat: str | None = None) -> int:
+def main(proc: str, pat: str | None = None, is_silent: bool = False) -> int:
     specs = get_specs(proc=proc, pat=pat)
     n = run_proc(dir=specs[0], proc=proc, pat=pat)
-    play_note(song=specs[1])
+    if not is_silent:
+        play_note(song=specs[1])
     return n
