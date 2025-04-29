@@ -7,10 +7,8 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 
 ## Introduction
 
-`Python project for {{cookiecutter.__project_slug}}` objectives are to
-
-* extract, transform and load data (ETL)
-* do an exploratory data analysis (EDA)
+`Python project for {{cookiecutter.__project_slug}}` objectives is to provide
+a pipeline to process an arbitrary number of pre-ordered modules.
 
 ## How to use
 
@@ -63,28 +61,28 @@ poetry run python -m src <command> --pat <glob pattern>
 package*** installed in the virtual environment,
 * `pat` is an optional string with a glob pattern to use selcted scripts.
 
-for example the *extract* command `extr` with the subprocess *test* would be
+for example the *all* command with the pattern *test* would be
 
 ```console
 cd ..\{{cookiecutter.__project_slug}}
-poetry run python -m src extr --pat test*
+python -m src all --pat test
 ```
 
 ## Pipe
 
-The `pipe` command allows to process commands, called *tasks* in this context,
-in a chain using a comma-delimited string with an id for each task. The `pipe`
+The `pipe` command allows to process *jobs* that are identified
+in a comma-delimited string with an id for each job. The `pipe`
 command syntax is
 
 ```console
-poetry run python -m src pipe <tasks> --pat <glob pattern>
+poetry run python -m src pipe <jobs> --pat <regex pattern>
 ```
 
 For example to `extract` then `transform` the scripts with `test` we would
 use
 
 ```console
-poetry run python -m src pipe extract,transform --path test*
+poetry run python -m src pipe extract,transform --pat test
 ```
 
 To get help you can use
@@ -95,41 +93,41 @@ poetry run python -m src pipe --help
 
 ### Task id
 
-The task id are 2-letter words used to identify a task.  If a longer word is
-used, only the first 2 letters will be used. The **table of task id** is
+The job id are 2-letter words used to identify the job.  If a longer word is
+used, only the first 2 letters will be used. The **table of job id** is
 
-|id|Sequence|Command|Description
-|:-----|:-----:|:-----|:-----
-|***ex***|1|`extr`|Extract
-|***tr***|2|`transf`|Transform
-|***lo***|3|`load`|Load
-|***ra***|4|`raw`|Raw data
-|***pp***|5|`pproc`|Pre-processing
-|***ed***|6|`eda`|E.D.A.
-|***fi***|7|`final`|Finalize
+|Job ID|Sequence|Command
+|:-----|:-----:|:-----
+|***ex***|1|Extract
+|***tr***|2|Transform
+|***lo***|3|Load
+|***ra***|4|Raw data
+|***pp***|5|Preprocessing
+|***ed***|6|E.D.A.
+|***fi***|7|Finalize
 
 The commands are the same as found in [commands](#commands) above.
 
 For example the command
 
 ```console
-poetry run python -m src pipe extract,transform --pat test*
+poetry run python -m src pipe extract,transform --pat test
 ```
 
 is the same as
 
 ```console
-poetry run python -m src pipe ex,tr --pat test*
+poetry run python -m src pipe ex,tr --pat test
 ```
 
-The task ids are arranged in a comma-separated string with the following rules:
+The jobs are arranged in a comma-separated string with the following rules:
 
-* The first 2 letters of task id must be an allowed id, see the table of task
+* The first 2 letters of job id must be an allowed id, see the table of task
 id above for the allowed id.
-* The tasks can be in any order. Internally they are run in the sequence shown
-in the table of task id above.
+* The jobs can be in any order. Internally they are run in the sequence shown
+in the table of job id above.
 * All spaces will be removed.
-* The tasks string is case-insensitive.
+* The jobs string is case-insensitive.
 
 For example the command
 
