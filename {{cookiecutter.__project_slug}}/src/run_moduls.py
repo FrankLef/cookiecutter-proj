@@ -72,12 +72,13 @@ def get_specs(job: str | None = None) -> Any:
     return out
 
 
-def run_job(job: str, pat: str | None = None) -> int:
+def run_job(job: str, pat: str | None = None, is_silent: bool = False) -> int:
     """Execute a single job."""
     specs = get_specs(job=job)
     pat = get_pattern(suffix=specs[0], pat=pat)
     n = run_modul(dir=specs[1], pat=pat)
-    play_note(song=specs[2])
+    if not is_silent:
+        play_note(song=specs[2])
     return n
 
 
