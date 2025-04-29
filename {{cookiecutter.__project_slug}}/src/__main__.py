@@ -2,6 +2,8 @@
 
 from typing import Final
 import typer
+# import importlib
+# import winsound
 
 from .run_moduls import main as run_cmd
 from src.s0_helpers.richtools import print_msg
@@ -29,15 +31,7 @@ def pipe(tasks: str, pat: str | None = None) -> int:
         int: The sum of all the integers returned by the tasks.
     """
     SEP: Final[str] = ","
-    TASKS: Final[dict[str, str]] = {
-        "ex": "extr",
-        "tr": "transf",
-        "lo": "load",
-        "ra": "raw",
-        "pp": "pproc",
-        "ed": "eda",
-        "fi": "final",
-    }
+    TASKS: Final[tuple[str, ...]] = ("ex", "tr", "lo", "ra", "pp", "ed", "fi")
 
     tasks = tasks.replace(" ", "")
 
@@ -46,9 +40,9 @@ def pipe(tasks: str, pat: str | None = None) -> int:
         tasks_todo = [x[:2] for x in tasks_todo]
         ntasks_todo = len(tasks_todo)
         if ntasks_todo <= len(TASKS):
-            err_nb = sum([x not in TASKS.keys() for x in tasks_todo])
+            err_nb = sum([x not in TASKS for x in tasks_todo])
             if err_nb:
-                msg = f"There are {err_nb} invalid tasks in '{tasks}'.\nThe task first 2 characters must be in {TASKS.keys()}."
+                msg = f"There are {err_nb} invalid tasks in '{tasks}'.\nThe task first 2 characters must be in {TASKS}."
                 raise KeyError(msg)
         else:
             msg = f"There are {ntasks_todo} tasks. There must be no more than {len(TASKS)}."
@@ -56,12 +50,12 @@ def pipe(tasks: str, pat: str | None = None) -> int:
     else:
         raise ValueError("The `tasks` argument must be provided.")
 
-    # run the command in the order in which they are in the tasks dictionary
     print_msg(f"Processing {ntasks_todo} main tasks \u2026", type="process")
     n: int = 0
-    for key, val in TASKS.items():
-        if key in tasks_todo:
-            n += run_cmd(proc=val, pat=pat)
+    # NOTE: run the command in the pre-determined order
+    for proc in TASKS:
+        if proc in tasks_todo:
+            n += run_cmd(proc=proc, pat=pat)
     return n
 
 

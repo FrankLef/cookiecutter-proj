@@ -1,12 +1,14 @@
 """Run the modules in the src folder dynamically."""
-import importlib
-import winsound
+
+from importlib import import_module
 from pathlib import Path
 from typing import Final
+import winsound
 
 from src.s0_helpers.richtools import print_modul
 
-def play_note(song: str, duration: int = 500, wake: bool = True)->None:
+
+def play_note(song: str, duration: int = 500, wake: bool = True) -> None:
     """Play a sequence of notes."""
     assert len(song) != 0, "The song must have at least one note."
     notes = {"C": 0, "D": 2, "E": 4, "F": 5, "G": 7, "A": 9, "B": 11}
@@ -19,13 +21,8 @@ def play_note(song: str, duration: int = 500, wake: bool = True)->None:
         winsound.Beep(frequency=freq, duration=duration)
 
 
-def run_proc(dir: str, proc: str, pat: str | None = None) -> int:
-    """Process the modules in the src directory."""
-    stem = proc + "*_*"
-    if pat is None:
-        pat = stem + ".py"
-    else:
-        pat = stem + pat + ".py"
+def run_proc(dir: str, pat: str) -> int:
+    """Process the modules in the src directory with given pattern."""
     wd = Path(__file__).parent.joinpath(dir)
     if not wd.exists():
         raise NotADirectoryError(f"Invalid path\n{wd}")
@@ -34,7 +31,7 @@ def run_proc(dir: str, proc: str, pat: str | None = None) -> int:
         raise ValueError(f"No module found in\n{wd}")
     n: int = 0
     for nm in names:
-        modul = importlib.import_module(name="." + nm, package=dir)
+        modul = import_module(name="." + nm, package=dir)
         print_modul(modul)
         try:
             n += modul.main()
@@ -44,23 +41,34 @@ def run_proc(dir: str, proc: str, pat: str | None = None) -> int:
     return n
 
 
-def get_specs(proc: str, pat: str | None = None) -> tuple[str,str]:
+def get_pattern(suffix: str, pat: str | None = None) -> str:
+    """Create the pattern for glob()"""
+    stem = suffix + "*_*"
+    if pat is None:
+        pat = stem + ".py"
+    else:
+        pat = stem + pat + ".py"
+    return pat
+
+
+def get_specs(proc: str) -> tuple[str, ...]:
     """Get the procedure's specs."""
-    MODULS: Final[dict[str, tuple[str, str]]] = {
-        "extr": ("s1_extr", "C"),
-        "transf": ("s2_transf", "D"),
-        "load": ("s3_load", "E"),
-        "raw": ("s4_raw", "F"),
-        "pproc": ("s5_pproc", "G"),
-        "eda": ("s6_eda", "A"),
-        "final": ("s7_final", "A"),
+    MODULS: Final[dict[str, tuple[str, ...]]] = {
+        "ex": ("extr", "s1_extr", "C"),
+        "tr": ("transf", "s2_transf", "D"),
+        "lo": ("load", "s3_load", "E"),
+        "ra": ("raw", "s4_raw", "F"),
+        "pp": ("pproc", "s5_pproc", "G"),
+        "ed": ("eda", "s6_eda", "A"),
+        "fi": ("final", "s7_final", "B"),
     }
     specs = MODULS[proc]
     return specs
 
-def main(proc: str, pat: str | None = None, is_silent: bool = False) -> int:
-    specs = get_specs(proc=proc, pat=pat)
-    n = run_proc(dir=specs[0], proc=proc, pat=pat)
-    if not is_silent:
-        play_note(song=specs[1])
+
+def main(proc: str, pat: str | None = None) -> int:
+    specs = get_specs(proc=proc)
+    pat = get_pattern(suffix=specs[0], pat=pat)
+    n = run_proc(dir=specs[1], pat=pat)
+    play_note(song=specs[2])
     return n
