@@ -48,9 +48,9 @@ def run_modul(dir: str, pat: str) -> int:
 def get_pattern(suffix: str, pat: str | None = None) -> str:
     """Create the regex pattern used to filter the files."""
     if pat is None:
-        pat = suffix + r".+_.*" + "[.]py"
+        pat = "^" + suffix + r".+_.*" + "[.]py$"
     else:
-        pat = suffix + r".+_" + pat + "[.]py"
+        pat = "^" + suffix + r".+_" + pat + "[.]py$"
     return pat
 
 
