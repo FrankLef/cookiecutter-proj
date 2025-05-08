@@ -18,7 +18,7 @@ class Job:
     job_dir: str
     pattern: str | None = None
     moduls: list[str] = field(default_factory=list)
-    emo: str | None = "\u2728"
+    emo: str | None = "\N{SPARKLES}"
     song: str = ""
 
 
@@ -95,29 +95,41 @@ def get_jobs(jobs: list[str] | None = None) -> dict[str, Job]:
     """
     all_jobs = {
         "ex": Job(
-            name="Extract", suffix="extr", job_dir="s1_extr", emo="\u2728", song="C"
+            name="Extract",
+            suffix="extr",
+            job_dir="s1_extr",
+            emo="\N{MUSHROOM}",
+            song="C",
         ),
         "tr": Job(
             name="Transform",
             suffix="transf",
             job_dir="s2_transf",
-            emo="\u2728",
+            emo="\N{SUNFLOWER}",
             song="D",
         ),
         "lo": Job(
-            name="Load", suffix="load", job_dir="s3_load", emo="\u2728", song="E"
+            name="Load",
+            suffix="load",
+            job_dir="s3_load",
+            emo="\N{LEAF FLUTTERING IN WIND}",
+            song="E",
         ),
-        "ra": Job(name="Raw", suffix="raw", job_dir="s4_raw", emo="\u2728", song="F"),
+        "ra": Job(
+            name="Raw", suffix="raw", job_dir="s4_raw", emo="\N{RAINBOW}", song="F"
+        ),
         "pp": Job(
             name="Preprocess",
             suffix="pproc",
             job_dir="s5_pproc",
-            emo="\u2728",
+            emo="\N{TULIP}",
             song="G",
         ),
-        "ed": Job(name="EDA", suffix="eda", job_dir="s6_eda", emo="\u2728", song="A"),
+        "ed": Job(
+            name="EDA", suffix="eda", job_dir="s6_eda", emo="\N{POTTED PLANT}", song="A"
+        ),
         "fi": Job(
-            name="Final", suffix="final", job_dir="s7_final", emo="\u2728", song="B"
+            name="Final", suffix="final", job_dir="s7_final", emo="\N{HERB}", song="B"
         ),
     }
     if jobs is not None:
