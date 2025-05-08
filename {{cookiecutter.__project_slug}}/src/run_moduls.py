@@ -2,11 +2,24 @@
 
 from importlib import import_module
 from pathlib import Path
-from typing import Final, Any
+from dataclasses import dataclass, field
+
+# from rich.pretty import pprint
 import re
 import winsound
 
 from src.s0_helpers.richtools import print_msg, print_modul
+
+
+@dataclass
+class Job:
+    name: str
+    suffix: str
+    job_dir: str
+    pattern: str | None = None
+    moduls: list[str] = field(default_factory=list)
+    emo: str | None = "\u2728"
+    song: str = ""
 
 
 def play_note(song: str, duration: int = 500, wake: bool = True) -> str:
@@ -23,19 +36,11 @@ def play_note(song: str, duration: int = 500, wake: bool = True) -> str:
     return song
 
 
-def run_modul(dir: str, pat: str) -> int:
+def run_modul(job_dir: str, names: list[str]) -> int:
     """Process the modules in the src directory with given pattern."""
-    wd = Path(__file__).parent.joinpath(dir)
-    if wd.exists():
-        files = [item for item in wd.iterdir() if item.is_file()]
-    else:
-        raise NotADirectoryError(f"Invalid path\n{wd}")
-    names = sorted([fn.stem for fn in files if re.match(pat, fn.name)])
-    if not len(names):
-        raise ValueError(f"No module found in\n{wd}")
     n: int = 0
     for nm in names:
-        modul = import_module(name="." + nm, package=dir)
+        modul = import_module(name="." + nm, package=job_dir)
         print_modul(modul)
         try:
             n += modul.main()
@@ -54,37 +59,78 @@ def get_pattern(suffix: str, pat: str | None = None) -> str:
     return pat
 
 
-def get_specs(job: str | None = None) -> Any:
-    """Get the procedure's specs."""
-    MODULS: Final[dict[str, tuple[str, ...]]] = {
-        "ex": ("extr", "s1_extr", "C"),
-        "tr": ("transf", "s2_transf", "D"),
-        "lo": ("load", "s3_load", "E"),
-        "ra": ("raw", "s4_raw", "F"),
-        "pp": ("pproc", "s5_pproc", "G"),
-        "ed": ("eda", "s6_eda", "A"),
-        "fi": ("final", "s7_final", "B"),
-    }
-    if job is not None:
-        out = MODULS[job]  # type: ignore
+def get_moduls(job_dir: str, pat: str) -> list[str]:
+    """Get the list of modules in the given directory with the pattern.
+
+    Args:
+        job_dir (str): Job directory.
+        pat (str): File pattern to use.
+
+    Raises:
+        NotADirectoryError: Invalid directory.
+        ValueError: The job directory is empty.
+
+    Returns:
+        list[str]: The modules to process.
+    """
+    wd = Path(__file__).parent.joinpath(job_dir)
+    if wd.exists():
+        files = [item for item in wd.iterdir() if item.is_file()]
     else:
-        out = MODULS  # type: ignore
+        raise NotADirectoryError(f"Invalid path\n{wd}")
+    moduls = sorted([fn.stem for fn in files if re.match(pat, fn.name)])
+    if not len(moduls):
+        raise ValueError(f"No module found in\n{wd}")
+    return moduls
+
+
+def get_jobs(jobs: list[str] | None = None) -> dict[str, Job]:
+    """Get the jobs' fixed specs.
+
+    Args:
+        jobs (list[str] | None, optional): List of jobs. Defaults to None.
+
+    Returns:
+        dict[str, Job]: Dictionnary of jobs.
+    """
+    all_jobs = {
+        "ex": Job(
+            name="Extract", suffix="extr", job_dir="s1_extr", emo="\u2728", song="C"
+        ),
+        "tr": Job(
+            name="Transform",
+            suffix="transf",
+            job_dir="s2_transf",
+            emo="\u2728",
+            song="D",
+        ),
+        "lo": Job(
+            name="Load", suffix="load", job_dir="s3_load", emo="\u2728", song="E"
+        ),
+        "ra": Job(name="Raw", suffix="raw", job_dir="s4_raw", emo="\u2728", song="F"),
+        "pp": Job(
+            name="Preprocess",
+            suffix="pproc",
+            job_dir="s5_pproc",
+            emo="\u2728",
+            song="G",
+        ),
+        "ed": Job(name="EDA", suffix="eda", job_dir="s6_eda", emo="\u2728", song="A"),
+        "fi": Job(
+            name="Final", suffix="final", job_dir="s7_final", emo="\u2728", song="B"
+        ),
+    }
+    if jobs is not None:
+        out = {key: all_jobs[key] for key in jobs}
+    else:
+        out = all_jobs
     return out
 
 
-def run_job(job: str, pat: str | None = None, is_silent: bool = False) -> int:
-    """Execute a single job."""
-    specs = get_specs(job=job)
-    pat = get_pattern(suffix=specs[0], pat=pat)
-    n = run_modul(dir=specs[1], pat=pat)
-    if not is_silent:
-        play_note(song=specs[2])
-    return n
-
-
-def get_jobs(jobs: str) -> list[str]:
-    """Get the oredered list of jobs."""
-    jobs_list = get_specs().keys()
+def get_jobs_todo(jobs: str) -> list[str]:
+    """Get the ordered list of jobs."""
+    # jobs_list = specs().keys()
+    jobs_list = get_jobs().keys()
 
     # remove all whitspace, tab, newline, etc
     jobs = re.sub(r"\s+", "", jobs)
@@ -109,10 +155,38 @@ def get_jobs(jobs: str) -> list[str]:
     return jobs_todo
 
 
-def main(jobs: str, pat: str | None = None) -> int:
-    jobs_todo = get_jobs(jobs=jobs)
-    print_msg(f"Processing {len(jobs)} jobs_todo \u2026", type="process")
+def get_jobs_specs(jobs: str, pat: str | None = None) -> dict[str, Job]:
+    """Get the specs for the jobs todo.
+
+    Args:
+        jobs (str): String of jobs to do.
+        pat (str | None, optional): Regex pattern. Defaults to None.
+
+    Returns:
+        dict[str, Job]: Dictionnary of job specs.
+    """
+    jobs_todo = get_jobs_todo(jobs=jobs)
+    jobs_specs = get_jobs(jobs=jobs_todo)
+    print_msg(f"Processing {len(jobs_todo)} jobs \u2026", type="process")
+    # populate the job with pattern and file names
+    for _, specs in jobs_specs.items():
+        pat_regx = get_pattern(suffix=specs.suffix, pat=pat)
+        specs.pattern = pat_regx
+        moduls = get_moduls(job_dir=specs.job_dir, pat=specs.pattern)
+        specs.moduls = moduls
+        # pprint(specs)
+    return jobs_specs
+
+
+def main(jobs: str, pat: str | None = None, is_silent: bool = True) -> int:
+    jobs_specs = get_jobs_specs(jobs=jobs, pat=pat)
+    moduls_count = sum([len(x.moduls) for x in jobs_specs.values()])
+    print_msg(f"Processing {moduls_count} modules \u2026", type="process")
     n: int = 0
-    for job in jobs_todo:
-        n += run_job(job=job, pat=pat)
+    for specs in jobs_specs.values():
+        msg = f"Run the {specs.name} modules. {specs.emo}"
+        print_msg(msg, type="process")
+        n += run_modul(job_dir=specs.job_dir, names=specs.moduls)
+        if not is_silent:
+            play_note(song=specs.song)
     return n
