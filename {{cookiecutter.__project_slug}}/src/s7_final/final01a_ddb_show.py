@@ -10,6 +10,14 @@ duckdb_path = settings.duck_db.fn
 
 
 def main(is_skipped: bool = True) -> int:
+    """Main function.
+
+    Args:
+        is_skipped (bool, optional): Skip this module if True. Defaults to False.
+
+    Returns:
+        int: Return an integer on the status.
+    """
     if is_skipped:
         msg = f"{__file__} is skipped."
         warnings.warn(msg, category=UserWarning)

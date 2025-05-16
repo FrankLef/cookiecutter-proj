@@ -12,6 +12,7 @@ path_reports = settings.paths.data_reports
 
 
 def get_xprt():
+    """Define the dictionary of files to export."""
     out = {
         "transf": {"path": path_transf, "files": ("dendo.png", "hclus_var.html")},
         "raw": {
@@ -28,6 +29,14 @@ def get_xprt():
 
 
 def main(is_skipped: bool = True) -> int:
+    """Main function.
+
+    Args:
+        is_skipped (bool, optional): Skip this module if True. Defaults to False.
+
+    Returns:
+        int: Return an integer on the status.
+    """
     if is_skipped:
         warnings.warn(f"{__name__} is skipped.", category=UserWarning)
         return 0

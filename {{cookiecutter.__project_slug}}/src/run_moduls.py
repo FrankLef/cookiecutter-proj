@@ -1,4 +1,4 @@
-"""Run the modules in the src folder dynamically."""
+"""Run the modules in the `src` folder dynamically."""
 
 from importlib import import_module
 from pathlib import Path

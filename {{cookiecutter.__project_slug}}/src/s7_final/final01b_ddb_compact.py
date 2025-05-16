@@ -21,6 +21,7 @@ temp_path = duckdb_path.with_name("temp.duckdb")
 
 
 def copy_db():
+    """Copy the database."""
     try:
         temp_path.unlink()
     except FileNotFoundError:
@@ -36,18 +37,28 @@ def copy_db():
 
 
 def ren_db():
+    """Rename the database."""
     new_path = temp_path.with_name(duckdb_path.name)
     duckdb_path.unlink()
     temp_path.replace(new_path)
 
 
 def test_db(tbl: str = "trialbal"):
+    """Test the compacted database."""
     with duckdb.connect(duckdb_path) as conn:
         data = conn.sql("DESCRIBE TABLES").fetchall()
         print(f"{len(data)} tables in '{duckdb_path.name}'.")
 
 
 def main(is_skipped: bool = False):
+    """Main function.
+
+    Args:
+        is_skipped (bool, optional): Skip this module if True. Defaults to False.
+
+    Returns:
+        int: Return an integer on the status.
+    """
     if is_skipped:
         msg = f"{__name__} is skipped."
         warnings.warn(msg, category=UserWarning)
