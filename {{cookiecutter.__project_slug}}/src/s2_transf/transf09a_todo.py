@@ -1,4 +1,4 @@
-"""TODO `transf`"""
+"""TODO `transf`."""
 
 import warnings
 import src.s0_helpers.richtools as rt

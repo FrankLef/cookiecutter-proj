@@ -1,4 +1,4 @@
-"""Show database info"""
+"""Show database info."""
 
 import warnings
 import duckdb as ddb

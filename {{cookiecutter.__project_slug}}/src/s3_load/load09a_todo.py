@@ -1,4 +1,4 @@
-"""TODO `load`"""
+"""TODO `load`."""
 
 import warnings
 import src.s0_helpers.richtools as rt

@@ -1,4 +1,4 @@
-"""Compacting duckdb database by copying"""
+"""Compacting duckdb database by copying."""
 
 # source:
 # https://duckdb.org/docs/operations_manual/footprint_of_duckdb/reclaiming_space
