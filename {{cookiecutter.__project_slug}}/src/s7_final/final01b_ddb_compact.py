@@ -4,20 +4,17 @@
 # https://duckdb.org/docs/operations_manual/footprint_of_duckdb/reclaiming_space
 import warnings
 import duckdb
-import sys
-from pathlib import Path
-
-src_path = Path(__file__).parent
-if src_path not in sys.path:
-    sys.path.insert(0, str(src_path))
-proj_path = Path(__file__).parents[1]
-if proj_path not in sys.path:
-    sys.path.insert(0, str(proj_path))
+# import sys
+# from pathlib import Path
 
 from config import settings  # noqa:E402
 
 duckdb_path = settings.duckdb
-temp_path = duckdb_path.with_name("temp.duckdb")
+try:
+    temp_path = duckdb_path.joinpath("temp.duckdb")
+except AttributeError:
+    msg = "temp path is str type because the duckdb path is invalid."
+    raise AttributeError(msg)
 
 
 def copy_db():
@@ -50,7 +47,7 @@ def test_db(tbl: str = "trialbal"):
         print(f"{len(data)} tables in '{duckdb_path.name}'.")
 
 
-def main(is_skipped: bool = False):
+def main(is_skipped: bool = True):
     """Main function.
 
     Args:
