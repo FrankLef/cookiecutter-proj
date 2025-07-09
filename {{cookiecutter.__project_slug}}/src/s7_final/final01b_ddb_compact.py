@@ -16,7 +16,7 @@ if proj_path not in sys.path:
 
 from config import settings  # noqa:E402
 
-duckdb_path = Path(settings.duck_db.fn)
+duckdb_path = settings.duckdb
 temp_path = duckdb_path.with_name("temp.duckdb")
 
 
