@@ -1,4 +1,3 @@
-"""Configuration settings used by dynaconf"""
 from dynaconf import Dynaconf  # type: ignore
 from pathlib import Path
 
@@ -13,13 +12,16 @@ settings = Dynaconf(
 project_path = Path(__file__).parent.absolute()
 settings.paths = {
     "data": project_path.joinpath("data"),
-    "data_temp": project_path.joinpath("data", "d0_temp"),
-    "data_extr": project_path.joinpath("data", "d1_extr"),
-    "data_transf": project_path.joinpath("data", "d2_transf"),
-    "data_load": project_path.joinpath("data", "d3_load"),
-    "data_raw": project_path.joinpath("data", "d4_raw"),
-    "data_pproc": project_path.joinpath("data", "d5_pproc"),
-    "data_eda": project_path.joinpath("data", "d6_eda"),
-    "data_final": project_path.joinpath("data", "d7_final"),
-    "data_reports": project_path.joinpath("reports", "data"),
+    "duckdb": project_path.joinpath("data", settings.duckdb),
+    "data_temp": project_path.joinpath("data", settings.dpaths.temp),
+    "data_extr": project_path.joinpath("data", settings.dpaths.extr),
+    "data_transf": project_path.joinpath("data", settings.dpaths.transf),
+    "data_load": project_path.joinpath("data", settings.dpaths.load),
+    "data_raw": project_path.joinpath("data", settings.dpaths.raw),
+    "data_pproc": project_path.joinpath("data", settings.dpaths.pproc),
+    "data_eda": project_path.joinpath("data", settings.dpaths.eda),
+    "data_final": project_path.joinpath("data", settings.dpaths.final),
+    "reports": project_path.joinpath("reports"),
+    "reports_data": project_path.joinpath("reports", "data"),
+    "reports_figs": project_path.joinpath("reports", "figs"),
 }

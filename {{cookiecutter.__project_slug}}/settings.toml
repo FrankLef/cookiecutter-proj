@@ -1,7 +1,23 @@
-tdict = "tdict.xlsx"
+duckdb = "db_todo.duckdb"
+
+[tdict]
+tdict_xl = "tdict.xlsx"
+
+[ddict]
+xbr_xl = "ddict_xbr.xlsx"
 
 [db]
 fn = "C:/Users/Public/MyAcctg/xbrl/db_xbr.accdb"
 
 [raw_db]
 fn = "C:/Users/Public/MyAcctg/xbrl/db_xbr.accdb"
+
+[dpaths]
+temp = "d0_temp"
+extr = "d1_extr"
+transf = "d2_transf"
+load = "d3_load"
+raw = "d4_raw"
+pproc = "d5_pproc"
+eda = "d6_eda"
+final = "d7_final"
