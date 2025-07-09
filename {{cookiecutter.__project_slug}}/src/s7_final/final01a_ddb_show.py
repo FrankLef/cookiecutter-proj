@@ -6,7 +6,7 @@ import src.s0_helpers.richtools as rt
 
 from config import settings
 
-duckdb_path = settings.duckdb.fn
+duckdb_path = settings.duckdb
 
 
 def main(is_skipped: bool = True) -> int:
