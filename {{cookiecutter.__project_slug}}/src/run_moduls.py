@@ -44,9 +44,12 @@ def run_modul(job_dir: str, names: list[str]) -> int:
         print_modul(modul)
         try:
             n += modul.main()
-        except TypeError:
-            msg = f"The return value from '{nm}' must be an integer."
-            raise TypeError(msg)
+        except TypeError as e:
+            msg = f"""
+            The return value from '{nm}' must be an integer.
+            {e}
+            """
+            raise Exception(msg) from e
     return n
 
 
