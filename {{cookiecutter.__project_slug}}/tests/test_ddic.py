@@ -35,24 +35,23 @@ def dictbl1(dic1):
     return out
 
 
-@pytest.mark.parametrize(
-    "table_nm, expected", [["tbl1", 3], ["tbl1 ", 3], ["", 6], [None, 6], ["X", 0]]
-)
-def test_has_table(dictbl1, table_nm, expected):
-    the_lines = [x for x in dictbl1.lines if x.has_table(table_nm)]
-    assert len(the_lines) == expected
+def test_lines(dictbl1):
+    a_line = dictbl1.lines[0]
+    assert isinstance(a_line,TestDicLine)
 
 
-@pytest.mark.parametrize("rule, expected", [["pk", 2], ["nn", 2], ["", 6], [None, 6]])
-def test_has_rule(dictbl1, rule, expected):
-    the_lines = [x for x in dictbl1.lines if x.has_rule(rule)]
-    assert len(the_lines) == expected
-
-
-@pytest.mark.parametrize("role, expected", [["ts", 2], ["log", 1], ["", 6], [None, 6]])
-def test_has_role(dictbl1, role, expected):
-    the_lines = [x for x in dictbl1.lines if x.has_role(role)]
-    assert len(the_lines) == expected
+@pytest.mark.parametrize("txt, target, expected", [
+    ["tbl", "tbl", True],
+    ["tbl", "", False],
+    ["", "tbl", True],
+    ["", "", True],
+    ["val1", "val1,val2", True],
+    ["val3", "val1,val2", False]
+])
+def test_check_txt(dictbl1, txt, target, expected):
+    a_line = dictbl1.lines[0]
+    out = a_line.check_txt(txt=txt, target=target)
+    assert out == expected
 
 
 @pytest.mark.parametrize(
