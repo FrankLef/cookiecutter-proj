@@ -38,6 +38,8 @@ class TDicTable(dic.IDicTable):
                 raw_dtype=row.raw_dtype,
                 dtype=row.dtype,
                 activ=row.activ,
+                rules=row.rules,
+                roles=row.roles,
                 desc=row.desc,
                 note=row.note,
                 path=row.path,
@@ -50,7 +52,6 @@ class TDicTable(dic.IDicTable):
                 left2=row.left2,
                 right2=row.right2,
             )
-            line.read_roles(row.roles)
             self.add(line)
 
 

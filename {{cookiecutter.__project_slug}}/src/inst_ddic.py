@@ -28,10 +28,11 @@ class DDicTable(dic.IDicTable):
                 raw_dtype=row.raw_dtype,
                 dtype=row.dtype,
                 activ=row.activ,
+                rules=row.rules,
+                roles=row.roles,
                 desc=row.desc,
                 note=row.note,
             )
-            line.read_roles(row.roles)
             self.add(line)
 
 

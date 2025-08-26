@@ -21,7 +21,7 @@ def data_path():
 
 @pytest.fixture
 def dic1() -> pd.DataFrame:
-    df = pd.read_json("tests/fixtures/dic1.json")
+    df = pd.read_json("tests/fixtures/ddic1.json")
     return df
 
 
