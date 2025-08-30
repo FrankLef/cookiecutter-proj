@@ -7,10 +7,10 @@ tdict_xl = "tdict.xlsx"
 xbr_xl = "ddict_xbr.xlsx"
 
 [db]
-fn = "C:/Users/Public/MyAcctg/xbrl/db_xbr.accdb"
+xbr = "C:/Users/Public/MyAcctg/xbrl/db_xbr.accdb"
 
 [raw_db]
-fn = "C:/Users/Public/MyAcctg/xbrl/db_xbr.accdb"
+xbr = "C:/Users/Public/MyAcctg/xbrl/db_xbr.accdb"
 
 [dpaths]
 temp = "d0_temp"

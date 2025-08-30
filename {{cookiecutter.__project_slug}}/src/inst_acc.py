@@ -1,21 +1,20 @@
 """Instantiate a connection to a MS Access database."""
 
 from pathlib import Path
-from typing import Any
 
 from config import settings
 
-from src.s0_helpers import connect_acc
+from src.s0_helpers import connect_acc as acc
 
 
-def main(db_choice: str) -> tuple[Any, Path]:
+def main(db_choice: str) -> tuple[acc.ConnectAcc, Path]:
     match db_choice:
         case "db":
-            path = Path(settings.acc_db.fn)
+            path = Path(settings.db.xbr)
         case "raw":
-            path = Path(settings.acc_raw_db.fn)
+            path = Path(settings.raw_db.xbr)
         case _:
             msg: str = f"'{db_choice}' is an invalid db choice for accdb_conn."
             raise ValueError(msg)
-    conn = connect_acc.ConnectAcc(path=path)
+    conn = acc.ConnectAcc(path=path)
     return (conn, path)

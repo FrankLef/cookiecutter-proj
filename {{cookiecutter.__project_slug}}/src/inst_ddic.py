@@ -9,7 +9,6 @@ import src.s0_helpers.cls.dic as dic
 
 data_path = settings.paths.data
 xbr_xl = settings.ddict.xbr_xl
-ref_xl = settings.ddict.ref_xl
 
 
 @dataclass
@@ -38,7 +37,7 @@ class DDicTable(dic.IDicTable):
 
 def main(name: str) -> DDicTable:
     SHEET: Final[str] = "data"
-    the_sources = {"xbr": xbr_xl, "ref": ref_xl}
+    the_sources = {"xbr": xbr_xl, "main": None}
     try:
         fn = the_sources[name]
     except KeyError:
