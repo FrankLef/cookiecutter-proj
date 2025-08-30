@@ -9,7 +9,8 @@ import duckdb
 
 from config import settings  # noqa:E402
 
-duckdb_path = settings.duckdb
+duckdb_path = settings.paths.duckdb
+
 try:
     temp_path = duckdb_path.joinpath("temp.duckdb")
 except AttributeError:
