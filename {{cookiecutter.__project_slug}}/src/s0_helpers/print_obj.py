@@ -26,5 +26,8 @@ class PrintObj:
                 elif isinstance(obj,GT):
                     obj.write_raw_html(path_fn)
                 else:
-                    msg=f"Cannot handle object of type '{type(obj)}'"
+                    msg: str=f"Cannot handle object of type '{type(obj)}'"
                     raise TypeError(msg)
+        else:
+            if not obj:
+                raise AssertionError(f"Object of type '{type(obj)}' is empty.")
