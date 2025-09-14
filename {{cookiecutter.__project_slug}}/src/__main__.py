@@ -2,13 +2,15 @@
 
 import typer
 
-from .run_moduls import main as run_cmd
+from .workflow import WorkFlow
 
 app = typer.Typer()
 
+workflow = WorkFlow()
+
 
 @app.command()
-def pipe(jobs: str, pat: str | None = None) -> int:
+def pipe(jobs: str, pat: str | None = None) -> None:
     """Run a pipe of commands.
 
     The `jobs` argument is a comma-separated string with the job's id. Job ids must be one of 'ex', 'tr', 'lo', 'ra', 'pp', 'ed', 'fi'. For example, you can use 'ex,tr' for 'extract' then 'transform'. The order does not matter.
@@ -21,12 +23,11 @@ def pipe(jobs: str, pat: str | None = None) -> int:
     Returns:
         int: The sum of all the integers returned by the jobs.
     """
-    n = run_cmd(jobs=jobs, pat=pat)
-    return n
+    workflow.execute(jobs_args=jobs, pat=pat)
 
 
 @app.command()
-def all(pat: str | None = None) -> int:
+def all(pat: str | None = None) -> None:
     """Run all modules.
 
     Args:
@@ -36,8 +37,7 @@ def all(pat: str | None = None) -> int:
         int: Integer returned by the process.
     """
     jobs = "ex,tr,lo,ra,pp,ed,fi"
-    n = run_cmd(jobs=jobs, pat=pat)
-    return n
+    workflow.execute(jobs_args=jobs, pat=pat)
 
 
 if __name__ == "__main__":
