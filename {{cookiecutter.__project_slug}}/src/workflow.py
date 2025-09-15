@@ -113,6 +113,7 @@ class WorkFlow:
         self.load()
         self._pat = pat
         self.parse_jobs(jobs_args)
+        self.sequence_jobs()
         self.run_jobs()
 
     def parse_jobs(self, jobs_args: str) -> None:
@@ -123,29 +124,35 @@ class WorkFlow:
             raise ValueError(msg)
         jobs_clean = jobs.lower().split(sep=",")
         jobs_clean = [x[:2] for x in jobs_clean]
-        jobs_names = set(jobs_clean)
-        if not len(jobs_names):
+        jobs_todo = set(jobs_clean)
+        if not len(jobs_todo):
             msg = f"No jobs obtained from '{jobs_args}'."
             raise AssertionError(msg)
-        self._jobs_names = jobs_names
+        self._jobs_todo = jobs_todo
+
+    def sequence_jobs(self) -> None:
+        jobs_todo = self._jobs_todo
+        jobs_names = list(self.names)
+        try:
+            jobs_pos = sorted([jobs_names.index(x) for x in jobs_todo])
+        except ValueError:
+            msg: str = "A job is not in the list of available jobs."
+            raise ValueError(msg)
+        if not jobs_pos:
+            raise ValueError("No job found in the list of available jobs.")
+        jobs_sequence = [jobs_names[pos] for pos in jobs_pos]
+        self._jobs_sequence = jobs_sequence
 
     def run_jobs(self) -> None:
         root_path = self._root_path
         pat = self._pat
-        jobs_names = self._jobs_names
-        jobs_todo_nb: int = len(jobs_names)
-        jobs_done_nb: int = 0
-        for name in self.names:
-            if jobs_done_nb < jobs_todo_nb:
-                if name in jobs_names:
-                    specs = self.get(name)
-                    text = f"Run the '{specs.label}' modules. :{specs.emo}:"
-                    self.print_process(text)
-                    the_files: list[str] = specs.get_files(root_path=root_path, pat=pat)
-                    self.run_modul(job_dir=specs.dir, files=the_files)
-                    jobs_done_nb += 1
-            else:
-                break
+        jobs_sequence = self._jobs_sequence
+        for job in jobs_sequence:
+            specs = self.get(job)
+            text = f"Run the '{specs.label}' modules. :{specs.emo}:"
+            self.print_process(text)
+            the_files: list[str] = specs.get_files(root_path=root_path, pat=pat)
+            self.run_modul(job_dir=specs.dir, files=the_files)
 
     def run_modul(self, job_dir: str, files: list[str]) -> None:
         """Process the modules in the src directory with given pattern."""
