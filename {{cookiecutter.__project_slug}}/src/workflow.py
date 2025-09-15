@@ -144,6 +144,7 @@ class WorkFlow:
                     # jobs_dir: str = str(root_path.joinpath(specs.dir))
                     the_files: list[str] = specs.get_files(root_path=root_path, pat=pat)
                     self.run_modul(job_dir=specs.dir, names=the_files)
+                i += 1
             else:
                 break
 
