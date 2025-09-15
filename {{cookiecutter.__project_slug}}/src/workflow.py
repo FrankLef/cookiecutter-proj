@@ -142,15 +142,15 @@ class WorkFlow:
                     text = f"Run the '{specs.label}' modules. :{specs.emo}:"
                     self.print_process(text)
                     the_files: list[str] = specs.get_files(root_path=root_path, pat=pat)
-                    self.run_modul(job_dir=specs.dir, names=the_files)
+                    self.run_modul(job_dir=specs.dir, files=the_files)
                     jobs_done_nb += 1
             else:
                 break
 
-    def run_modul(self, job_dir: str, names: list[str]) -> None:
+    def run_modul(self, job_dir: str, files: list[str]) -> None:
         """Process the modules in the src directory with given pattern."""
-        for nm in names:
-            modul = import_module(name="." + nm, package=job_dir)
+        for a_file in files:
+            modul = import_module(name="." + a_file, package=job_dir)
             text = f"Processing '{modul.__name__}' \u2026"
             self.print_process(text)
             modul.main()
