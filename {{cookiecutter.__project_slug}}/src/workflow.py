@@ -133,10 +133,10 @@ class WorkFlow:
         root_path = self._root_path
         pat = self._pat
         jobs_names = self._jobs_names
-        n: int = len(jobs_names)
-        i: int = 0
+        jobs_todo_nb: int = len(jobs_names)
+        jobs_done_nb: int = 0
         for name in self.names:
-            if i < n:
+            if jobs_done_nb < jobs_todo_nb:
                 if name in jobs_names:
                     specs = self.get(name)
                     text = f"Run the '{specs.label}' modules. :{specs.emo}:"
@@ -144,7 +144,7 @@ class WorkFlow:
                     # jobs_dir: str = str(root_path.joinpath(specs.dir))
                     the_files: list[str] = specs.get_files(root_path=root_path, pat=pat)
                     self.run_modul(job_dir=specs.dir, names=the_files)
-                i += 1
+                    jobs_done_nb += 1
             else:
                 break
 
