@@ -141,7 +141,6 @@ class WorkFlow:
                     specs = self.get(name)
                     text = f"Run the '{specs.label}' modules. :{specs.emo}:"
                     self.print_process(text)
-                    # jobs_dir: str = str(root_path.joinpath(specs.dir))
                     the_files: list[str] = specs.get_files(root_path=root_path, pat=pat)
                     self.run_modul(job_dir=specs.dir, names=the_files)
                     jobs_done_nb += 1
