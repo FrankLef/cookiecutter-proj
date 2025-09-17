@@ -149,8 +149,7 @@ class WorkFlow:
         jobs_sequence = self._jobs_sequence
         for job in jobs_sequence:
             specs = self.get(job)
-            text = f"Run the '{specs.label}' modules. :{specs.emo}:"
-            self.print_process(text)
+            self.print_run(label=specs.label, emo=specs.emo)
             the_files: list[str] = specs.get_files(root_path=root_path, pat=pat)
             self.run_modul(job_dir=specs.dir, files=the_files)
 
@@ -158,11 +157,24 @@ class WorkFlow:
         """Process the modules in the src directory with given pattern."""
         for a_file in files:
             modul = import_module(name="." + a_file, package=job_dir)
-            text = f"Processing '{modul.__name__}' \u2026"
-            self.print_process(text)
+            self.print_process(modul.__name__)
             modul.main()
-
-    def print_process(self, text: str) -> str:
-        msg = "[gold3]" + " ".join(["\u2022", text]) + "[/gold3]"
+            self.print_complete(modul.__name__)
+            
+    def print_run(self, label:str, emo:str) -> str:
+        text = f"Run the '{label}' modules. :{emo}:"
+        msg = f"[gold3]\u2022 {text}[/gold3]"
+        rprint(msg)
+        return msg
+            
+    def print_process(self, modul_nm: str) -> str:
+        text = f"Processing '{modul_nm}' \u2026"
+        msg = f"[gold3]\u2022 {text}[/gold3]"
+        rprint(msg)
+        return msg
+    
+    def print_complete(self, modul_nm: str)-> str:
+        text = f"Completed '{modul_nm}'."
+        msg = f"[green]\u2713 {text}[/green]"
         rprint(msg)
         return msg
