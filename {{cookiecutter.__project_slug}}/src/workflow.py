@@ -37,7 +37,12 @@ class DirSpecs:
             raise NotADirectoryError(f"Invalid path\n{wd}")
         the_files = sorted([fn.stem for fn in files if re.match(full_pattern, fn.name)])
         if not len(the_files):
-            raise ValueError(f"No files found in\n{wd}")
+            msg: str = f"""
+            No module found:
+            path: {wd}
+            pattern: {full_pattern}
+            """
+            raise ValueError(msg)
         return the_files
 
 
