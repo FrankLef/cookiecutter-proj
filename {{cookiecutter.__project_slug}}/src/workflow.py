@@ -35,7 +35,7 @@ class DirSpecs:
             files = [item for item in wd.iterdir() if item.is_file()]
         else:
             raise NotADirectoryError(f"Invalid path\n{wd}")
-        the_files = sorted([fn.stem for fn in files if re.match(full_pattern, fn.name)])
+        the_files = sorted([fn.stem for fn in files if re.match(full_pattern, fn.name, flags=re.IGNORECASE)])
         if not len(the_files):
             msg: str = f"""
             No module found:
