@@ -167,19 +167,19 @@ class WorkFlow:
             self.print_complete(modul.__name__)
 
     def print_run(self, label: str, emo: str) -> str:
-        text = f"Run the '{label}' modules. :{emo}:"
+        text = f"Run the {label} modules. :{emo}:"
         msg = f"[gold3]\u2022 {text}[/gold3]"
         rprint(msg)
         return msg
 
     def print_process(self, modul_nm: str) -> str:
-        text = f"Processing [orchid]'{modul_nm}'[/orchid] \u2026"
+        text = f"Processing [orchid]{modul_nm}[/orchid]\u2026"
         msg = f"[gold3]\u2022 {text}[/gold3]"
         rprint(msg)
         return msg
 
     def print_complete(self, modul_nm: str) -> str:
-        text = f"Completed [orchid]'{modul_nm}'[/orchid]."
+        text = f"Completed [orchid]{modul_nm}[/orchid]"
         msg = f"[green]\u2713 {text}[/green]"
         rprint(msg)
         return msg
