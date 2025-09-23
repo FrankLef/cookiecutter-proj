@@ -1,5 +1,4 @@
-from dataclasses import dataclass
-from typing import Iterable, Final
+from typing import NamedTuple, Final
 from pathlib import Path
 import re
 import json
@@ -7,43 +6,14 @@ from rich import print as rprint
 from importlib import import_module
 
 
-@dataclass
-class DirSpecs:
+class DirSpecs(NamedTuple):
+    priority: int
     name: str
     label: str
     suffix: str
     dir: str
     emo: str
     song: str
-
-    def get_full_pattern(self, pat: str | None) -> str:
-        """Create the regex pattern used to filter the files."""
-        suffix = self.suffix
-        if pat is None:
-            full_pat = "^" + suffix + r".+_.*" + "[.]py$"
-        else:
-            full_pat = "^" + suffix + r".+_" + pat + "[.]py$"
-        return full_pat
-
-    def get_files(self, root_path: Path, pat: str | None) -> list[str]:
-        """Get the list of files in the folder, given a name pattern."""
-        jobs_dir = self.dir
-        full_pattern: str = self.get_full_pattern(pat=pat)
-
-        wd = root_path.joinpath(jobs_dir)
-        if wd.exists():
-            files = [item for item in wd.iterdir() if item.is_file()]
-        else:
-            raise NotADirectoryError(f"Invalid path\n{wd}")
-        the_files = sorted([fn.stem for fn in files if re.match(full_pattern, fn.name, flags=re.IGNORECASE)])
-        if not len(the_files):
-            msg: str = f"""
-            No module found:
-            path: {wd}
-            pattern: {full_pattern}
-            """
-            raise ValueError(msg)
-        return the_files
 
 
 class WorkFlow:
@@ -63,6 +33,12 @@ class WorkFlow:
     @property
     def names(self):
         return self._all_specs.keys()
+
+    def add(self, specs: DirSpecs):
+        self._all_specs[specs.name] = specs
+
+    def get(self, name: str):
+        return self._all_specs[name]
 
     def check_root_path(self, root_path: Path | None = None) -> Path:
         if not root_path:
@@ -88,17 +64,6 @@ class WorkFlow:
 
         return a_file
 
-    def add(self, dir_specs: DirSpecs):
-        self._all_specs[dir_specs.name] = dir_specs
-
-    def get(self, name: str) -> DirSpecs:
-        specs = self._all_specs[name]
-        return specs
-
-    def fetch(self, names: Iterable[str]):
-        specs = [self.get(name) for name in names]
-        return specs
-
     def load(self):
         dirs_file = self._dirs_file
         try:
@@ -109,10 +74,15 @@ class WorkFlow:
             print(msg)
         except json.JSONDecodeError:
             print(f"Invalid JSON format in\n'{dirs_file}'.")
-        dirs = data
-        for dir in dirs:
+        for dir in data:
             specs = DirSpecs(**dir)  # type: ignore
             self.add(specs)
+        # NOTE: Must sort the dictionnary by priority
+        sorted_specs = sorted(
+            self._all_specs.items(), key=lambda item: item[1].priority
+        )
+        sorted_dict_specs = dict(sorted_specs)
+        self._all_specs = sorted_dict_specs
 
     def execute(self, jobs_args: str, pat: str | None) -> None:
         self.load()
@@ -139,6 +109,7 @@ class WorkFlow:
         jobs_todo = self._jobs_todo
         jobs_names = list(self.names)
         try:
+            # NOTE: We can use index because the dictionary is sorted by priority
             jobs_pos = sorted([jobs_names.index(x) for x in jobs_todo])
         except ValueError:
             msg: str = "A job is not in the list of available jobs."
@@ -148,38 +119,89 @@ class WorkFlow:
         jobs_sequence = [jobs_names[pos] for pos in jobs_pos]
         self._jobs_sequence = jobs_sequence
 
+    def get_full_pattern(self, specs: DirSpecs, pat: str | None) -> str:
+        """Create the regex pattern used to filter the files."""
+        suffix = specs.suffix
+        if pat is None:
+            full_pat = "^" + suffix + r".+_.*" + "[.]py$"
+        else:
+            full_pat = "^" + suffix + r".+_" + pat + "[.]py$"
+        return full_pat
+
+    def get_files(self, root_path: Path, specs: DirSpecs, pat: str | None) -> list[str]:
+        """Get the list of files in the folder, given a name pattern."""
+        full_pattern: str = self.get_full_pattern(specs=specs, pat=pat)
+
+        wd = root_path.joinpath(specs.dir)
+        if wd.exists():
+            files = [item for item in wd.iterdir() if item.is_file()]
+        else:
+            raise NotADirectoryError(f"Invalid path\n{wd}")
+        the_files = sorted(
+            [
+                fn.stem
+                for fn in files
+                if re.match(full_pattern, fn.name, flags=re.IGNORECASE)
+            ]
+        )
+        if not len(the_files):
+            msg: str = f"""
+            No module found:
+            path: {wd}
+            pattern: {full_pattern}
+            """
+            raise ValueError(msg)
+        return the_files
+
     def run_jobs(self) -> None:
         root_path = self._root_path
         pat = self._pat
+
         jobs_sequence = self._jobs_sequence
         for job in jobs_sequence:
             specs = self.get(job)
-            self.print_run(label=specs.label, emo=specs.emo)
-            the_files: list[str] = specs.get_files(root_path=root_path, pat=pat)
+            self.print_run(dir=specs.dir, emo=specs.emo)
+            the_files: list[str] = self.get_files(
+                root_path=root_path, specs=specs, pat=pat
+            )
             self.run_modul(job_dir=specs.dir, files=the_files)
 
     def run_modul(self, job_dir: str, files: list[str]) -> None:
         """Process the modules in the src directory with given pattern."""
         for a_file in files:
             modul = import_module(name="." + a_file, package=job_dir)
-            self.print_process(modul.__name__)
-            modul.main()
+            self.print_process(modul_nm=modul.__name__, modul_doc=modul.__doc__)
+            try:
+                modul.main()
+            except NotImplementedError as e:
+                if str(e).lower().startswith("skip"):
+                    self.print_skip(modul.__name__)
+                else:
+                    raise
             self.print_complete(modul.__name__)
 
-    def print_run(self, label: str, emo: str) -> str:
-        text = f"Run the {label} modules. :{emo}:"
-        msg = f"[gold3]\u2022 {text}[/gold3]"
+    def print_run(self, dir: str, emo: str) -> str:
+        text = f"\n:{emo}: Running the modules in the [orchid]{dir}[/orchid] directory"
+        msg = f"[cyan]{text}[/cyan]"
         rprint(msg)
         return msg
 
-    def print_process(self, modul_nm: str) -> str:
-        text = f"Processing [orchid]{modul_nm}[/orchid]\u2026"
-        msg = f"[gold3]\u2022 {text}[/gold3]"
+    def print_process(self, modul_nm: str, modul_doc: str | None) -> str:
+        text = f"Processing [orchid]{modul_nm}[/orchid]"
+        msg = f"[cyan]\u2699  {text}[/cyan]"
+        rprint(msg)
+        if modul_doc is not None:
+            doc_msg = f"\u2139  {modul_doc}"
+            rprint(doc_msg)
+        return msg
+
+    def print_skip(self, modul_nm: str) -> str:
+        msg = f"\u26a0[yellow]  Skip [orchid]{modul_nm}[/orchid][/yellow]"
         rprint(msg)
         return msg
 
     def print_complete(self, modul_nm: str) -> str:
         text = f"Completed [orchid]{modul_nm}[/orchid]"
-        msg = f"[green]\u2713 {text}[/green]"
+        msg = f"[green]\u2705 {text}[/green]"
         rprint(msg)
         return msg

@@ -1,59 +1,63 @@
-[
-    {
-        "name":"ex",
-        "label":"Extract",
-        "suffix":"extr",
-        "dir":"s1_extr",
-        "emo":"mushroom",
-        "song":"C"
-    },
-    {
-        "name":"tr",
-        "label":"Transform",
-        "suffix":"transf",
-        "dir":"s2_transf",
-        "emo":"sunflower",
-        "song":"D"
-    },
-    {
-        "name":"lo",
-        "label":"Load",
-        "suffix":"load",
-        "dir":"s3_load",
-        "emo":"leaves",
-        "song":"E"
-    },
-    {
-        "name":"ra",
-        "label":"Raw",
-        "suffix":"raw",
-        "dir":"s4_raw",
-        "emo":"rainbow",
-        "song":"F"
-    },
-    {
-        "name":"pp",
-        "label":"Pre Processing",
-        "suffix":"pproc",
-        "dir":"s5_pproc",
-        "emo":"tulip",
-        "song":"G"
-    },
-    {
-        "name":"ed",
-        "label":"EDA",
-        "suffix":"eda",
-        "dir":"s6_eda",
-        "emo":"seedling",
-        "song":"A"
-    },
-    {
-        "name":"fi",
-        "label":"Final",
-        "suffix":"final",
-        "dir":"s7_final",
-        "emo":"hibiscus",
-        "song":"B"
-    }
-
-]
+[{
+    "priority": 1,
+    "name":"ex",
+    "label":"Extract",
+    "suffix":"extr",
+    "dir":"s1_extr",
+    "emo":"mushroom",
+    "song":"C"
+},
+{
+    "priority": 2,
+    "name":"tr",
+    "label":"Transform",
+    "suffix":"transf",
+    "dir":"s2_transf",
+    "emo":"sunflower",
+    "song":"D"
+},
+{
+    "priority": 3,
+    "name":"lo",
+    "label":"Load",
+    "suffix":"load",
+    "dir":"s3_load",
+    "emo":"leaves",
+    "song":"E"
+},
+{
+    "priority": 4,
+    "name":"ra",
+    "label":"Raw",
+    "suffix":"raw",
+    "dir":"s4_raw",
+    "emo":"rainbow",
+    "song":"F"
+},
+{
+    "priority": 5,
+    "name":"pp",
+    "label":"Pre Processing",
+    "suffix":"pproc",
+    "dir":"s5_pproc",
+    "emo":"tulip",
+    "song":"G"
+},
+{
+    "priority": 6,
+    "name":"ed",
+    "label":"EDA",
+    "suffix":"eda",
+    "dir":"s6_eda",
+    "emo":"seedling",
+    "song":"A"
+},
+{
+    "priority": 7,
+    "name":"fi",
+    "label":"Final",
+    "suffix":"final",
+    "dir":"s7_final",
+    "emo":"hibiscus",
+    "song":"B"
+}]
