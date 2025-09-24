@@ -7,6 +7,7 @@ from importlib import import_module
 
 
 class DirSpecs(NamedTuple):
+    """The directory specifications."""
     priority: int
     name: str
     label: str
@@ -17,6 +18,7 @@ class DirSpecs(NamedTuple):
 
 
 class WorkFlow:
+    """The workflow to run the modules."""
     def __init__(self, root_path: Path | None = None, dirs_file: Path | None = None):
         self._all_specs: dict[str, DirSpecs] = {}
         self._root_path = self.check_root_path(root_path)
@@ -24,23 +26,29 @@ class WorkFlow:
 
     @property
     def root_path(self) -> Path:
+        """The root_path path is where all workflow paths are located."""
         return self._root_path
 
     @property
     def dirs_file(self) -> Path:
+        """The full path to the workflow.json file."""
         return self._dirs_file
 
     @property
     def names(self):
+        """The name (key) of all the workflow directories."""
         return self._all_specs.keys()
 
     def add(self, specs: DirSpecs):
+        """Add a directory specifications to the overall dictionnary."""
         self._all_specs[specs.name] = specs
 
     def get(self, name: str):
+        """Get a directory specifications from the overall dictionnary."""
         return self._all_specs[name]
 
     def check_root_path(self, root_path: Path | None = None) -> Path:
+        """Validate the root_path."""
         if not root_path:
             a_path: Path = Path(__file__).parent
         else:
@@ -52,6 +60,7 @@ class WorkFlow:
         return a_path
 
     def check_dirs_file(self, dirs_file: Path | None = None) -> Path:
+        """Validate the path to the workflow.json file."""
         DIRS_FILE: Final[str] = "workflow.json"  # the default dirs file
 
         if not dirs_file:
@@ -65,6 +74,7 @@ class WorkFlow:
         return a_file
 
     def load(self):
+        """Load all directory specifications from the json file."""
         dirs_file = self._dirs_file
         try:
             with open(dirs_file, mode="r", encoding="utf-8") as file:
@@ -77,7 +87,8 @@ class WorkFlow:
         for dir in data:
             specs = DirSpecs(**dir)  # type: ignore
             self.add(specs)
-        # NOTE: Must sort the dictionnary by priority
+        
+        # NOTE: Must sort the dictionnary by priority.
         sorted_specs = sorted(
             self._all_specs.items(), key=lambda item: item[1].priority
         )
@@ -85,6 +96,7 @@ class WorkFlow:
         self._all_specs = sorted_dict_specs
 
     def execute(self, jobs_args: str, pat: str | None) -> None:
+        """This execute the different steps of the program."""
         self.load()
         self._pat = pat
         self.parse_jobs(jobs_args)
@@ -92,6 +104,7 @@ class WorkFlow:
         self.run_jobs()
 
     def parse_jobs(self, jobs_args: str) -> None:
+        """Parse the jobs from the CLI."""
         # remove all whitspace, tab, newline, etc
         jobs = re.sub(r"\s+", "", jobs_args)
         if not jobs:
@@ -106,10 +119,11 @@ class WorkFlow:
         self._jobs_todo = jobs_todo
 
     def sequence_jobs(self) -> None:
+        """Sequence the jobs according to the establieshed priorities."""
         jobs_todo = self._jobs_todo
         jobs_names = list(self.names)
         try:
-            # NOTE: We can use index because the dictionary is sorted by priority
+            # NOTE: We can use index because the dictionary is sorted by priority in the load function above.
             jobs_pos = sorted([jobs_names.index(x) for x in jobs_todo])
         except ValueError:
             msg: str = "A job is not in the list of available jobs."
@@ -154,6 +168,7 @@ class WorkFlow:
         return the_files
 
     def run_jobs(self) -> None:
+        """Run each job required by the user."""
         root_path = self._root_path
         pat = self._pat
 
@@ -167,7 +182,7 @@ class WorkFlow:
             self.run_modul(job_dir=specs.dir, files=the_files)
 
     def run_modul(self, job_dir: str, files: list[str]) -> None:
-        """Process the modules in the src directory with given pattern."""
+        """Process the modules in the workflow directory with given pattern."""
         for a_file in files:
             modul = import_module(name="." + a_file, package=job_dir)
             self.print_process(modul_nm=modul.__name__, modul_doc=modul.__doc__)
@@ -181,12 +196,14 @@ class WorkFlow:
             self.print_complete(modul.__name__)
 
     def print_run(self, dir: str, emo: str) -> str:
+        """Print the run message."""
         text = f"\n:{emo}: Running the modules in the [orchid]{dir}[/orchid] directory"
         msg = f"[cyan]{text}[/cyan]"
         rprint(msg)
         return msg
 
     def print_process(self, modul_nm: str, modul_doc: str | None) -> str:
+        """Print the process message."""
         text = f"Processing [orchid]{modul_nm}[/orchid]"
         msg = f"[cyan]\u2699  {text}[/cyan]"
         rprint(msg)
@@ -196,11 +213,13 @@ class WorkFlow:
         return msg
 
     def print_skip(self, modul_nm: str) -> str:
+        """Print the skip message."""
         msg = f"\u26a0[yellow]  Skip [orchid]{modul_nm}[/orchid][/yellow]"
         rprint(msg)
         return msg
 
     def print_complete(self, modul_nm: str) -> str:
+        """Print the complete message."""
         text = f"Completed [orchid]{modul_nm}[/orchid]"
         msg = f"[green]\u2705 {text}[/green]"
         rprint(msg)
