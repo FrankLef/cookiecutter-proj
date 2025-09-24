@@ -292,7 +292,6 @@ This is how the folders will be organized.
 ├── settings.toml             <- Project's settings used by `dynaconf`.
 ├── .secrets.toml             <- Secret settings used by `dynaconf`.
 ├── README.md                 <- The top-level README for developers using this project.
-├── pypath.bat                <- A batch file to set the PYTHONPATH. Optional.
 ├── data                      <- Data directories used throughout the project.
 │   ├── d0_temp               <- Temporary folder. These files can be deleted.
 │   ├── d1_raw                <- Original, immutable data.
@@ -320,6 +319,8 @@ This is how the folders will be organized.
 ├── src                       <- Store the source code.
 │   ├── __init__.py           <- The module's initialize file.
 │   ├── __main__.py           <- Main CLI entry point.
+│   ├── workflow.py           <- CLI used by __main__.py to run the modules.
+│   ├── workflow.json         <- Directory specifications. Used by workflow.py
 │   ├── s0_helpers            <- Utilities and helper codes.
 │   │   ├── __init__.py
 |   |   └── ...

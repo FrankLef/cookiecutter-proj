@@ -10,7 +10,7 @@ class DirSpecs(NamedTuple):
     priority: int
     name: str
     label: str
-    suffix: str
+    prefix: str
     dir: str
     emo: str
     song: str
@@ -121,11 +121,11 @@ class WorkFlow:
 
     def get_full_pattern(self, specs: DirSpecs, pat: str | None) -> str:
         """Create the regex pattern used to filter the files."""
-        suffix = specs.suffix
+        prefix = specs.prefix
         if pat is None:
-            full_pat = "^" + suffix + r".+_.*" + "[.]py$"
+            full_pat = "^" + prefix + r".+_.*" + "[.]py$"
         else:
-            full_pat = "^" + suffix + r".+_" + pat + "[.]py$"
+            full_pat = "^" + prefix + r".+_" + pat + "[.]py$"
         return full_pat
 
     def get_files(self, root_path: Path, specs: DirSpecs, pat: str | None) -> list[str]:
