@@ -8,6 +8,7 @@ from importlib import import_module
 
 class DirSpecs(NamedTuple):
     """The directory specifications."""
+
     priority: int
     name: str
     label: str
@@ -19,6 +20,7 @@ class DirSpecs(NamedTuple):
 
 class WorkFlow:
     """The workflow to run the modules."""
+
     def __init__(self, root_path: Path | None = None, dirs_file: Path | None = None):
         self._all_specs: dict[str, DirSpecs] = {}
         self._root_path = self.check_root_path(root_path)
@@ -87,7 +89,7 @@ class WorkFlow:
         for dir in data:
             specs = DirSpecs(**dir)  # type: ignore
             self.add(specs)
-        
+
         # NOTE: Must sort the dictionnary by priority.
         sorted_specs = sorted(
             self._all_specs.items(), key=lambda item: item[1].priority
@@ -175,7 +177,7 @@ class WorkFlow:
         jobs_sequence = self._jobs_sequence
         for job in jobs_sequence:
             specs = self.get(job)
-            self.print_run(dir=specs.dir, emo=specs.emo)
+            self.print_run(dir=specs.dir, pat=pat, emo=specs.emo)
             the_files: list[str] = self.get_files(
                 root_path=root_path, specs=specs, pat=pat
             )
@@ -195,9 +197,11 @@ class WorkFlow:
                     raise
             self.print_complete(modul.__name__)
 
-    def print_run(self, dir: str, emo: str) -> str:
+    def print_run(self, dir: str, pat:str|None, emo: str) -> str:
         """Print the run message."""
-        text = f"\n:{emo}: Running the modules in the [orchid]{dir}[/orchid] directory"
+        text: str = f"\n:{emo}: Running the modules in [orchid]{dir}[/orchid]"
+        if pat:
+            text = text + f" with pattern [orchid]{pat}[/orchid]"
         msg = f"[cyan]{text}[/cyan]"
         rprint(msg)
         return msg
