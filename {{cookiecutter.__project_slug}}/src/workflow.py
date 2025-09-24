@@ -224,7 +224,7 @@ class WorkFlow:
 
     def print_complete(self, modul_nm: str) -> str:
         """Print the complete message."""
-        text = f"Completed [orchid]{modul_nm}[/orchid]"
+        text = f"Completed [orchid]{modul_nm}[/orchid]\n"
         msg = f"[green]\u2705 {text}[/green]"
         rprint(msg)
         return msg
