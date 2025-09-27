@@ -2,8 +2,8 @@
 
 # source:
 # https://duckdb.org/docs/operations_manual/footprint_of_duckdb/reclaiming_space
-import warnings
 import duckdb
+from rich import print as rprint
 # import sys
 # from pathlib import Path
 
@@ -12,7 +12,7 @@ from config import settings  # noqa:E402
 duckdb_path = settings.paths.duckdb
 
 try:
-    temp_path = duckdb_path.joinpath("temp.duckdb")
+    temp_path = duckdb_path.with_name("temp.duckdb")
 except AttributeError:
     msg = "temp path is str type because the duckdb path is invalid."
     raise AttributeError(msg)
@@ -35,7 +35,7 @@ def copy_db():
 
 
 def ren_db():
-    """Rename the database."""
+    """Rename the database with a temporary name."""
     new_path = temp_path.with_name(duckdb_path.name)
     duckdb_path.unlink()
     temp_path.replace(new_path)
@@ -48,7 +48,7 @@ def test_db(tbl: str = "trialbal"):
         print(f"{len(data)} tables in '{duckdb_path.name}'.")
 
 
-def main(is_skipped: bool = True):
+def main(is_skipped: bool = False) -> None:
     """Main function.
 
     Args:
@@ -58,14 +58,12 @@ def main(is_skipped: bool = True):
         int: Return an integer on the status.
     """
     if is_skipped:
-        msg = f"{__name__} is skipped."
-        warnings.warn(msg, category=UserWarning)
-        return 0
-    print(f"Compacting {duckdb_path}.")
+        raise NotImplementedError(f"Skip the '{__name__}' script.")
+
+    rprint(f"Compacting {duckdb_path}.")
     copy_db()
     ren_db()
     test_db()
-    return 1
 
 
 if __name__ == "__main__":
