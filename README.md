@@ -348,7 +348,7 @@ This is how the folders will be organized.
     ├── fixtures              <- Where to put example inputs and outputs.
     │   ├── input.json        <- Test input data.
     │   └── output.json       <- Test output data.
-    ├── test_extract_acc.py   <- Test example for etl..
+    ├── test_extract_acc.py   <- Test example for etl.
     ├── test_samples.py       <- Test example to verify `pytest`.
     └── ...
 ```
