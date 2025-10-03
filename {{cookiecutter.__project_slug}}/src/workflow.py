@@ -197,7 +197,7 @@ class WorkFlow:
                     raise
             self.print_complete(modul.__name__)
 
-    def print_run(self, dir: str, pat:str|None, emo: str) -> str:
+    def print_run(self, dir: str, pat: str | None, emo: str) -> str:
         """Print the run message."""
         text: str = f"\n:{emo}: Running the modules in [orchid]{dir}[/orchid]"
         if pat:
@@ -208,8 +208,10 @@ class WorkFlow:
 
     def print_process(self, modul_nm: str, modul_doc: str | None) -> str:
         """Print the process message."""
-        text = f"Processing [orchid]{modul_nm}[/orchid]"
-        msg = f"[cyan]\u2699  {text}[/cyan]"
+        text = f"[cyan]Processing [orchid]{modul_nm}[/orchid][/cyan]"
+        # msg = f"[cyan]\u21BB  {text}[/cyan]"
+        msg = f":arrows_counterclockwise: {text}"
+        
         rprint(msg)
         if modul_doc is not None:
             doc_msg = f"\u2139  {modul_doc}"
