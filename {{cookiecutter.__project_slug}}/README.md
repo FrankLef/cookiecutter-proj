@@ -16,7 +16,7 @@ run the project modules as a pipeline in avery simple and straightforward way.
 
 The project is organised with specific directories that can be called in a
 command line interface (CLI). The structure of the directories is described
-in the [Structure](#structure) section below.
+in the **Structure** section below.
 
 The entry point is in `{{cookiecutter.__project_slug}}\src\__main__.py`.
 For help with the commands the usual `--help` option is available.
@@ -26,11 +26,11 @@ cd ..\{{cookiecutter.__project_slug}}
 python -m src --help
 ```
 
-## How to use the workflow {#work}
+## How to use the workflow
 
 **Important**: This section assumes that the default setup is in place as
-described in the [Structure](#structure) section below. It can be modified as
-described in the [Directories' Specifications](#dir-specs) below but you should
+described in the **STructure** section below. It can be modified as
+described in the **Directories' Specifications** below but you should
 start with the default.
 
 To run the modules in a given directory, for example the *s2_transf* directory,
@@ -52,10 +52,10 @@ python -m src pipe transf --pat todo
 ```
 
 We could have used any word that starts with ***tr*** and the `workflow` would
-understand it to be for the *s2_transf*. See the [Directories Identifications](#dir-id)
+understand it to be for the *s2_transf*. See the **Directories Identifications**
 for a table of the directory identifications.
 
-## How to use the workflow for a pipeline {#work-pipe}
+## How to use the workflow for a pipeline
 
 Very often, you will probably want to use several directories as in a pipeline.
 For example to run the *extract*, *transform* and *load* directories you will
@@ -66,12 +66,12 @@ cd ..\{{cookiecutter.__project_slug}}
 python -m src pipe transf,extr,load
 ```
 
-See the [Directories Identifications](#dir-id) for a table of the directory
+See the **Directories Identifications** for a table of the directory
 identifications that can be used.
 
 **The order is unimportant** because the `workflow` will always run the directories
 in the order of their given priorities as set in the ***workflow.json*** file.
-See the [Directories Specifications](*dir-specs) section below.
+See the **Directories Specifications** section below.
 
 **Only the first two characters of the directory id matter**. For example the
 following command would work like the one just mentioned previously.
@@ -83,7 +83,7 @@ python -m src pipe transform,ex,LOAD
 
 ### How to use the pattern
 
-As mentioned in [Workflow](#work) section you can use a regex pattern to run a
+As mentioned in **Workflow** section you can use a regex pattern to run a
 specific file. For example
 
 ```console
@@ -97,8 +97,7 @@ in its name.
 If you use `--pat todo` with several directories in a pipeline, the pattern
 will be applied to all directories in the pipeline.
 
-
-### Directories Identifications {#dir-id}
+### Directories Identifications
 
 The task id are 2-letter words used to identify a task.  If a longer word is
 used, only the first 2 letters will be used. The **table of task id** is
@@ -113,10 +112,10 @@ used, only the first 2 letters will be used. The **table of task id** is
 |***ed***|6|`eda`|E.D.A.
 |***fi***|7|`final`|Finalize
 
-### Sructure {#structure}
+### Sructure
 
 Thie is the default structure of the project. It can be modified in which case
-the ***workflow.json*** file must be changed. See the [json](#dir-specs)
+the ***workflow.json*** file must be changed. See the json file in **Directories Specifications**.
 
 ```text
 {{cookiecutter.__project_slug}}
@@ -191,7 +190,7 @@ the ***workflow.json*** file must be changed. See the [json](#dir-specs)
     └── ...
 ```
 
-### Directories Specifications {#dir-specs}
+### Directories Specifications
 
 The directories' attributes are described in the ***workflow.json*** where every
 directory has the following attributes:
