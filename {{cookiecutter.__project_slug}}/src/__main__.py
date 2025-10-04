@@ -2,7 +2,7 @@
 
 import typer
 
-from .workflow import WorkFlow
+from ._workflow.workflow import WorkFlow
 
 app = typer.Typer()
 

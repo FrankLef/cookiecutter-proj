@@ -53,7 +53,7 @@ class WorkFlow:
     def check_root_path(self, root_path: Path | None = None) -> Path:
         """Validate the root_path."""
         if not root_path:
-            a_path: Path = Path(__file__).parent
+            a_path: Path = Path(__file__).parents[1]
         else:
             a_path = root_path
 
@@ -83,8 +83,11 @@ class WorkFlow:
         self.parse_jobs(jobs_args)
         self.sequence_jobs()
         self.run_jobs()
-        winsound.MessageBeep(winsound.MB_ICONASTERISK)
-        # winsound.Beep(1000, 500) # Plays a 1000Hz beep for 500ms
+        # WAV_FILE:Final[str]= "achievement-bell-600.wav"
+        # sound_file: Path = Path(__file__).parent.joinpath(WAV_FILE)
+        # winsound.PlaySound(str(sound_file), flags=winsound.SND_FILENAME)
+        # winsound.MessageBeep(winsound.MB_ICONASTERISK)
+        winsound.Beep(440, 500)
         
     def load(self):
         """Load all directory specifications from the json file."""
