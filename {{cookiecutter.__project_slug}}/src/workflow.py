@@ -4,6 +4,7 @@ import re
 import json
 from rich import print as rprint
 from importlib import import_module
+import winsound
 
 
 class DirSpecs(NamedTuple):
@@ -104,6 +105,8 @@ class WorkFlow:
         self.parse_jobs(jobs_args)
         self.sequence_jobs()
         self.run_jobs()
+        winsound.MessageBeep(winsound.MB_ICONASTERISK)
+        # winsound.Beep(1000, 500) # Plays a 1000Hz beep for 500ms
 
     def parse_jobs(self, jobs_args: str) -> None:
         """Parse the jobs from the CLI."""
@@ -211,7 +214,7 @@ class WorkFlow:
         text = f"[cyan]Processing [orchid]{modul_nm}[/orchid][/cyan]"
         # msg = f"[cyan]\u21BB  {text}[/cyan]"
         msg = f":arrows_counterclockwise: {text}"
-        
+
         rprint(msg)
         if modul_doc is not None:
             doc_msg = f"\u2139  {modul_doc}"
