@@ -76,6 +76,16 @@ class WorkFlow:
 
         return a_file
 
+    def execute(self, jobs_args: str, pat: str | None) -> None:
+        """This execute the different steps of the program."""
+        self.load()
+        self._pat = pat
+        self.parse_jobs(jobs_args)
+        self.sequence_jobs()
+        self.run_jobs()
+        winsound.MessageBeep(winsound.MB_ICONASTERISK)
+        # winsound.Beep(1000, 500) # Plays a 1000Hz beep for 500ms
+        
     def load(self):
         """Load all directory specifications from the json file."""
         dirs_file = self._dirs_file
@@ -97,16 +107,6 @@ class WorkFlow:
         )
         sorted_dict_specs = dict(sorted_specs)
         self._all_specs = sorted_dict_specs
-
-    def execute(self, jobs_args: str, pat: str | None) -> None:
-        """This execute the different steps of the program."""
-        self.load()
-        self._pat = pat
-        self.parse_jobs(jobs_args)
-        self.sequence_jobs()
-        self.run_jobs()
-        winsound.MessageBeep(winsound.MB_ICONASTERISK)
-        # winsound.Beep(1000, 500) # Plays a 1000Hz beep for 500ms
 
     def parse_jobs(self, jobs_args: str) -> None:
         """Parse the jobs from the CLI."""
