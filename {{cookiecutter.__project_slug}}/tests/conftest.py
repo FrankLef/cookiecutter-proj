@@ -41,3 +41,23 @@ def df1a():
 def df2():
     df = pd.read_json("tests/fixtures/df2.json")
     return df
+
+
+@pytest.fixture
+def cleanfeat_df():
+    df = pd.read_json("tests/fixtures/cleanfeat.json")
+    return df
+
+
+@pytest.fixture
+def xbr1():
+    with open("tests/fixtures/xbr1.json", "r") as file:
+        data_dict = json.load(file)
+    return data_dict
+
+
+@pytest.fixture
+def xbr2():
+    with open("tests/fixtures/xbr2.json", "r") as file:
+        data_dict = json.load(file)
+    return data_dict

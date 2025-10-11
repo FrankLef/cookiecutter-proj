@@ -1,11 +1,51 @@
-from abc import ABC
+from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Iterable
+import re
+
+
+@dataclass(frozen=True)
+class IXbrAttr(ABC):
+    name: str
+    role: str | None = None
+    rule: str | None = None
 
 
 @dataclass(frozen=True)
 class IXbrTbl(ABC):
     name: str
+
+    @property
+    @abstractmethod
+    def attrs(self):
+        pass
+
+    def get_role(self, name: str) -> str | list[str]:
+        out = []
+        for attr in self.attrs:
+            # print("pattern:", rf"\b{name}\b", "role:", attr.role)
+            if attr.role:
+                a_match = re.search(pattern=rf"\b{name}\b", string=attr.role)
+                if a_match is not None:
+                    out.append(attr.name)
+        if not len(out):
+            msg: str = f"No item found for role '{name}'."
+            raise KeyError(msg)
+        out = out[0] if len(out) == 1 else out
+        return out
+
+    def get_rule(self, name: str) -> str | list[str]:
+        out = []
+        for attr in self.attrs:
+            if attr.rule:
+                a_match = re.search(pattern=rf"\b{name}\b", string=attr.rule)
+                if a_match is not None:
+                    out.append(attr.name)
+        if not len(out):
+            msg: str = f"No item found for rule '{name}'."
+            raise KeyError(msg)
+        out = out[0] if len(out) == 1 else out
+        return out
 
 
 @dataclass(frozen=True)
