@@ -24,6 +24,7 @@ class IXbrTbl(ABC):
         out=[x for x in self.attrs if x.name in names]
         if not len(out):
             raise AssertionError(f"No attributes available for {names}")
+        out = out[0] if len(out) == 1 else out
         return out
 
     def get_role(self, name: str) -> str | list[str]:
