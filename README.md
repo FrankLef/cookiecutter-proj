@@ -319,8 +319,13 @@ This is how the folders will be organized.
 ├── src                       <- Store the source code.
 │   ├── __init__.py           <- The module's initialize file.
 │   ├── __main__.py           <- Main CLI entry point.
-│   ├── workflow.py           <- CLI used by __main__.py to run the modules.
-│   ├── workflow.json         <- Directory specifications. Used by workflow.py
+│   ├── _registry             <- Values, instantiated classes, shared by all modules.
+│   │   ├── registry.py       <- Values shared by all modules. Equivalent to a singleton.
+|   |   └── ...
+│   ├── _workflow             <- CLI used by __main__.py to run the modules.
+│   │   ├── workflow.py       <- Main module used by the CLI.
+|   |   ├── workflow.json     <- File with data used by the CLI.
+|   |   └── ...
 │   ├── s0_helpers            <- Utilities and helper codes.
 │   │   ├── __init__.py
 |   |   └── ...
