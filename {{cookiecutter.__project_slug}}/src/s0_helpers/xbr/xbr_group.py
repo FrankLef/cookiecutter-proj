@@ -19,6 +19,12 @@ class IXbrUnit(ABC):
     @abstractmethod
     def attrs(self):
         pass
+    
+    def get_attrs(self,names:list[str]):
+        out=[x for x in self.attrs if x.name in names]
+        if not len(out):
+            raise AssertionError(f"No attributes available for {names}")
+        return out
 
     def get_role(self, name: str) -> str | list[str]:
         out = []
