@@ -1,12 +1,10 @@
 """Test the graphics classes."""
 
 import pytest
-import src.s0_helpers.cls.graphics as gr
+from src.s0_helpers.graphics.titles import ITitles
 
 
-class TestTitle(gr.ITitles):
-    title_geom = gr.BaseGeom(color="navy", size=12, shape="DejaVu Sans")
-    subtitle_geom = gr.BaseGeom(color="navy", size=12, shape="DejaVu Sans")
+class TestTitle(ITitles):
 
     def write_title(self, text: str | None = None):
         self.title = text
