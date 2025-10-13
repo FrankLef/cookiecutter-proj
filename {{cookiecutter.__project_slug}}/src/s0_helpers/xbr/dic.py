@@ -34,13 +34,19 @@ class IDicLine(ABC):
             else:
                 out = False
         return out
-    
-    def is_select(self, table_nm: str | None = None,rule: str | None = None,role: str | None = None)->bool:
-        out: bool = ((self.check_txt(txt=table_nm, target=self.table_nm) and
-        self.check_txt(txt=rule, target=self.rules)) and
-        self.check_txt(txt=role, target=self.roles))
+
+    def is_select(
+        self,
+        table_nm: str | None = None,
+        rule: str | None = None,
+        role: str | None = None,
+    ) -> bool:
+        out: bool = (
+            self.check_txt(txt=table_nm, target=self.table_nm)
+            and self.check_txt(txt=rule, target=self.rules)
+        ) and self.check_txt(txt=role, target=self.roles)
         return out
-    
+
 
 class IDicTable(ABC):
     def __init__(self, name: str):
@@ -77,10 +83,11 @@ class IDicTable(ABC):
         role: str | None = None,
         is_activ_only: bool = True,
     ) -> list[IDicLine]:
-        the_lines = [x for x in self.lines if x.is_select(table_nm=table_nm,rule=rule,role=role)]
-        # the_lines = [x for x in self.lines if x.has_table(table_nm)]
-        # the_lines = [x for x in the_lines if x.has_rule(rule)]
-        # the_lines = [x for x in the_lines if x.has_role(role)]
+        the_lines = [
+            x
+            for x in self.lines
+            if x.is_select(table_nm=table_nm, rule=rule, role=role)
+        ]
         if is_activ_only:
             the_lines = [x for x in the_lines if x.activ]
         return the_lines

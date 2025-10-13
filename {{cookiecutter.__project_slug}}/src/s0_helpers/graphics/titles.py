@@ -1,19 +1,5 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from abc import ABC, abstractmethod
-
-
-@dataclass
-class BaseGeom:
-    color: str | None = None
-    size: float | None = None
-    shape: str | None = None
-
-
-@dataclass
-class BaseFmt:
-    scale: float = 1
-    decimals: int = 2
-    mask: str = "{:,.2f}"
 
 
 @dataclass
@@ -23,12 +9,6 @@ class ITitles(ABC):
     x: str | None = None
     y: str | None = None
     z: str | None = None
-    title_geom: BaseGeom = field(
-        default_factory=lambda: BaseGeom(color="navy", size=12, shape="DejaVu Sans")
-    )
-    subtitle_geom: BaseGeom = field(
-        default_factory=lambda: BaseGeom(color="navy", size=10, shape="DejaVu Sans")
-    )
 
     @staticmethod
     def write_html(

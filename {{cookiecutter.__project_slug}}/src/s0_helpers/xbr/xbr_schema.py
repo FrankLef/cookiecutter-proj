@@ -19,15 +19,16 @@ class IXbrTbl(ABC):
     @abstractmethod
     def attrs(self):
         pass
-    
-    def get_attrs(self,names:list[str]):
-        out=[x for x in self.attrs if x.name in names]
+
+    def get_attrs(self, names: list[str], keep_list: bool = False):
+        out = [x for x in self.attrs if x.name in names]
         if not len(out):
-            raise AssertionError(f"No attributes available for {names}")
-        out = out[0] if len(out) == 1 else out
+            raise KeyError(f"No attributes available for '{names}'.")
+        if not keep_list and len(out) == 1:
+            out = out[0]
         return out
 
-    def get_role(self, name: str) -> str | list[str]:
+    def get_role(self, name: str, keep_list: bool = False) -> str | list[str]:
         out = []
         for attr in self.attrs:
             # print("pattern:", rf"\b{name}\b", "role:", attr.role)
@@ -38,10 +39,11 @@ class IXbrTbl(ABC):
         if not len(out):
             msg: str = f"No item found for role '{name}'."
             raise KeyError(msg)
-        out = out[0] if len(out) == 1 else out
+        if not keep_list and len(out) == 1:
+            out = out[0]
         return out
 
-    def get_rule(self, name: str) -> str | list[str]:
+    def get_rule(self, name: str, keep_list: bool = False) -> str | list[str]:
         out = []
         for attr in self.attrs:
             if attr.rule:
@@ -51,7 +53,8 @@ class IXbrTbl(ABC):
         if not len(out):
             msg: str = f"No item found for rule '{name}'."
             raise KeyError(msg)
-        out = out[0] if len(out) == 1 else out
+        if not keep_list and len(out) == 1:
+            out = out[0]
         return out
 
 
