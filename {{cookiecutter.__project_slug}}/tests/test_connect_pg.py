@@ -2,7 +2,7 @@
 
 from sqlalchemy import engine
 
-import src.s0_helpers.connect_pg as conn
+import src.s0_helpers.conn.connect_pg as conn
 
 
 def test_engine_gp():

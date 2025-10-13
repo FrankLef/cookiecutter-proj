@@ -4,7 +4,7 @@ import pytest
 from pathlib import Path
 from sqlalchemy import engine
 
-from src.s0_helpers.connect_acc import ConnectAcc as conn_cls
+from src.s0_helpers.conn.connect_acc import ConnectAcc as conn_cls
 
 
 @pytest.fixture
