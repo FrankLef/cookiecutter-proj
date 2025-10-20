@@ -15,7 +15,7 @@ path_reports = settings.paths.reports_data
 
 class XprtFile(NamedTuple):
     name: str
-    skip: bool
+    skip: bool = False
 
 class XprtDir(NamedTuple):
     name: str
@@ -26,10 +26,9 @@ xprt_transf = XprtDir(
     name="transf",
     path=path_transf,
     files=[
-        XprtFile(name="clus_client_3D.html", skip=False),
-        XprtFile(name="clus_client_bubbles.html", skip=False),
+        XprtFile(name="clus_client_3D.html"),
+        XprtFile(name="clus_client_bubbles.html", skip=True),
         XprtFile(name="clus_genus_3D.html", skip=False),
-        XprtFile(name="clus_genus_bubbles.html", skip=False),
     ]
 )
 
@@ -37,10 +36,8 @@ xprt_raw = XprtDir(
     name="raw",
     path=path_raw,
     files=[
-        XprtFile(name="catfr_crosstabl.html", skip=False),
-        XprtFile(name="clus_crosstabl.html", skip=False),
-        XprtFile(name="violin_catfr.html", skip=False),
-        XprtFile(name="violin_genus.html", skip=False),
+        XprtFile(name="catfr_crosstabl.html"),
+        XprtFile(name="clus_crosstabl.html", skip=True),
     ]
 )
 
@@ -56,8 +53,8 @@ xprt_eda = XprtDir(
     name="eda",
     path=path_eda,
     files=[
-        XprtFile(name="elast_catfr.html", skip=False),
-        XprtFile(name="elast_genus.html", skip=False),
+        XprtFile(name="elast_catfr.html"),
+        XprtFile(name="elast_genus.html", skip=True),
     ]
 )
 
