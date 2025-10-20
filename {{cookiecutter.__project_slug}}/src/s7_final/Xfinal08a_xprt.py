@@ -64,12 +64,7 @@ def export_files(xprt: XprtDir, path: Path)-> int:
     nfiles :int = 0
     for a_file in xprt.files:
         if not a_file.skip:
-            msg = f"""
-            Exporting '{a_file.name}'
-            from {xprt.path}
-            to
-            {path}
-            """
+            msg = f"Exporting '{a_file.name}'\nfrom\n{xprt.path}\nto\n{path}"
             rprint(msg)
             src_fn = xprt.path.joinpath(a_file.name)
             dest_fn = path.joinpath(a_file.name)
