@@ -60,12 +60,13 @@ xprt_eda = XprtDir(
 
 xprts = [xprt_transf, xprt_raw, xprt_pproc, xprt_eda]
 
-def export_files(xprt: XprtDir, path: Path)-> int:
-    nfiles :int = 0
+def export_files(xprt: XprtDir, path: Path) -> int:
+    nfiles: int = 0
+    msg = f"Exporting from\n{xprt.path}\nto\n{path}"
+    rprint(msg)
     for a_file in xprt.files:
         if not a_file.skip:
-            msg = f"Exporting '{a_file.name}'\nfrom\n{xprt.path}\nto\n{path}"
-            rprint(msg)
+            rprint(f"'{a_file.name}'")
             src_fn = xprt.path.joinpath(a_file.name)
             dest_fn = path.joinpath(a_file.name)
             shutil.copy2(src=src_fn, dst=dest_fn)
