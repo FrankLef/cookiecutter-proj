@@ -92,9 +92,11 @@ class WorkFlow:
             with open(dirs_file, mode="r", encoding="utf-8") as file:
                 data = json.load(file)
         except FileNotFoundError:
+            self.ring_error()
             msg = f"File not found. This was checked when initializing. Weird.\n {dirs_file}"
             print(msg)
         except json.JSONDecodeError:
+            self.ring_error()
             print(f"Invalid JSON format in\n'{dirs_file}'.")
         for dir in data:
             specs = DirSpecs(**dir)  # type: ignore
@@ -112,12 +114,14 @@ class WorkFlow:
         # remove all whitspace, tab, newline, etc
         jobs = re.sub(r"\s+", "", jobs_args)
         if not jobs:
+            self.ring_error()
             msg: str = f"The job arguments '{jobs_args}' is invalid."
             raise ValueError(msg)
         jobs_clean = jobs.lower().split(sep=",")
         jobs_clean = [x[:2] for x in jobs_clean]
         jobs_todo = set(jobs_clean)
         if not len(jobs_todo):
+            self.ring_error()
             msg = f"No jobs obtained from '{jobs_args}'."
             raise AssertionError(msg)
         self._jobs_todo = jobs_todo
@@ -130,9 +134,11 @@ class WorkFlow:
             # NOTE: We can use index because the dictionary is sorted by priority in the load function above.
             jobs_pos = sorted([jobs_names.index(x) for x in jobs_todo])
         except ValueError:
+            self.ring_error()
             msg: str = "A job is not in the list of available jobs."
             raise ValueError(msg)
         if not jobs_pos:
+            self.ring_error()
             raise ValueError("No job found in the list of available jobs.")
         jobs_sequence = [jobs_names[pos] for pos in jobs_pos]
         self._jobs_sequence = jobs_sequence
@@ -154,6 +160,7 @@ class WorkFlow:
         if wd.exists():
             files = [item for item in wd.iterdir() if item.is_file()]
         else:
+            self.ring_error()
             raise NotADirectoryError(f"Invalid path\n{wd}")
         the_files = sorted(
             [
@@ -163,6 +170,7 @@ class WorkFlow:
             ]
         )
         if not len(the_files):
+            self.ring_error()
             msg: str = f"""
             No module found:
             path: {wd}
@@ -196,19 +204,9 @@ class WorkFlow:
                 if str(e).lower().startswith("skip"):
                     self.print_skip(modul.__name__)
                 else:
+                    self.ring_error()
                     raise
             self.print_complete(modul.__name__)
-
-    def ring_bell(self, ring_bell: bool) -> None:
-        # WAV_FILE:Final[str]= "achievement-bell-600.wav"
-        # WAV_FILE:Final[str]= "kids-cartoon-close-bells-2256.wav"
-        WAV_FILE: Final[str] = "bike-magical-bell-591.wav"
-        sound_file: Path = Path(__file__).parent.joinpath(WAV_FILE)
-        if ring_bell:
-            winsound.PlaySound(str(sound_file), flags=winsound.SND_FILENAME)
-            # winsound.PlaySound(WAV_FILE, flags=winsound.SND_FILENAME)
-            # winsound.MessageBeep(winsound.MB_ICONASTERISK)
-            # winsound.Beep(440, 500)
 
     def print_run(self, dir: str, pat: str | None, emo: str) -> str:
         """Print the run message."""
@@ -243,3 +241,17 @@ class WorkFlow:
         msg = f"[green]\u2705 {text}[/green]"
         rprint(msg)
         return msg
+    
+    def ring_bell(self, ring_bell: bool) -> None:
+        # WAV_FILE:Final[str]= "achievement-bell-600.wav"
+        # WAV_FILE:Final[str]= "kids-cartoon-close-bells-2256.wav"
+        WAV_FILE: Final[str] = "bike-magical-bell-591.wav"
+        sound_file: Path = Path(__file__).parent.joinpath(WAV_FILE)
+        if ring_bell:
+            winsound.PlaySound(str(sound_file), flags=winsound.SND_FILENAME)
+            # winsound.MessageBeep(winsound.MB_ICONASTERISK)
+            # winsound.Beep(440, 500)
+            
+    def ring_error(self) -> None:
+        winsound.MessageBeep(winsound.MB_ICONHAND)
+        # winsound.Beep(440, 500)
