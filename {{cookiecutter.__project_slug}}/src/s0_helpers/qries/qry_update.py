@@ -27,6 +27,9 @@ class QryUpdate:
         from_table: str,
         join_vars: tuple[str, str],
     ) -> str:
+        if from_table == self._table_nm:
+            msg: str = f"Main table and From table must have different name. They both have the name '{self._table_nm}'."
+            raise ValueError(msg)
         qry: str = f"""
         UPDATE {self._table_nm} SET {col} = {upd_text}
         FROM {from_table}
