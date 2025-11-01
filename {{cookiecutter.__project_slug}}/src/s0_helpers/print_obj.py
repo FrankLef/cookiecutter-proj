@@ -1,14 +1,13 @@
 from pathlib import Path
 from typing import Any
-from enum import Enum, auto
-from rich import print as rprint
+from enum import StrEnum, auto
 from great_tables import GT
 import plotly.graph_objects as go
 
 
 class PrintObj:
-    class PType(Enum):
-        NONE = auto()
+    class PType(StrEnum):
+        NONE = auto()  # auto with StrEnum gives lowered-case member name
         SHOW = auto()
         FILE = auto()
 
@@ -41,7 +40,7 @@ class PrintObj:
                 obj.show()
             elif ptype == self.PType.FILE:
                 fn = name + ".html"
-                rprint(f"Printing file '{fn}'")
+                print(f"Printing file '{fn}'")
                 path_fn = path.joinpath(fn)
                 if isinstance(obj, go.Figure):
                     obj.write_html(path_fn)
