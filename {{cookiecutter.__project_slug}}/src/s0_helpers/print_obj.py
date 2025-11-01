@@ -7,7 +7,7 @@ import plotly.graph_objects as go
 
 class PrintObj:
     class PType(StrEnum):
-        NONE = auto()  # auto with StrEnum gives lowered-case member name
+        NONE = auto()  # auto() gives lowered-case member name
         SHOW = auto()
         FILE = auto()
 
@@ -18,7 +18,7 @@ class PrintObj:
     def path(self):
         return self._path
 
-    def run(self, name: str, obj: Any, ptype: PType) -> None:
+    def run(self, name: str, obj: Any, ptype: PType | str) -> None:
         if not name:
             raise ValueError("The name is empty.")
 
@@ -26,12 +26,9 @@ class PrintObj:
             msg: str = f"Object of type '{type(obj)}' is empty."
             raise ValueError(msg)
 
-        if not isinstance(ptype, self.PType):
-            msg = f"""
-            The ptype argument must be of type 'PType'.
-            Its type is {type(ptype)}.
-            """
-            raise TypeError(msg)
+        ptype = ptype.lower()
+        if ptype not in self.PType:
+            raise TypeError(f"'{ptype}' is an invalid PType value.")
 
         path = self._path
 
