@@ -76,14 +76,14 @@ class WorkFlow:
 
         return a_file
 
-    def execute(self, jobs_args: str, pat: str | None, ring_bell: bool = True) -> None:
+    def execute(self, jobs_args: str, pat: str | None, is_ring: bool = True) -> None:
         """This execute the different steps of the program."""
         self.load()
         self._pat = pat
         self.parse_jobs(jobs_args)
         self.sequence_jobs()
         self.run_jobs()
-        self.ring_bell(ring_bell=ring_bell)
+        self.ring_success(is_rin=is_ring)
 
     def load(self):
         """Load all directory specifications from the json file."""
@@ -242,12 +242,12 @@ class WorkFlow:
         rprint(msg)
         return msg
     
-    def ring_bell(self, ring_bell: bool) -> None:
+    def ring_success(self, is_ring: bool) -> None:
         # WAV_FILE:Final[str]= "achievement-bell-600.wav"
         # WAV_FILE:Final[str]= "kids-cartoon-close-bells-2256.wav"
         WAV_FILE: Final[str] = "bike-magical-bell-591.wav"
         sound_file: Path = Path(__file__).parent.joinpath(WAV_FILE)
-        if ring_bell:
+        if is_ring:
             winsound.PlaySound(str(sound_file), flags=winsound.SND_FILENAME)
             # winsound.MessageBeep(winsound.MB_ICONASTERISK)
             # winsound.Beep(440, 500)
