@@ -4,7 +4,7 @@
 [![Lifecycle:
 stable](https://img.shields.io/badge/lifecycle-stable-brightgreen)](https://lifecycle.r-lib.org/articles/stages)
 [![License](https://img.shields.io/badge/license-MIT-green)](https://opensource.org/licenses/MIT)
-[![Python](https://img.shields.io/badge/python-^3.10-blue)](https://www.python.org/downloads/release/python-3106/)
+[![Python](https://img.shields.io/badge/python-^3.12-blue)](https://www.python.org/downloads/release/python-3106/)
 [![Poetry](https://img.shields.io/badge/poetry-^1.8.2-purple)](https://pypi.org/project/poetry/)
 [![Ruff](https://img.shields.io/badge/ruff-^0.3.1-maroon)](https://docs.astral.sh/ruff/)
 [![Pre-commit](https://img.shields.io/badge/precommit-^3.6.2-orange)](https://pypi.org/project/pre-commit/)
