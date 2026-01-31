@@ -1,10 +1,10 @@
 duckdb = "db_todo.duckdb"
 
-[tdict]
-tdict_xl = "tdict.xlsx"
-
-[ddict]
-xbr_xl = "ddict_xbr.xlsx"
+[dic]
+sources = "dic_sources.xlsx"
+schema = "dic_schema.xlsx"
+xbr = "dic_xbr.xlsx"
+groups = "dic_groups.xlsx"
 
 [db]
 xbr = "C:/Users/Public/MyAcctg/xbrl/db_xbr.accdb"
