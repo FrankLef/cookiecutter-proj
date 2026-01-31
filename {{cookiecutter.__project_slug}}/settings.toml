@@ -9,9 +9,6 @@ groups = "dic_groups.xlsx"
 [db]
 xbr = "C:/Users/Public/MyAcctg/xbrl/db_xbr.accdb"
 
-[raw_db]
-xbr = "C:/Users/Public/MyAcctg/xbrl/db_xbr.accdb"
-
 [dpaths]
 temp = "d0_temp"
 extr = "d1_extr"
