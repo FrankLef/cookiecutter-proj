@@ -83,7 +83,7 @@ class WorkFlow:
         self.parse_jobs(jobs_args)
         self.sequence_jobs()
         self.run_jobs()
-        self.ring_success(is_rin=is_ring)
+        self.ring_success(is_ring=is_ring)
 
     def load(self):
         """Load all directory specifications from the json file."""
