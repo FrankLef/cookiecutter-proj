@@ -26,7 +26,7 @@ def pipe(jobs: str, pat: str | None = None) -> None:
     Returns:
         int: The sum of all the integers returned by the jobs.
     """
-    wf.execute(jobs_args=jobs, pat=pat)
+    workflow.execute(jobs_args=jobs, pat=pat)
 
 
 @app.command()
@@ -40,7 +40,7 @@ def all(pat: str | None = None) -> None:
         int: Integer returned by the process.
     """
     jobs = "ex,tr,lo,ra,pp,ed,fi"
-    wf.execute(jobs_args=jobs, pat=pat)
+    workflow.execute(jobs_args=jobs, pat=pat)
 
 
 if __name__ == "__main__":
