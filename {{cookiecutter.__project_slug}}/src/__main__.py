@@ -1,12 +1,15 @@
 """Main CLI entry point."""
 
 import typer
+from pathlib import Path
 
-from ._workflow.workflow import WorkFlow
+from fltk.workflow import workflow as wf  # type: ignore
 
 app = typer.Typer()
 
-workflow = WorkFlow()
+root_path = Path(__file__).parent
+config_path = root_path.joinpath("wf_config.json")
+workflow = wf.WorkFlow(root=root_path, config=config_path)
 
 
 @app.command()
@@ -23,7 +26,7 @@ def pipe(jobs: str, pat: str | None = None) -> None:
     Returns:
         int: The sum of all the integers returned by the jobs.
     """
-    workflow.execute(jobs_args=jobs, pat=pat)
+    wf.execute(jobs_args=jobs, pat=pat)
 
 
 @app.command()
@@ -37,7 +40,7 @@ def all(pat: str | None = None) -> None:
         int: Integer returned by the process.
     """
     jobs = "ex,tr,lo,ra,pp,ed,fi"
-    workflow.execute(jobs_args=jobs, pat=pat)
+    wf.execute(jobs_args=jobs, pat=pat)
 
 
 if __name__ == "__main__":

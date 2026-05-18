@@ -319,6 +319,7 @@ This is how the folders will be organized.
 ├── src                       <- Store the source code.
 │   ├── __init__.py           <- The module's initialize file.
 │   ├── __main__.py           <- Main CLI entry point.
+│   ├── wf_config.py          <- Workflow config file, used by workflow.
 │   ├── _registry             <- Values, instantiated classes, shared by all modules.
 │   │   ├── registry.py       <- Values shared by all modules. Equivalent to a singleton.
 |   |   └── ...
