@@ -1,5 +1,5 @@
 {
-    "prefix" : "run",
+    "run_prefix" : "run",
     "success_wav": "kids-cartoon-close-bells-2256.wav",
     "dirs" : [{
         "priority": 1,
