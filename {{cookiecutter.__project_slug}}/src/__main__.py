@@ -8,8 +8,8 @@ from fltk.workflow import workflow as wf  # type: ignore
 app = typer.Typer()
 
 root_path = Path(__file__).parent
-config_path = root_path.joinpath("wf_config.json")
-workflow = wf.WorkFlow(root=root_path, config=config_path)
+wf_path = root_path.joinpath("_workflow")
+workflow = wf.WorkFlow(root=root_path, wf_path=wf_path)
 
 
 @app.command()
