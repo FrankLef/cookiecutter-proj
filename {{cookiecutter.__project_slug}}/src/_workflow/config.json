@@ -1,53 +1,69 @@
 {
-    "run_prefix" : "run",
+    "run_prefix": "run",
     "success_wav": "kids-cartoon-close-bells-2256.wav",
-    "dirs" : [{
-        "priority": 1,
-        "name":"ex",
-        "dir":"s1_extr",
-        "emo":"mushroom",
-        "song":"C"
-    },
-    {
-        "priority": 2,
-        "name":"tr",
-        "dir":"s2_transf",
-        "emo":"sunflower",
-        "song":"D"
-    },
-    {
-        "priority": 3,
-        "name":"lo",
-        "dir":"s3_load",
-        "emo":"leaves",
-        "song":"E"
-    },
-    {
-        "priority": 4,
-        "name":"ra",
-        "dir":"s4_raw",
-        "emo":"rainbow",
-        "song":"F"
-    },
-    {
-        "priority": 5,
-        "name":"pp",
-        "dir":"s5_pproc",
-        "emo":"tulip",
-        "song":"G"
-    },
-    {
-        "priority": 6,
-        "name":"ed",
-        "dir":"s6_eda",
-        "emo":"seedling",
-        "song":"A"
-    },
-    {
-        "priority": 7,
-        "name":"fi",
-        "dir":"s7_final",
-        "emo":"hibiscus",
-        "song":"B"
-    }]
+    "dirs": [
+        {
+            "priority": 0,
+            "name": "se",
+            "dir": "s0_setup",
+            "emo": "hammer_and_pick",
+            "song": "C"
+        },
+        {
+            "priority": 1,
+            "name": "ex",
+            "dir": "s1_extr",
+            "emo": "mushroom",
+            "song": "C"
+        },
+        {
+            "priority": 2,
+            "name": "tr",
+            "dir": "s2_transf",
+            "emo": "sunflower",
+            "song": "D"
+        },
+        {
+            "priority": 3,
+            "name": "lo",
+            "dir": "s3_load",
+            "emo": "leaves",
+            "song": "E"
+        },
+        {
+            "priority": 4,
+            "name": "ra",
+            "dir": "s4_raw",
+            "emo": "rainbow",
+            "song": "F"
+        },
+        {
+            "priority": 5,
+            "name": "pp",
+            "dir": "s5_pproc",
+            "emo": "tulip",
+            "song": "G"
+        },
+        {
+            "priority": 6,
+            "name": "ed",
+            "dir": "s6_eda",
+            "emo": "seedling",
+            "song": "A"
+        },
+        {
+            "priority": 7,
+            "name": "fi",
+            "dir": "s7_final",
+            "emo": "hibiscus",
+            "song": "B"
+        },
+        {
+            "priority": 9,
+            "name": "te",
+            "dir": "s9_teardown",
+            "emo": "hammer_and_wrench",
+            "song": "B"
+        }
+    ]
 }

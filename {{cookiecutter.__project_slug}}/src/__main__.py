@@ -16,7 +16,7 @@ workflow = wf.WorkFlow(root=root_path, wf_path=wf_path)
 def pipe(jobs: str, pat: str | None = None) -> None:
     """Run a pipe of commands.
 
-    The `jobs` argument is a comma-separated string with the job's id. Job ids must be one of 'ex', 'tr', 'lo', 'ra', 'pp', 'ed', 'fi'. For example, you can use 'ex,tr' for 'extract' then 'transform'. The order does not matter.
+    The `jobs` argument is a comma-separated string with the job's id. Job ids must be one of 'se', 'ex', 'tr', 'lo', 'ra', 'pp', 'ed', 'te'. For example, you can use 'ex,tr' for 'extract' then 'transform'. The order does not matter.
     The `jobs` is case-insensitive. All spaces are removed. The task id could be any word as long as it starts with the proper two letter. For example 'transform_it, EXT' is the same as 'ex,tr'.  If a task appears more that once, it will be processed only once.
 
     Args:
@@ -39,7 +39,7 @@ def all(pat: str | None = None) -> None:
     Returns:
         int: Integer returned by the process.
     """
-    jobs = "ex,tr,lo,ra,pp,ed,fi"
+    jobs = "se,ex,tr,lo,ra,pp,ed,te"
     workflow.execute(jobs_args=jobs, pat=pat)
 
 
