@@ -7,28 +7,28 @@ project code.
 
 ## Extract `s1_extr`
 
-::: s1_extr.extr99a_todo
+::: s1_extr.run99a_todo
 
 ## Transform `s2_transf`
 
-::: s2_transf.transf99a_todo
+::: s2_transf.run99a_todo
 
 ## Load `s3_load`
 
-::: s3_load.load99a_todo
+::: s3_load.run99a_todo
 
 ## Raw `s4_raw`
 
-::: s4_raw.raw99a_todo
+::: s4_raw.run99a_todo
 
 ## Preprocessing `s5_pproc`
 
-::: s5_pproc.pproc99a_todo
+::: s5_pproc.run99a_todo
 
 ## E.D.A. `s6_eda`
 
-::: s6_eda.eda99a_todo
+::: s6_eda.run99a_todo
 
-## Finalize `s7_final`
+## Finalize `s9_teardown`
 
-::: s7_final.final99a_todo
+::: s9_teardown.run99a_todo

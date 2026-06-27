@@ -52,13 +52,6 @@
             "song": "A"
         },
         {
-            "priority": 7,
-            "name": "fi",
-            "dir": "s7_final",
-            "emo": "hibiscus",
-            "song": "B"
-        },
-        {
             "priority": 9,
             "name": "te",
             "dir": "s9_teardown",
