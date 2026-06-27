@@ -142,7 +142,7 @@ Priority|Name|Dir|Description
 6|***ed***|`s6_eda`|E.D.A.
 9|***te***|`s9_teardown`|Finalize
 
-### Directory Sructure
+### Directory Structure
 
 This is the default structure of the project. It can be modified in which case
 the `.\_worklow\config.json` file must be changed.
