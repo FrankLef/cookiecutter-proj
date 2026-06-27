@@ -31,7 +31,7 @@ def pipe(jobs: str, pat: str | None = None) -> None:
 
 @app.command()
 def all(pat: str | None = None) -> None:
-    """Run all modules.
+    """Run all modules except teardown.
 
     Args:
         pat (str | None, optional): Patttern passed on to the command to fitler files. Defaults to None.
@@ -39,7 +39,7 @@ def all(pat: str | None = None) -> None:
     Returns:
         int: Integer returned by the process.
     """
-    jobs = "se,ex,tr,lo,ra,pp,ed,te"
+    jobs = "se,ex,tr,lo,ra,pp,ed"
     workflow.execute(jobs_args=jobs, pat=pat)
 
 

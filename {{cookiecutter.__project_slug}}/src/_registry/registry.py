@@ -2,6 +2,7 @@
 
 import os
 
+
 def msg_hello() -> str:
     """Example function for the registry.
 
