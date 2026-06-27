@@ -120,10 +120,10 @@ This section identifies the different directories that will be run by the worklo
 
 Each directory's specifications includes
 
-* priority: Detrmine the order in which the directory will be run.
-* name: The 2-character, and *unique* word used to run the given directory. See the 
-* emo: The emoji name used in the CLI.
-* song: The name of the sound used to identify the directory. To be used (maybe) in the future.
+* **priority**: Detrmine the order in which the directory will be run.
+* **name**: The 2-character, and *unique* word used to run the given directory. See [Directories](#directories).
+* **emo**: The emoji name used in the CLI.
+* **song**: The name of the sound used to identify the directory. To be used (maybe) in the future.
 
 ### Directories
 
@@ -133,14 +133,14 @@ The task id are 2-letter words used to identify a task as discussed in the
 
 Priority|Name|Dir|Description
 :-----|:-----:|:-----|:-----
-0|***se***|`s0_setup`|Setup
+0|***se***|`s0_setup`|Set up
 1|***ex***|`s1_extr`|Extract
 2|***tr***|`s2_transf`|Transform
 3|***lo***|`s3_load`|Load
 4|***ra***|`s4_raw`|Raw data
 5|***pp***|`s5_pproc`|Pre-processing
 6|***ed***|`s6_eda`|E.D.A.
-9|***te***|`s9_teardown`|Finalize
+9|***te***|`s9_teardown`|Tear down
 
 ### Directory Structure
 
@@ -217,7 +217,7 @@ See the [Configuration](#configuration) section above.
 |   └── ...
 └── tests                     <- All test and fixtures files used in testing.
     ├── __init__.py
-    ├── fixtures              <- Where to put example inputs and outputs.
+    ├── fixtures              <- Where to put example inputs and outputs
     │   ├── input.json        <- Test input data.
     │   └── output.json       <- Test output data.
     ├── conftest.py           <- Configurations used by `pytest`.
