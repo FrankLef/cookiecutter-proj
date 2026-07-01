@@ -5,6 +5,10 @@ an **information-oriented** approach. Use it as a
 reference for the technical implementation of the
 project code.
 
+## Extract `s0_setup`
+
+::: s0_setup.run99a_todo
+
 ## Extract `s1_extr`
 
 ::: s1_extr.run99a_todo
@@ -29,6 +33,6 @@ project code.
 
 ::: s6_eda.run99a_todo
 
-## Finalize `s9_teardown`
+## Tear Down `s9_teard`
 
 ::: s9_teardown.run99a_todo

@@ -140,7 +140,7 @@ Priority|Name|Dir|Description
 4|***ra***|`s4_raw`|Raw data
 5|***pp***|`s5_pproc`|Pre-processing
 6|***ed***|`s6_eda`|E.D.A.
-9|***te***|`s9_teardown`|Tear down
+9|***te***|`s9_teard`|Tear down
 
 ### Directory Structure
 
@@ -161,13 +161,13 @@ See the [Configuration](#configuration) section above.
 ├── .secrets.toml             <- Optional: Secret settings used by `dynaconf`.
 ├── README.md                 <- The top-level README for developers using this project.
 ├── data                      <- Data directories used throughout the project.
-│   ├── d0_setup               <- Temporary folder. These files can be deleted.
+│   ├── d0_setup              <- Temporary folder. These files can usually be deleted.
 │   ├── d1_raw                <- Original, immutable data.
 |   ├── d2_transf             <- Data being transformed.
 |   ├── d3_ready              <- Transformed data ready to use.
 │   ├── d4_preproc            <- Preprocessed data to used for EDA.
 │   ├── d5_eda                <- Data used for exploratory data analysis.
-│   ├── d9_teardown           <- Final data sets or graphics. Usually used used for reports.
+│   ├── d9_teard              <- Final data sets. Usually used for reports and graphics.
 |   └── ...
 ├── docs                      <- GitHub pages website.
 │   ├── explanation.md        <- Understanding-oriented documentation.
@@ -211,7 +211,7 @@ See the [Configuration](#configuration) section above.
 |   ├── s5_eda                <- Code for exploratory data analysis (EDA).
 │   │   ├── __init__.py
 |   |   └── ...
-|   ├── s9_teardown           <- Code used to finish off the project.
+|   ├── s9_teard              <- Code used to tear down the project.
 │   │   ├── __init__.py
 |   |   └── ...
 |   └── ...

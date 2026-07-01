@@ -69,7 +69,7 @@ ignored_dir:
 	mkdir -p data/d4_raw
 	mkdir -p data/d5_preproc
 	mkdir -p data/d6_eda
-	mkdir -p data/d9_teardown
+	mkdir -p data/d9_teard
 	@echo -e "\x1b[1;32mIgnored directories created successfully!\x1b[0m"
 
 test:
