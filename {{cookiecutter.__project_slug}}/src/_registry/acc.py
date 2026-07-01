@@ -1,4 +1,4 @@
-"""Instantiate a connection to a MS Access database."""
+"""Validate MS Access connection."""
 
 # from pathlib import Path
 

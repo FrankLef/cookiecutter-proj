@@ -1,9 +1,9 @@
-"""A template to use within the `load` directory."""
+"""A template to use within the `Teardown` directory."""
 
 from rich import print as rprint
 
 
-def main(is_skipped: bool =False) -> None:
+def main(is_skipped: bool = False) -> None:
     """Main function.
 
     Args:
