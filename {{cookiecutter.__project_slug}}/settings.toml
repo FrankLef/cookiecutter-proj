@@ -1,10 +1,9 @@
-duckdb = "db_todo.duckdb"
+duckdb = "todo.duckdb"
 
-[dic]
-sources = "dic_sources.xlsx"
-schema = "dic_schema.xlsx"
-xbr = "dic_xbr.xlsx"
-groups = "dic_groups.xlsx"
+[bag]
+sources = "bag_sources.xlsx"
+schema = "bag_schema.xlsx"
+output = "bag_output.xlsx"
 
 [db]
 xbr = "C:/Users/Public/MyAcctg/xbrl/db_xbr.accdb"
