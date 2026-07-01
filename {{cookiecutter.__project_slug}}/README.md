@@ -193,7 +193,7 @@ See the [Configuration](#configuration) section above.
 │   ├── _workflow             <- CLI used by __main__.py to run the modules.
 |   |   ├── config.json       <- Configuration file used by `workflow`.
 |   |   └── ...
-│   ├── s0_setup              <- Code used for settting up the project.
+│   ├── s0_setup              <- Code used for setting up the project.
 │   │   ├── __init__.py
 |   |   └── ...
 |   ├── s1_extr               <- Code to extract the raw data.
