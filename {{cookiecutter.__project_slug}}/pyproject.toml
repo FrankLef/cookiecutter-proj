@@ -1,4 +1,4 @@
-[tool.poetry]
+[project]
 # Operating mode is NOT PACKAGE
 # package-mode = false
 name = "{{cookiecutter.__project_slug}}"
