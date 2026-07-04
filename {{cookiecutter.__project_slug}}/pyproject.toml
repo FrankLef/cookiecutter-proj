@@ -16,7 +16,7 @@ Changelog = "{{cookiecutter.git_repo}}/releases"
 [tool.poetry.dependencies]
 # python changed to allow install of scipy
 python = "^3.10.6"
-pandas = "^1.5.0"
+pandas = "^3.0.0"
 pandera = "^0.22.1"
 numpy = "^1.23.3"
 pyodbc = "^4.0.34"
@@ -32,7 +32,7 @@ psycopg2 = "^2.9.9"
 # don't install pyarrow with poetry add, plenty of error messages ensue.
 dynaconf = "^3.1.11"
 rich = "^12.5.1"
-typer = "^0.13.1"
+typer = "^0.22.0"
 tomli = "^2.0.1"
 matplotlib = "^3.7.0"
 scipy = "^1.10.1"
