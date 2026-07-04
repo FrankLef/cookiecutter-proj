@@ -32,38 +32,10 @@ dependencies = [
 [project.urls]
 homepage = "{{cookiecutter.git_repo}}"
 repository = "{{cookiecutter.git_repo}}"
-Changelog = "{{cookiecutter.__changelog}}/releases"
+Changelog = "{{cookiecutter.__changelog}}"
 
 # [tool.poetry.dependencies]
-# python changed to allow install of scipy
-# python = "^3.10.6"
-# pandas = "^3.0.0"
-# pandera = "^0.22.1"
-# numpy = "^1.23.3"
-# pyodbc = "^4.0.34"
-# SQLAlchemy = "^2.0.0"
-# sqlalchemy-utils = "^0.41.2"
-# used by sqlalchemy to connect to MS Access
-# sqlalchemy-access = "^2.0.2"
-# used by sqlalchemy to connect to postgre
-# psycopg2 = "^2.9.9"
-# Use pyarrow.feather instead of feather-format,
-# feather.format exists only fo backward compatibility.
-# pyarrow is better installed with `pip3 install pyarrow` in the local python,
-# don't install pyarrow with poetry add, plenty of error messages ensue.
-# dynaconf = "^3.1.11"
-# rich = "^12.5.1"
-# typer = "^0.22.0"
-# tomli = "^2.0.1"
-# matplotlib = "^3.7.0"
-# scipy = "^1.10.1"
-# seaborn = "^0.12.2"
-# openpyxl = "^3.1.5"
-# pyyaml = "^6.0.2"
-# black = "^24.10.0"
-# frictionless = "^5.18.0"
-# great-tables = "^0.16.1"
-# plotly = "^5.24.1"
+
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.14.0"
