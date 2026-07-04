@@ -62,11 +62,10 @@ Make sure the poetry version used is at least 1.7.
 poetry --version
 ```
 
-Run `poetry shell` to open the poetry shell and avoid using `poetry run` with
-all commands
+Run `poetry check` to verify `pyproject.toml` and if it is consistent with `poetry.lock.`
 
 ```console
-poetry shell
+poetry check
 ```
 
 Run the `make` command `poetry_update`.
@@ -177,7 +176,7 @@ will run
 
 1. `poetry update`: The `poetry.lock` file will be created and the virtual
 environment updated with the right packages and versions
-2. `poetry show`: To verify if there are inconsistencies
+2. `poetry check`: To verify if there are inconsistencies
 
 #### Help poetry environment
 
@@ -219,13 +218,6 @@ wich is encoded in the MakeFile with the command
 ```console
 make precommit_run
 ```
-
-### `pyarrow`
-
-Use `pyarrow.feather` instead of `feather-format`, `feather.format` exists only
-for backward compatibility. `pyarrow` should be installed with
-`pip3 install pyarrow` in the local python. Don't install `pyarrow` with
-`poetry add pyarrow` or you will get a whole lot of cryptic errors.
 
 ## Libraries Used
 
@@ -282,7 +274,7 @@ This is how the folders will be organized.
 
 ```text
 {{cookiecutter.__project_slug}}
-├── .gitignore                <- GitHub's Python `.gitignore` customized for this project.
+├── .gitignore                <- GitHub's `.gitignore` customized for python.
 ├── config.py                 <- Script used `dynaconf` to manage settings.
 ├── pre-commit-config.yaml    <- Settings for `pre-commit`.
 ├── LICENSE                   <- The project's license.
@@ -290,16 +282,16 @@ This is how the folders will be organized.
 ├── mkdocs.yaml               <- Settings for `mkdocs`.
 ├── pyproject.toml            <- Configuration file used by `poetry`.
 ├── settings.toml             <- Project's settings used by `dynaconf`.
-├── .secrets.toml             <- Secret settings used by `dynaconf`.
+├── .secrets.toml             <- Optional: Secret settings used by `dynaconf`.
 ├── README.md                 <- The top-level README for developers using this project.
 ├── data                      <- Data directories used throughout the project.
-│   ├── d0_temp               <- Temporary folder. These files can be deleted.
+│   ├── d0_setup              <- Temporary folder. These files can usually be deleted.
 │   ├── d1_raw                <- Original, immutable data.
 |   ├── d2_transf             <- Data being transformed.
 |   ├── d3_ready              <- Transformed data ready to use.
 │   ├── d4_preproc            <- Preprocessed data to used for EDA.
 │   ├── d5_eda                <- Data used for exploratory data analysis.
-│   ├── d6_final              <- Final data sets used for reports.
+│   ├── d9_teard              <- Final data sets. Usually used for reports and graphics.
 |   └── ...
 ├── docs                      <- GitHub pages website.
 │   ├── explanation.md        <- Understanding-oriented documentation.
@@ -323,9 +315,9 @@ This is how the folders will be organized.
 │   │   ├── registry.py       <- Values shared by all modules. Equivalent to a singleton.
 |   |   └── ...
 │   ├── _workflow             <- CLI used by __main__.py to run the modules.
-│   │   ├── config.json       <- Configuration settings used by workflow.
+|   |   ├── config.json       <- Configuration file used by `workflow`.
 |   |   └── ...
-│   ├── s0_helpers            <- Utilities and helper codes.
+│   ├── s0_setup              <- Code used for setting up the project.
 │   │   ├── __init__.py
 |   |   └── ...
 |   ├── s1_extr               <- Code to extract the raw data.
@@ -340,20 +332,20 @@ This is how the folders will be organized.
 |   ├── s4_preproc            <- Code to preprocess the data for EDA.
 │   │   ├── __init__.py
 |   |   └── ...
-|   ├── s5_eda                <- Code for exploratory data analysis.
+|   ├── s5_eda                <- Code for exploratory data analysis (EDA).
 │   │   ├── __init__.py
 |   |   └── ...
-|   ├── s6_final              <- Code for final data usually used in reporting.
+|   ├── s9_teard              <- Code used to tear down the project.
 │   │   ├── __init__.py
 |   |   └── ...
 |   └── ...
 └── tests                     <- All test and fixtures files used in testing.
     ├── __init__.py
-    ├── fixtures              <- Where to put example inputs and outputs.
+    ├── fixtures              <- Where to put example inputs and outputs
     │   ├── input.json        <- Test input data.
     │   └── output.json       <- Test output data.
-    ├── test_extract_acc.py   <- Test example for etl.
-    ├── test_samples.py       <- Test example to verify `pytest`.
+    ├── conftest.py           <- Configurations used by `pytest`.
+    ├── test_sample.py        <- Test example to verify `pytest`.
     └── ...
 ```
 
