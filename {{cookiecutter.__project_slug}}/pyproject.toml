@@ -9,7 +9,7 @@ authors = [
 ]
 license = "{{cookiecutter.license}}"
 readme = "README.md"
-requires-python = "{{cookiecutter.requires_py}}"
+requires-python = "{{cookiecutter.__requires_py}}"
 dependencies = [
     "pandas>=3.0.0",
     "pandera>=0.22.1",
@@ -32,7 +32,7 @@ dependencies = [
 [project.urls]
 homepage = "{{cookiecutter.git_repo}}"
 repository = "{{cookiecutter.git_repo}}"
-Changelog = "{{cookiecutter.git_repo}}/releases"
+Changelog = "{{cookiecutter.__changelog}}/releases"
 
 # [tool.poetry.dependencies]
 # python changed to allow install of scipy
