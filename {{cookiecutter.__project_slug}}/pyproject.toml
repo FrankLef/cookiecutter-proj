@@ -11,8 +11,6 @@ license = "{{cookiecutter.license}}"
 readme = "README.md"
 requires-python = "{{cookiecutter.__requires_py}}"
 dependencies = [
-    # "pandas>=3.0.0",
-    # "pandera>=0.22.1",
     "polars>=1.42.0",
     "numpy>=2.3.4",
     "openpyxl>=3.1.5",
@@ -40,7 +38,7 @@ Changelog = "{{cookiecutter.__changelog}}"
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^4.6.0"
-pre-commit-hooks = "^4.3.0"
+pre-commit-hooks = "^5.0.0"
 pytest = "^9.0.0"
 mypy = "^0.971"
 typeguard = "^2.13.3"
