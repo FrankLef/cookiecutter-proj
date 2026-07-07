@@ -4,7 +4,7 @@
 
 # from config import settings
 
-# from fltk.conn import connect_acc as acc
+# from fltk.conn.connect_acc import ConnectAcc
 
 
 # def main(db_choice: str) -> ConnectAcc:
@@ -16,5 +16,5 @@
 #         case _:
 #             msg: str = f"'{db_choice}' is an invalid db choice for accdb_conn."
 #             raise ValueError(msg)
-#     conn = acc.ConnectAcc(path=path)
+#     conn = ConnectAcc(path=path)
 #     return conn
