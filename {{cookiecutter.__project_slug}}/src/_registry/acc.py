@@ -7,7 +7,7 @@
 # from fltk.conn import connect_acc as acc
 
 
-# def main(db_choice: str) -> tuple[acc.ConnectAcc, Path]:
+# def main(db_choice: str) -> ConnectAcc:
 #     match db_choice:
 #         case "db":
 #             path = Path(settings.db.xbr)
