@@ -17,4 +17,4 @@
 #             msg: str = f"'{db_choice}' is an invalid db choice for accdb_conn."
 #             raise ValueError(msg)
 #     conn = acc.ConnectAcc(path=path)
-#     return (conn, path)
+#     return conn
