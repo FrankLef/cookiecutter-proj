@@ -1,4 +1,4 @@
-"""A template to use within the `Setup` directory."""
+"""A job template, used as a placeholder."""
 
 from rich import print as rprint
 
