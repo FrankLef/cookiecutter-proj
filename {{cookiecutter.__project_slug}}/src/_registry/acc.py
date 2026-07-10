@@ -17,7 +17,7 @@ def main(db_choice: str) -> ConnectAcc:
     try:
         path = paths[db_choice]
     except KeyError as e:
-        msg: str = f"'{db_choice}' is an invalid db choice for accdb_conn."
+        msg: str = f"'{db_choice}' is an invalid MS Access choice."
         e.add_note(msg)
         raise
     conn = ConnectAcc(path=path)
