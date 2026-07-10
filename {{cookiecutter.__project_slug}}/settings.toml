@@ -5,8 +5,11 @@ sources = "bag_sources.xlsx"
 schema = "bag_schema.xlsx"
 output = "bag_output.xlsx"
 
-[db]
+[acc]
+main = "C:/Users/Public/MyAcctg/xbrl/db_xbr.accdb"
+raw = "C:/Users/Public/MyAcctg/xbrl/db_xbr.accdb"
 xbr = "C:/Users/Public/MyAcctg/xbrl/db_xbr.accdb"
+
 
 [dpaths]
 setup = "d0_setup"
