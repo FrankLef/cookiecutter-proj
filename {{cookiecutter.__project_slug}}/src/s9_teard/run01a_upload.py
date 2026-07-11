@@ -31,7 +31,7 @@ def main(db_choice: str = "main", status_time: str = "5 min") -> None:
             qry = f"SELECT * FROM {table_nm}"
             data = conn.sql(qry).pl()  # noqa: F841
             console = Console()
-            status_msg: str = f"Uploading, {status_time}"
+            status_msg: str = f"Uploading, {status_time} ..."
             with console.status(status_msg, spinner="bouncingBar"):
                 data.write_database(
                     table_name=table_nm, connection=engin, if_table_exists="replace"
