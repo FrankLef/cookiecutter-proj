@@ -42,6 +42,12 @@ def upload() -> None:
     """Upload data to MS Access."""
     workflow.execute(jobs_args="teard", pat="upload")
 
+   
+@app.command()
+def compact() -> None:
+    """Compact Duckdb."""
+    workflow.execute(jobs_args="teard", pat="ddb_compact")
+
 
 if __name__ == "__main__":
     app()
