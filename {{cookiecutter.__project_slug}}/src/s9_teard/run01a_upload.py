@@ -18,10 +18,10 @@ duckdb_path = settings.paths.duckdb
 data_path = settings.paths.data
 
 
-def main(db_choice: str = "main", status_time: str = "5 min") -> None:
+def main(db_choice: str = "main", wait_time: str = "5 min") -> None:
     accdb = inst_acc(db_choice=db_choice)
     engin = accdb.engine
-    is_ok = Confirm.ask(f"Uploading takes about {status_time}. ok?")
+    is_ok = Confirm.ask(f"Uploading takes about {wait_time}. ok?")
     if not is_ok:
         return
     print_msg("Upload to MS Access.", type=MsgType.PROCESS)
@@ -31,7 +31,7 @@ def main(db_choice: str = "main", status_time: str = "5 min") -> None:
             qry = f"SELECT * FROM {table_nm}"
             data = conn.sql(qry).pl()  # noqa: F841
             console = Console()
-            status_msg: str = f"Uploading, {status_time} ..."
+            status_msg: str = f"Uploading, {wait_time} ..."
             with console.status(status_msg, spinner="bouncingBar"):
                 data.write_database(
                     table_name=table_nm, connection=engin, if_table_exists="replace"
