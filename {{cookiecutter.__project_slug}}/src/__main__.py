@@ -40,7 +40,7 @@ def all(pat: str | None = None) -> None:
 @app.command()
 def upload() -> None:
     """Upload data to MS Access."""
-    workflow.execute(jobs_args="teard", pat="upload")
+    workflow.execute(jobs_args="teard", pat="upload_acc")
 
    
 @app.command()
