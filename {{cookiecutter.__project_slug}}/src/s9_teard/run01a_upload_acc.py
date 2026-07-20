@@ -45,7 +45,7 @@ def main(db_choice: str = "main", wait_time: str = "5 min") -> None:
     start_time: str = dt.now().strftime("%H:%M:%S")
     print_msg(f"Start time: {start_time}", type=MsgType.INFO)
     print_msg("Upload to MS Access.", type=MsgType.PROCESS)
-    for table_nm in _sources.line_nms:
+    for table_nm in _sources.lines.get_names():
         print_msg(table_nm, type=MsgType.TRACE)
         with get_conn() as conn:
             data = conn.sql(f"FROM {table_nm};").pl()
