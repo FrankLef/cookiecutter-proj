@@ -11,11 +11,11 @@ from rich.prompt import Confirm
 
 from fltk.prnt.print_msg import print_msg, MsgType
 
-from src._registry.dicz import dicz
+from src._registry.specs import specs_mstr
 from src._registry.ddb import get_conn
 from src._registry.acc import main as inst_acc
 
-_sources = dicz.bag("acc").group("upload")
+_sources = specs_mstr.specs("acc").group("upload")
 
 
 data_path = settings.paths.data
