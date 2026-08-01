@@ -1,5 +1,5 @@
 # mypy: ignore-errors
-"""Create MS Access connection."""
+"""Create the connection to MS Access used by the project."""
 
 from pathlib import Path
 
