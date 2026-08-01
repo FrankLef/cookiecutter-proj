@@ -1,4 +1,3 @@
-# mypy: ignore-errors
 """Upload data to MS Access."""
 
 from config import settings
@@ -15,7 +14,7 @@ from src._registry.specs import specs_mstr
 from src._registry.ddb import get_conn
 from src._registry.acc import main as inst_acc
 
-_sources = specs_mstr.specs("acc").group("upload")
+_sources = specs_mstr.specs("sources_acc").group("upload")
 
 
 data_path = settings.paths.data
@@ -45,7 +44,7 @@ def main(db_choice: str = "main", wait_time: str = "5 min") -> None:
     start_time: str = dt.now().strftime("%H:%M:%S")
     print_msg(f"Start time: {start_time}", type=MsgType.INFO)
     print_msg("Upload to MS Access.", type=MsgType.PROCESS)
-    for table_nm in _sources.lines().get_names():
+    for table_nm in _sources.lines().line_nms:
         print_msg(table_nm, type=MsgType.TRACE)
         with get_conn() as conn:
             data = conn.sql(f"FROM {table_nm};").pl()
