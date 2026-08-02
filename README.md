@@ -7,7 +7,7 @@
 [![Poetry](https://img.shields.io/badge/poetry-2.2%2B-purple)](https://pypi.org/project/poetry/)
 [![Ruff](https://img.shields.io/badge/ruff-0.14%2B-maroon)](https://docs.astral.sh/ruff/)
 [![Polars](https://shields.io/badge/polars-1.42%2B-blue)](https://pola.rs)
-![DuckDB](https://img.shields.io/badge/DuckDB-1.5%2B-yellow)
+[![DuckDB](https://img.shields.io/badge/DuckDB-1.5%2B-yellow)](https://duckdb.org)
 <!-- badges: end -->
 
 Cookiecutter for simple projects using the most up-to-date setup possible.
