@@ -3,7 +3,7 @@
 <!-- badges: start -->
 [![Lifecycle](https://shields.io/badge/lifecycle-stable-green)](https://github.com)
 [![License](https://img.shields.io/badge/license-MIT-brown)](https://opensource.org/licenses/MIT)
-[![Python](https://img.shields.io/badge/python-3.14%2B-blue)](https://www.python.org/downloads/release/python-3106/)
+[![Python](https://img.shields.io/badge/python-3.14%2B-blue)](https://www.python.org)
 [![Poetry](https://img.shields.io/badge/poetry-2.2%2B-purple)](https://pypi.org/project/poetry/)
 [![Ruff](https://img.shields.io/badge/ruff-0.14%2B-maroon)](https://docs.astral.sh/ruff/)
 [![Polars](https://shields.io/badge/polars-1.42%2B-blue)](https://pola.rs)
