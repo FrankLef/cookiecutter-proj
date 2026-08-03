@@ -6,7 +6,7 @@ from config import settings
 
 from fltk.prnt.print_msg import print_msg, MsgType
 
-from src._registry.specs import specs_mstr
+from src._registry.main import specs_mstr
 
 _export = specs_mstr.specs("export")
 

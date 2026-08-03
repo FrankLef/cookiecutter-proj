@@ -10,9 +10,7 @@ from rich.prompt import Confirm
 
 from fltk.prnt.print_msg import print_msg, MsgType
 
-from src._registry.specs import specs_mstr
-from src._registry.ddb import get_conn
-from src._registry.acc import main as inst_acc
+from src._registry.main import get_conn,specs_mstr,inst_acc
 
 _sources = specs_mstr.specs("sources_acc").group("upload")
 
