@@ -9,10 +9,10 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 
 This is the main *readme* of the {{cookiecutter.project_name}} project.
 
-The sections below cover the `workflow` command to
+The sections below cover the `jobrun` command to
 run the project modules as a pipeline in a very simple and straightforward way.
 
-## Workflow
+## Jobrun
 
 The project is organised with specific directories that can be called in a
 command line interface (CLI). The structure of the directories is described
@@ -26,61 +26,39 @@ cd ..\{{cookiecutter.__project_slug}}
 python -m src --help
 ```
 
-## How to use the workflow
+## How to use the jobrun
 
-**Important**: This section assumes that the default directories are in place as
-described in the [Directory Structure](#directory-structure) section below.
-It can be modified as described in the [Configuration](#configuration) below but you should
-start with the default.
-
-To run the modules in a given directory, for example the *s2_transf* directory,
+To run the modules in a given directory, for example the *job1_etl* directory,
 wou must be in the project directory and use this command
 
 ```console
 cd ..\{{cookiecutter.__project_slug}}
-python -m src pipe transf
+python -m src pipe etl
 ```
 
 This will run all the files whose name begins with the prefix **run** in the
-*s2_transf* directory in alphabetical order.
+*job1_etl* directory in alphabetical order.
 
 To run a specific module in a directory, for example to run *run99a_todo.py* in
-the *s2_transf* directory, you can use a regex pattern as follows:
+the *job1_etl* directory, you can use a regex pattern as follows:
 
 ```console
 cd ..\{{cookiecutter.__project_slug}}
 python -m src pipe transf --pat todo
 ```
 
-We could have used any word that starts with ***tr*** and the `workflow` would
-understand it to be for the *s2_transf*. See the [Directories](#directories)
-section for a table of the directory identifications.
-
 ## How to use the workflow for a pipeline
 
 Very often, you will probably want to use several directories as in a pipeline.
-For example to run the *extract*, *transform* and *load* directories you will
-do
+For example to run the *setup* and *etl* directories you will do
 
 ```console
 cd ..\{{cookiecutter.__project_slug}}
-python -m src pipe transf,extr,load
+python -m src pipe setup,etl
 ```
 
-See the [Directories](#directories) section for a table of the directory
-identifications that can be used.
-
-**The order is unimportant** because the `workflow` will always run the directories
-in the order of their given priorities as set in the **config.json*** file.
-See the [Configuration](#configuration) section below for information on the directories.
-
-**Only the first two characters of the directory id matter**. For example the
-following command would work like the one just mentioned previously.
-
-```console
-cd ..\{{cookiecutter.__project_slug}}
-python -m src pipe transform,ex,LOAD
-```
+**The order is unimportant** because the `jobrun` will always run the directories
+and their files in alphabetical order.
 
 ### How to use the pattern
 
@@ -89,64 +67,27 @@ specific file. For example
 
 ```console
 cd ..\{{cookiecutter.__project_slug}}
-python -m src pipe transf --pat todo
+python -m src pipe etl --pat todo
 ```
 
-would run any file starting with the prefix *transf* and containing *todo*
-in its name.
+would run any file starting containing *todo* in its name.
 
 If you use `--pat todo` with several directories in a pipeline, the pattern
 will be applied to all directories in the pipeline.
 
-### Configuration
-
-The few configuration settings are located in the `.\_workflow\config.json`.
-This config file has 3 setions only.
-
-#### run_prefix
-
-This section identifies the word used as a prefix in the file names to select the module
-that will be run. The default is **run** and it is recommended not to change that
-unless there is a pretty good reason to do so.
-
-#### success_wav
-
-This section identifies the name of the sound file used to generate a sound when a run
-is successfully completed. The file must be located in the `.\_worklow` directory.
-
-#### dirs
-
-This section identifies the different directories that will be run by the worklow.
-
-Each directory's specifications includes
-
-* **priority**: Detrmine the order in which the directory will be run.
-* **name**: The 2-character, and *unique* word used to run the given directory. See [Directories](#directories).
-* **emo**: The emoji name used in the CLI.
-* **song**: The name of the sound used to identify the directory. To be used (maybe) in the future.
-
 ### Directories
 
-The task id are 2-letter words used to identify a task as discussed in the
-[dirs](#dirs) section just above.  If a longer word is used, only the first
-2 letters will be used. The **table of directories** is
+The *Jobs* are the subdirectories of the `src` directory and are always name
+*job*, then any number of characters  or number foloowed by and underscore.
+They will processed in alphabetical order. That is with the regex pattern
+`^job.+_.+`.
 
-Priority|Name|Dir|Description
-:-----|:-----:|:-----|:-----
-0|***se***|`s0_setup`|Set up
-1|***ex***|`s1_extr`|Extract
-2|***tr***|`s2_transf`|Transform
-3|***lo***|`s3_load`|Load
-4|***ra***|`s4_raw`|Raw data
-5|***pp***|`s5_pproc`|Pre-processing
-6|***ed***|`s6_eda`|E.D.A.
-9|***te***|`s9_teard`|Tear down
+See the [directory structure](#directory-structure) for an example.
 
 ### Directory Structure
 
-This is the default structure of the project. It can be modified in which case
-the `.\_worklow\config.json` file must be changed.
-See the [Configuration](#configuration) section above.
+This is a proposed structure of the project. It can be modified simply by changing
+the name of the directories and files.
 
 ```text
 {{cookiecutter.__project_slug}}
@@ -190,28 +131,10 @@ See the [Configuration](#configuration) section above.
 │   ├── _registry             <- Values, instantiated classes, shared by all modules.
 │   │   ├── registry.py       <- Values shared by all modules. Equivalent to a singleton.
 |   |   └── ...
-│   ├── _workflow             <- CLI used by __main__.py to run the modules.
-|   |   ├── config.json       <- Configuration file used by `workflow`.
-|   |   └── ...
-│   ├── s0_setup              <- Code used for setting up the project.
+│   ├── job0_setup            <- Directory of job 'setup'.
 │   │   ├── __init__.py
 |   |   └── ...
-|   ├── s1_extr               <- Code to extract the raw data.
-│   │   ├── __init__.py
-|   |   └── ...
-|   ├── s2_transf             <- Code to transform the raw data.
-│   │   ├── __init__.py
-|   |   └── ...
-|   ├── s3_load               <- Code to load the raw data, usually in a database.
-│   │   ├── __init__.py
-|   |   └── ...
-|   ├── s4_preproc            <- Code to preprocess the data for EDA.
-│   │   ├── __init__.py
-|   |   └── ...
-|   ├── s5_eda                <- Code for exploratory data analysis (EDA).
-│   │   ├── __init__.py
-|   |   └── ...
-|   ├── s9_teard              <- Code used to tear down the project.
+|   ├── job1_etl              <- Directory of job 'etl'.
 │   │   ├── __init__.py
 |   |   └── ...
 |   └── ...
