@@ -3,14 +3,12 @@
 import typer
 from pathlib import Path
 
-# from fltk.jobrun.main import JobRun
-from fltk.jobflow.main import JobFlow
+from fltk.scriptrun.main import ScriptRun  # type: ignore
 
 app = typer.Typer()
 
 project_path = Path(__file__).parents[1]
-# process = JobRun(project_path, work_dirs=["src"])
-process = JobFlow(project_path, work_dirs=["src"])
+process = ScriptRun(project_path, work_dirs=["src"], mode="subprocess")
 
 
 @app.command()
