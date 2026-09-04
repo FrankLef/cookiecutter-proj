@@ -38,7 +38,7 @@ def all(pat: str | None = None) -> None:
         int: Integer returned by the process.
     """
     jobs = "setup, etl, pproc, rollup, survey, outl, eda"
-    process.execute(job_args=jobs, file_pat=None)
+    process.execute(job_args=jobs, file_pat=pat, with_timer=True)
 
 
 if __name__ == "__main__":
