@@ -9,7 +9,7 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 
 This is the main *readme* of the {{cookiecutter.project_name}} project.
 
-The sections below cover the `jobrun` command to
+The sections below cover the `scriptrun` command to
 run the project modules as a pipeline in a very simple and straightforward way.
 
 ## Jobrun
@@ -57,7 +57,7 @@ cd ..\{{cookiecutter.__project_slug}}
 python -m src pipe setup,etl
 ```
 
-**The order is unimportant** because the `jobrun` will always run the directories
+**The order is unimportant** because the `scriptrun` will always run the directories
 and their files in alphabetical order.
 
 ### How to use the pattern
