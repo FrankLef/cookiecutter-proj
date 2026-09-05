@@ -1,10 +1,5 @@
 duckdb = "todo.duckdb"
 
-[bag]
-sources = "bag_sources.xlsx"
-schema = "bag_schema.xlsx"
-output = "bag_output.xlsx"
-
 [acc]
 main = "C:/Users/Public/MyAcctg/xbrl/db_xbr.accdb"
 raw = "C:/Users/Public/MyAcctg/xbrl/db_xbr.accdb"
