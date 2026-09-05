@@ -39,7 +39,7 @@ def main(db_choice: str = "main", wait_time: str = "5 min") -> None:
     is_ok = Confirm.ask(f"Uploading takes about {wait_time}. ok?")
     if not is_ok:
         return
-    start_time: str = dt.now().strftime("%H:%M:%S")
+    start_time: str = dt.now().astimezone().strftime("%H:%M:%S")
     print_msg(f"Start time: {start_time}", type=MsgType.INFO)
     print_msg("Upload to MS Access.", type=MsgType.PROCESS)
     for table_nm in _sources.lines().line_nms:
@@ -57,5 +57,5 @@ def main(db_choice: str = "main", wait_time: str = "5 min") -> None:
                     if_table_exists="replace",
                     engine_options={"dtype": dtype_mapping},
                 )
-    end_time: str = dt.now().strftime("%H:%M:%S")
+    end_time: str = dt.now().astimezone().strftime("%H:%M:%S")
     print_msg(f"End time: {end_time}", type=MsgType.INFO)
