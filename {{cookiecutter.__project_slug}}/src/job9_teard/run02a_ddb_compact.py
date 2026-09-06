@@ -9,5 +9,8 @@ duckdb_path = settings.paths.duckdb
 
 
 def main() -> None:
-
     compact_ddb.main(duckdb_path=duckdb_path)
+    
+if __name__ == "__main__":
+    main()
+

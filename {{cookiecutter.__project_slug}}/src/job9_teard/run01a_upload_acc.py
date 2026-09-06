@@ -59,3 +59,6 @@ def main(db_choice: str = "main", wait_time: str = "5 min") -> None:
                 )
     end_time: str = dt.now().astimezone().strftime("%H:%M:%S")
     print_msg(f"End time: {end_time}", type=MsgType.INFO)
+
+if __name__ == "__main__":
+    main()
