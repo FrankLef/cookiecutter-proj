@@ -8,7 +8,7 @@ from fltk.scriptrun.main import ScriptRun  # type: ignore
 app = typer.Typer()
 
 project_path = Path(__file__).parents[1]
-process = ScriptRun(project_path, work_dirs=["src"], mode="subprocess")
+process = ScriptRun(project_path, work_dirs=["src"], mode="importlib")
 
 
 @app.command()
