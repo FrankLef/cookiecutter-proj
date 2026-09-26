@@ -12,6 +12,8 @@ readme = "README.md"
 requires-python = "{{cookiecutter.__requires_py}}"
 dependencies = [
     "polars>=1.42.0",
+    "xlsxwriter>=3.2.0",
+    "fastexcel>0.20.0",
     "numpy>=2.3.4",
     "great-tables>=0.23.0",
     "openpyxl>=3.1.5",
@@ -60,6 +62,9 @@ force-exclude = true
 # use this option if you want 'strict' style which is a bit too much
 # select = ["ALL"]
 extend-include = ["*.ipynb"]
+
+[tool.ruff.lint]
+ignore = ["DTZ"] # disable all strict timezone awareness linting
 
 
 # https://mypy.readthedocs.io/en/stable/config_file.html#config-file
