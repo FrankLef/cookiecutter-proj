@@ -10,7 +10,7 @@ from rich.prompt import Confirm
 
 from fltk.prnt.print_msg import print_msg, MsgType
 
-from src._registry.main import get_conn,specs_mstr,inst_acc
+from _registry import ddb_conn,specs_mstr,acc_conn
 
 _sources = specs_mstr.specs("sources_acc").group("upload")
 
@@ -34,7 +34,7 @@ def get_dtype_mapping(data: pl.DataFrame) -> dict[str, Any]:
 
 
 def main(db_choice: str = "main", wait_time: str = "5 min") -> None:
-    accdb = inst_acc(db_choice=db_choice)
+    accdb = acc_conn(db_choice=db_choice)
     engin = accdb.engine
     is_ok = Confirm.ask(f"Uploading takes about {wait_time}. ok?")
     if not is_ok:
@@ -44,7 +44,7 @@ def main(db_choice: str = "main", wait_time: str = "5 min") -> None:
     print_msg("Upload to MS Access.", type=MsgType.PROCESS)
     for table_nm in _sources.lines().line_nms:
         print_msg(table_nm, type=MsgType.TRACE)
-        with get_conn() as conn:
+        with ddb_conn() as conn:
             data = conn.sql(f"FROM {table_nm};").pl()
             data = cast_shortstr(data)
             dtype_mapping = get_dtype_mapping(data)
