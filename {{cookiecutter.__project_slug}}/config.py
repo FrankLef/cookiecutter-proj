@@ -1,27 +1,17 @@
-from dynaconf import Dynaconf  # type: ignore
+from dynaconf import Dynaconf
 from pathlib import Path
+
+config_dir = Path(__file__).parent.joinpath("config")
 
 settings = Dynaconf(
     envvar_prefix="DYNACONF",
-    settings_files=["settings.toml", ".secrets.toml"],
+    settings_files=[
+        config_dir.joinpath("settings.toml"),
+        config_dir.joinpath("specs.py"),
+        config_dir.joinpath("dpaths.py"),
+        config_dir.joinpath("rpaths.py"),
+        config_dir.joinpath("ddb.py"),
+        config_dir.joinpath("acc.py"),
+    ],
+    merge_enabled=True,
 )
-
-# `envvar_prefix` = export envvars with `export DYNACONF_FOO=bar`.
-# `settings_files` = Load these files in the order.
-
-project_path = Path(__file__).parent.absolute()
-settings.paths = {
-    "data": project_path.joinpath("data"),
-    "duckdb": project_path.joinpath("data", settings.duckdb),
-    "data_setup": project_path.joinpath("data", settings.dpaths.setup),
-    "data_extr": project_path.joinpath("data", settings.dpaths.extr),
-    "data_transf": project_path.joinpath("data", settings.dpaths.transf),
-    "data_load": project_path.joinpath("data", settings.dpaths.load),
-    "data_raw": project_path.joinpath("data", settings.dpaths.raw),
-    "data_pproc": project_path.joinpath("data", settings.dpaths.pproc),
-    "data_eda": project_path.joinpath("data", settings.dpaths.eda),
-    "data_teard": project_path.joinpath("data", settings.dpaths.teard),
-    "reports": project_path.joinpath("reports"),
-    "reports_data": project_path.joinpath("reports", "data"),
-    "reports_figs": project_path.joinpath("reports", "figs"),
-}

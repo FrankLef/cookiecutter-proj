@@ -5,12 +5,14 @@ from rich import print as rprint
 from config import settings
 from fltk.ddb import compact_ddb
 
-duckdb_path = settings.paths.duckdb
+
+def main(is_skipped: bool = False) -> None:
+    if is_skipped:
+        raise NotImplementedError(f"Skip the '{__name__}' script.")
+    rprint(f"Executing the '{__name__}' script.")
+
+    compact_ddb.main(duckdb_path=settings.DDB_PATH)
 
 
-def main() -> None:
-    compact_ddb.main(duckdb_path=duckdb_path)
-    
 if __name__ == "__main__":
     main()
-

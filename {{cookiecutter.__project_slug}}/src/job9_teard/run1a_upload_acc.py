@@ -10,12 +10,13 @@ from rich.prompt import Confirm
 
 from fltk.prnt.print_msg import print_msg, MsgType
 
-from _registry import ddb_conn,specs_mstr,acc_conn
+from _registry import specs_mstr
+
 
 _sources = specs_mstr.specs("sources_acc").group("upload")
 
 
-data_path = settings.paths.data
+data_path = settings.DPATHS.data
 
 
 def cast_shortstr(data: pl.DataFrame) -> pl.DataFrame:
@@ -34,17 +35,17 @@ def get_dtype_mapping(data: pl.DataFrame) -> dict[str, Any]:
 
 
 def main(db_choice: str = "main", wait_time: str = "5 min") -> None:
-    accdb = acc_conn(db_choice=db_choice)
+    accdb = settings.ACC_CONN(db_choice=db_choice)
     engin = accdb.engine
     is_ok = Confirm.ask(f"Uploading takes about {wait_time}. ok?")
     if not is_ok:
         return
-    start_time: str = dt.now().astimezone().strftime("%H:%M:%S")
+    start_time: str = dt.now().strftime("%H:%M:%S")
     print_msg(f"Start time: {start_time}", type=MsgType.INFO)
     print_msg("Upload to MS Access.", type=MsgType.PROCESS)
     for table_nm in _sources.lines().line_nms:
         print_msg(table_nm, type=MsgType.TRACE)
-        with ddb_conn() as conn:
+        with settings.DDB_CONN() as conn:
             data = conn.sql(f"FROM {table_nm};").pl()
             data = cast_shortstr(data)
             dtype_mapping = get_dtype_mapping(data)
@@ -57,8 +58,9 @@ def main(db_choice: str = "main", wait_time: str = "5 min") -> None:
                     if_table_exists="replace",
                     engine_options={"dtype": dtype_mapping},
                 )
-    end_time: str = dt.now().astimezone().strftime("%H:%M:%S")
-    print_msg(f"End time: {end_time}", type=MsgType.INFO)
+    end_time: str = dt.now().strftime("%H:%M:%S")
+    print_msg(f"Finish time: {end_time}", type=MsgType.INFO)
+
 
 if __name__ == "__main__":
     main()

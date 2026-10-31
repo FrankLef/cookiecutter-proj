@@ -10,8 +10,8 @@ from _registry import specs_mstr
 
 _export = specs_mstr.specs("export")
 
-path_data = settings.paths.data
-path_reports = settings.paths.reports_figs
+path_data = settings.DPATHS.data
+path_reports = settings.RPATHS.figs
 
 
 def main(is_skipped: bool = False) -> None:
