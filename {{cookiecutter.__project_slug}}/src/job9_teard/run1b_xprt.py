@@ -24,10 +24,12 @@ def main(is_skipped: bool = False) -> None:
         print_msg(row["line"], type=MsgType.TRACE)
         src = path_data.joinpath(row["group"], row["line"])
         if not src.exists():
-            raise FileNotFoundError(f"Source file does not exist:\n{src}")
+            msg=f"Source file does not exist:\n{src}"
+            raise FileNotFoundError(msg)
         dst = path_reports.joinpath(row["line"])
-        if not dst.exists():
-            raise FileNotFoundError(f"Destination file does not exist:\n{dst}")
+        if not path_reports.exists():
+            msg = f"Destination folder does not exist:\n{path_reports}"
+            raise FileNotFoundError(msg)
         shutil.copy2(src=src, dst=dst)
 
 
