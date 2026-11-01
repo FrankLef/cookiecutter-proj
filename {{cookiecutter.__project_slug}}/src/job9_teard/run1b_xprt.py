@@ -23,7 +23,11 @@ def main(is_skipped: bool = False) -> None:
     for row in _export.df.iter_rows(named=True):
         print_msg(row["line"], type=MsgType.TRACE)
         src = path_data.joinpath(row["group"], row["line"])
+        if not src.exists():
+            raise FileNotFoundError(f"Source file does not exist:\n{src}")
         dst = path_reports.joinpath(row["line"])
+        if not dst.exists():
+            raise FileNotFoundError(f"Destination file does not exist:\n{dst}")
         shutil.copy2(src=src, dst=dst)
 
 

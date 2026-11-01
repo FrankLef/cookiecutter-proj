@@ -8,8 +8,8 @@ def get_rpaths() -> NamedTuple:
 
     class DataPaths(NamedTuple):
         reports: Path = reports_path
-        data: Path = reports_path.joinpath("figs")
-        figs: Path = reports_path.joinpath("data")
+        data: Path = reports_path.joinpath("data")
+        figs: Path = reports_path.joinpath("figs")
 
     return DataPaths()
 
